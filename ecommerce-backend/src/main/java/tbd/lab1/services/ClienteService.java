@@ -13,16 +13,16 @@ public class ClienteService {
     ClienteRepository clienteRepository;
 
     public ClienteEntity saveCliente(ClienteEntity cliente){
-        return clienteRepository.save(cliente);
+        return clienteRepository.saveCliente(cliente);
     }
 
     public ArrayList<ClienteEntity> getClientes(){
-        return (ArrayList<ClienteEntity>) clienteRepository.findAll();
+        return (ArrayList<ClienteEntity>) clienteRepository.getClientes();
     }
 
     public boolean deleteCliente(Long id) throws Exception {
         try{
-            clienteRepository.deleteById(id);
+            clienteRepository.deleteCliente(id);
             return true;
         } catch (Exception e) {
             throw new Exception(e.getMessage());
@@ -30,6 +30,6 @@ public class ClienteService {
     }
 
     public ClienteEntity getClienteById(Long id){
-        return clienteRepository.findById(id).orElse(null);
+        return clienteRepository.getClienteById(id);
     }
 }
