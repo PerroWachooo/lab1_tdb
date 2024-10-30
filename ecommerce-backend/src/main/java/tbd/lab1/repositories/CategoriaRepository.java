@@ -10,6 +10,8 @@ import tbd.lab1.entities.CategoriaEntity;
 
 @Repository
 public interface CategoriaRepository extends JpaRepository<CategoriaEntity, Long>{
+    
 
     public CategoriaEntity findByIdCategoria(int id);
+    public CategoriaEntity save(CategoriaEntity categoria);
 }

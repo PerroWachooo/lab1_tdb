@@ -5,31 +5,33 @@ import org.springframework.stereotype.Service;
 import tbd.lab1.entities.ClienteEntity;
 import tbd.lab1.repositories.ClienteRepository;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClienteService {
-    @Autowired
-    ClienteRepository clienteRepository;
 
-    public ClienteEntity saveCliente(ClienteEntity cliente){
+    @Autowired
+    private ClienteRepository clienteRepository;
+
+    public List<ClienteEntity> getAllClientes() {
+        return clienteRepository.findAll();
+    }
+
+    public ClienteEntity getClienteById(Long id) {
+        return clienteRepository.findById(id).orElse(null);
+    }
+
+    public ClienteEntity createCliente(ClienteEntity cliente) {
         return clienteRepository.save(cliente);
     }
 
-    public ArrayList<ClienteEntity> getClientes(){
-        return (ArrayList<ClienteEntity>) clienteRepository.findAll();
-    }
-
-    public boolean deleteCliente(Long id) throws Exception {
-        try{
+    public boolean deleteCliente(Long id) {
+        if (clienteRepository.existsById(id)) {
             clienteRepository.deleteById(id);
             return true;
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
+        } else {
+            return false;
         }
-    }
-
-    public ClienteEntity getClienteById(Long id){
-        return clienteRepository.findById(id).orElse(null);
     }
 }

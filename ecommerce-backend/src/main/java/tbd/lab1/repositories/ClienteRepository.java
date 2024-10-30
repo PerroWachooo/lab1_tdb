@@ -8,4 +8,8 @@ import tbd.lab1.entities.ClienteEntity;
 @Repository
 public interface ClienteRepository extends JpaRepository<ClienteEntity, Long> {
 
+    ClienteEntity findByIdCliente(Long id);
+    ClienteEntity save(ClienteEntity cliente);
+    void deleteById(Long id);
+
 }

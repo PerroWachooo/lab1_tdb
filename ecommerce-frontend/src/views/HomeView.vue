@@ -1,9 +1,14 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
+import Categorias from '@/components/Categorias.vue';
+import clientes from '@/components/clientes.vue';
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+
+    <Categorias />
+    <clientes />
+
+
   </main>
 </template>

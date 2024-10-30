@@ -9,48 +9,45 @@ import tbd.lab1.services.ClienteService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/cliente")
+@RequestMapping("/api/v1/clientes")
 @CrossOrigin("*")
 public class ClienteController {
 
     @Autowired
-    ClienteService clienteService;
+    private ClienteService clienteService;
 
-    //obtiene todos los clientes ingresados en la base de datos
-    @GetMapping("/")
-    public ResponseEntity<List<ClienteEntity>> listCliente() {
-        List<ClienteEntity> clientes = clienteService.getClientes();
-        return ResponseEntity.ok(clientes);
+
+    @GetMapping("")
+    public ResponseEntity<List<ClienteEntity>> getAllClientes() {
+        return ResponseEntity.ok().body(clienteService.getAllClientes());
     }
 
-    @GetMapping("/id-cliente/{id}")
+    // Obtiene un cliente específico por su ID
+    @GetMapping("/{id}")
     public ResponseEntity<ClienteEntity> getClienteById(@PathVariable Long id) {
         ClienteEntity cliente = clienteService.getClienteById(id);
-        return ResponseEntity.ok(cliente);
+        if (cliente != null) {
+            return ResponseEntity.ok(cliente);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    //crea un cliente
-    @PostMapping("/")
-    public ResponseEntity<ClienteEntity> saveCliente(@RequestBody ClienteEntity cliente) {
-            ClienteEntity NewCliente = clienteService.saveCliente(cliente);
-        return ResponseEntity.ok(NewCliente);
+    // Crea un cliente
+    @PostMapping("")
+    public ResponseEntity<ClienteEntity> createCliente(@RequestBody ClienteEntity cliente) {
+        ClienteEntity newCliente = clienteService.createCliente(cliente);
+        return ResponseEntity.ok(newCliente);
     }
 
-    //borra un solo cliente
-    @DeleteMapping("/delete-cliente/{id}")
-    public ResponseEntity<Boolean> deleteClienteById(@PathVariable Long id) throws Exception {
-        var isDeleted = clienteService.deleteCliente(id);
-        return ResponseEntity.noContent().build();
+    // Borra un cliente específico por su ID
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteClienteById(@PathVariable Long id) {
+        boolean isDeleted = clienteService.deleteCliente(id);
+        if (isDeleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
-
-
-
-
-
-
-
-
-
-
 }
-
