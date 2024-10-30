@@ -3,7 +3,6 @@ package tbd.lab1.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tbd.lab1.entities.CategoriaEntity;
-import tbd.lab1.entities.ClienteEntity;
 import tbd.lab1.repositories.CategoriaRepository;
 
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ public class CategoriaService {
         return (ArrayList<CategoriaEntity>) categoriaRepository.getCategorias();
     }
 
-    public CategoriaEntity getCategoryById(int id) {
+    public CategoriaEntity getCategoryById(Long id) {
         return categoriaRepository.findByIdCategoria(id);
     }
 
@@ -32,5 +31,14 @@ public class CategoriaService {
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
+    }
+
+    public boolean updateCategoria(CategoriaEntity categoria) {
+        // vemos si categoria existe en la base de datos
+        if (categoriaRepository.findByIdCategoria(categoria.getIdCategoria()) != null) {
+            // actualizamos el categoria usando el método del repositorio
+            return categoriaRepository.updateCategoria(categoria);
+        }
+        return false;
     }
 }

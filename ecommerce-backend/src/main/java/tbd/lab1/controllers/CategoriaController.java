@@ -22,16 +22,27 @@ public class CategoriaController {
         return ResponseEntity.ok(NewCategoria);
     }
 
+    //todas las categorias
     @GetMapping("/")
-    public ResponseEntity<List<CategoriaEntity>> listCategoria() {
+    public ResponseEntity<List<CategoriaEntity>> listCategorias() {
         List<CategoriaEntity> categorias = categoriaService.getCategorias();
         return ResponseEntity.ok(categorias);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CategoriaEntity> getCategoriaById(@PathVariable int id) {
+    public ResponseEntity<CategoriaEntity> getCategoriaById(@PathVariable Long id) {
         CategoriaEntity categoria =categoriaService.getCategoryById(id);
         return ResponseEntity.ok().body(categoria);
+    }
+
+    @PutMapping("/")
+    public ResponseEntity<CategoriaEntity> updateCategoria(@RequestBody CategoriaEntity categoria) {
+        boolean isUpdated = categoriaService.updateCategoria(categoria);
+        if (isUpdated) {
+            return ResponseEntity.ok(categoria);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/delete-categoria/{id}")

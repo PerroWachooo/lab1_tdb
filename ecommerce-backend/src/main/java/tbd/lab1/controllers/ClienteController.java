@@ -36,6 +36,7 @@ public class ClienteController {
         return ResponseEntity.ok(NewCliente);
     }
 
+    //actualiza cliente
     @PutMapping("/")
     public ResponseEntity<ClienteEntity> updateCliente(@RequestBody ClienteEntity cliente) {
         boolean isUpdated = clienteService.updateCliente(cliente);
@@ -52,15 +53,6 @@ public class ClienteController {
         var isDeleted = clienteService.deleteCliente(id);
         return ResponseEntity.noContent().build();
     }
-
-
-
-
-
-
-
-
-
 
 }
 

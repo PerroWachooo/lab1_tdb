@@ -59,6 +59,7 @@ public class CategoriaRepository{
                 CategoriaEntity categoria = new CategoriaEntity();
                 categoria.setIdCategoria(resultSet.getLong("id_categoria"));
                 categoria.setNombre(resultSet.getString("nombre"));
+                categorias.add(categoria);
             }
 
         } catch (SQLException e) {
@@ -67,14 +68,14 @@ public class CategoriaRepository{
         return categorias;
     }
 
-    public CategoriaEntity findByIdCategoria(int id) {
+    public CategoriaEntity findByIdCategoria(Long id) {
         String sql = "SELECT * FROM categoria WHERE id_categoria = ?";
         CategoriaEntity categoria = null;
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setInt(1, id);
+            statement.setLong(1, id);
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
@@ -104,5 +105,22 @@ public class CategoriaRepository{
         } catch (SQLException e) {
             throw new Exception("Error al eliminar la categoria: " + e.getMessage());
         }
+    }
+
+    public boolean updateCategoria(CategoriaEntity categoria) {
+        String sql = "UPDATE categoria SET nombre = ? WHERE id_categoria = ?";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, categoria.getNombre());
+            statement.setLong(2, categoria.getIdCategoria());
+
+            int affectedRows = statement.executeUpdate();
+            return affectedRows > 0;  // Devuelve true si se actualizó al menos una fila
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
