@@ -114,4 +114,24 @@ public class ClienteRepository {
         return cliente;
     }
 
+    public boolean updateCliente(ClienteEntity cliente) {
+        String sql = "UPDATE cliente SET nombre = ?, direccion = ?, email = ?, telefono = ? WHERE id_cliente = ?";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, cliente.getNombre());
+            statement.setString(2, cliente.getDireccion());
+            statement.setString(3, cliente.getEmail());
+            statement.setString(4, cliente.getTelefono());
+            statement.setLong(5, cliente.getIdCliente());
+
+            int affectedRows = statement.executeUpdate();
+            return affectedRows > 0;  // Devuelve true si se actualizó al menos una fila
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

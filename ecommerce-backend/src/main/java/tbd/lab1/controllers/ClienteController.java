@@ -36,6 +36,16 @@ public class ClienteController {
         return ResponseEntity.ok(NewCliente);
     }
 
+    @PutMapping("/")
+    public ResponseEntity<ClienteEntity> updateCliente(@RequestBody ClienteEntity cliente) {
+        boolean isUpdated = clienteService.updateCliente(cliente);
+        if (isUpdated) {
+            return ResponseEntity.ok(cliente);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     //borra un solo cliente
     @DeleteMapping("/delete-cliente/{id}")
     public ResponseEntity<Boolean> deleteClienteById(@PathVariable Long id) throws Exception {
