@@ -10,7 +10,7 @@ import tbd.lab1.services.CategoriaService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/categorias")
+@RequestMapping("/categorias")
 @CrossOrigin("*")
 public class CategoriaController {
     @Autowired
@@ -29,7 +29,7 @@ public class CategoriaController {
         return ResponseEntity.ok(categorias);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id-categoria/{id}")
     public ResponseEntity<CategoriaEntity> getCategoriaById(@PathVariable Long id) {
         CategoriaEntity categoria =categoriaService.getCategoryById(id);
         return ResponseEntity.ok().body(categoria);

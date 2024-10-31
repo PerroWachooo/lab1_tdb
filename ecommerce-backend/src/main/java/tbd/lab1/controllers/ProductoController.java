@@ -3,7 +3,6 @@ package tbd.lab1.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tbd.lab1.entities.ClienteEntity;
 import tbd.lab1.entities.ProductoEntity;
 import tbd.lab1.services.ProductoService;
 

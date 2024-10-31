@@ -4,7 +4,6 @@ package tbd.lab1.repositories;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import tbd.lab1.entities.CategoriaEntity;
-import tbd.lab1.entities.ClienteEntity;
 import tbd.lab1.entities.ProductoEntity;
 
 import javax.sql.DataSource;

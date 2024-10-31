@@ -2,9 +2,7 @@ package tbd.lab1.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tbd.lab1.entities.ClienteEntity;
 import tbd.lab1.entities.ProductoEntity;
-import tbd.lab1.repositories.ClienteRepository;
 import tbd.lab1.repositories.ProductoRepository;
 
 import java.util.ArrayList;

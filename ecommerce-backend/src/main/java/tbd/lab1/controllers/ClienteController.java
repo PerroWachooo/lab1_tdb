@@ -16,6 +16,12 @@ public class ClienteController {
     @Autowired
     ClienteService clienteService;
 
+    //crea un cliente
+    @PostMapping("/")
+    public ResponseEntity<ClienteEntity> saveCliente(@RequestBody ClienteEntity cliente) {
+        ClienteEntity NewCliente = clienteService.saveCliente(cliente);
+        return ResponseEntity.ok(NewCliente);
+    }
     //obtiene todos los clientes ingresados en la base de datos
     @GetMapping("/")
     public ResponseEntity<List<ClienteEntity>> listCliente() {
@@ -27,13 +33,6 @@ public class ClienteController {
     public ResponseEntity<ClienteEntity> getClienteById(@PathVariable Long id) {
         ClienteEntity cliente = clienteService.getClienteById(id);
         return ResponseEntity.ok(cliente);
-    }
-
-    //crea un cliente
-    @PostMapping("/")
-    public ResponseEntity<ClienteEntity> saveCliente(@RequestBody ClienteEntity cliente) {
-            ClienteEntity NewCliente = clienteService.saveCliente(cliente);
-        return ResponseEntity.ok(NewCliente);
     }
 
     //actualiza cliente
