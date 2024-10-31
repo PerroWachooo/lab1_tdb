@@ -1,4 +1,3 @@
-<!-- Categoria.vue -->
 <template>
   <v-card
     :disabled="loading"
@@ -54,20 +53,43 @@ export default {
       type: [String, Number],
       default: 200,
     },
-    imageSrc: {
-      type: String,
-      default: '', // Agrega aquí la URL de una imagen por defecto o ajusta según sea necesario
-    },
   },
 
-  data: () => ({
-    loading: false,
-  }),
+  data() {
+    return {
+      loading: false,
+      imageSrc: '', // Initial empty image src
+    };
+  },
+
+  watch: {
+    categoria: {
+      immediate: true,
+      handler(newVal) {
+        this.fetchImage(newVal.nombre);
+      },
+    },
+  },
 
   methods: {
     buscar() {
       this.loading = true;
       setTimeout(() => (this.loading = false), 2000);
+    },
+
+    async fetchImage(query) {
+      try {
+        const response = await fetch(`https://api.unsplash.com/search/photos?query=${query}&client_id=QkjMm1DzbXbkQDPZha7IrUSE_8UYBb-JHMrMbskJgis&per_page=1`);
+        const data = await response.json();
+        if (data.results && data.results.length > 0) {
+          this.imageSrc = data.results[0].urls.small;
+        } else {
+          this.imageSrc = 'https://example.com/default.jpg'; // Fallback image
+        }
+      } catch (error) {
+        console.error('Error fetching image:', error);
+        this.imageSrc = 'https://example.com/default.jpg'; // Fallback in case of error
+      }
     },
   },
 };
