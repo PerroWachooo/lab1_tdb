@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tbd.lab1.entities.CategoriaEntity;
 import tbd.lab1.repositories.CategoriaRepository;
+import java.util.List;
 
 import java.util.ArrayList;
 
@@ -12,6 +13,7 @@ public class CategoriaService {
     @Autowired
     CategoriaRepository categoriaRepository;
 
+<<<<<<< HEAD
     public CategoriaEntity saveCategoria(CategoriaEntity categoria){
         return categoriaRepository.saveCategoria(categoria);
     }
@@ -21,7 +23,16 @@ public class CategoriaService {
     }
 
     public CategoriaEntity getCategoryById(Long id) {
+=======
+    public CategoriaEntity getCategoriaById(int id) {
+>>>>>>> Andre
         return categoriaRepository.findByIdCategoria(id);
+    }  
+     public List<CategoriaEntity> getAllCategorias() {
+        return categoriaRepository.findAll(); 
+    }
+    public CategoriaEntity createCategoria(CategoriaEntity categoria) {
+        return categoriaRepository.save(categoria); // Guarda la categoría en la base de datos
     }
 
     public boolean deleteCategoria(Long id) throws Exception {

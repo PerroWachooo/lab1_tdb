@@ -134,4 +134,8 @@ public class ClienteRepository {
         return false;
     }
 
+    ClienteEntity findByIdCliente(Long id);
+    ClienteEntity save(ClienteEntity cliente);
+    void deleteById(Long id);
+
 }
