@@ -10,19 +10,13 @@ import tbd.lab1.services.CategoriaService;
 import java.util.List;
 
 @RestController
-<<<<<<< HEAD
 @RequestMapping("/categorias")
 @CrossOrigin("*")
-=======
-@RequestMapping("/api/v1/categorias")
-@CrossOrigin("*") // Permite acceso desde el frontend en cualquier origen
->>>>>>> Andre
 public class CategoriaController {
 
     @Autowired
     CategoriaService categoriaService;
 
-<<<<<<< HEAD
     @PostMapping("/")
     public ResponseEntity<CategoriaEntity> saveCategoria(@RequestBody CategoriaEntity categoria) {
         CategoriaEntity NewCategoria = categoriaService.saveCategoria(categoria);
@@ -60,22 +54,4 @@ public class CategoriaController {
 
 
 
-=======
-    @GetMapping("/{id}")
-    public ResponseEntity<CategoriaEntity> getCategoriaById(@PathVariable int id) {
-        CategoriaEntity categoria = categoriaService.getCategoriaById(id);
-        return ResponseEntity.ok().body(categoria);
-    }
-
-    @GetMapping("")
-    public ResponseEntity<List<CategoriaEntity>> getAllCategorias() {
-        return ResponseEntity.ok().body(categoriaService.getAllCategorias());
-    }
-
-    @PostMapping("")
-    public ResponseEntity<CategoriaEntity> createCategoria(@RequestBody CategoriaEntity categoria) {
-        return ResponseEntity.ok().body(categoriaService.createCategoria(categoria));
-    }
-    
->>>>>>> Andre
 }

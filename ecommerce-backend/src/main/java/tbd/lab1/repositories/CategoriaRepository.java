@@ -15,7 +15,6 @@ import tbd.lab1.entities.ClienteEntity;
 import javax.sql.DataSource;
 
 @Repository
-<<<<<<< HEAD
 public class CategoriaRepository{
     private final DataSource dataSource;
 
@@ -124,11 +123,4 @@ public class CategoriaRepository{
         }
         return false;
     }
-=======
-public interface CategoriaRepository extends JpaRepository<CategoriaEntity, Long>{
-    
-
-    public CategoriaEntity findByIdCategoria(int id);
-    public CategoriaEntity save(CategoriaEntity categoria);
->>>>>>> Andre
 }

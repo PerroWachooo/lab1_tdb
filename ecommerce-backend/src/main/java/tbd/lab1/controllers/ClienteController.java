@@ -16,7 +16,6 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
-<<<<<<< HEAD
     //crea un cliente
     @PostMapping("/")
     public ResponseEntity<ClienteEntity> saveCliente(@RequestBody ClienteEntity cliente) {
@@ -28,12 +27,6 @@ public class ClienteController {
     public ResponseEntity<List<ClienteEntity>> listCliente() {
         List<ClienteEntity> clientes = clienteService.getClientes();
         return ResponseEntity.ok(clientes);
-=======
-
-    @GetMapping("")
-    public ResponseEntity<List<ClienteEntity>> getAllClientes() {
-        return ResponseEntity.ok().body(clienteService.getAllClientes());
->>>>>>> Andre
     }
 
     // Obtiene un cliente específico por su ID
@@ -47,7 +40,6 @@ public class ClienteController {
         }
     }
 
-<<<<<<< HEAD
     //actualiza cliente
     @PutMapping("/")
     public ResponseEntity<ClienteEntity> updateCliente(@RequestBody ClienteEntity cliente) {
@@ -57,13 +49,6 @@ public class ClienteController {
         } else {
             return ResponseEntity.notFound().build();
         }
-=======
-    // Crea un cliente
-    @PostMapping("")
-    public ResponseEntity<ClienteEntity> createCliente(@RequestBody ClienteEntity cliente) {
-        ClienteEntity newCliente = clienteService.createCliente(cliente);
-        return ResponseEntity.ok(newCliente);
->>>>>>> Andre
     }
 
     // Borra un cliente específico por su ID
@@ -76,8 +61,4 @@ public class ClienteController {
             return ResponseEntity.notFound().build();
         }
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> Andre
 }

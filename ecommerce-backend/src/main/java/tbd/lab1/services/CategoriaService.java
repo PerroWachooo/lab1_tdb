@@ -13,7 +13,6 @@ public class CategoriaService {
     @Autowired
     CategoriaRepository categoriaRepository;
 
-<<<<<<< HEAD
     public CategoriaEntity saveCategoria(CategoriaEntity categoria){
         return categoriaRepository.saveCategoria(categoria);
     }
@@ -23,9 +22,6 @@ public class CategoriaService {
     }
 
     public CategoriaEntity getCategoryById(Long id) {
-=======
-    public CategoriaEntity getCategoriaById(int id) {
->>>>>>> Andre
         return categoriaRepository.findByIdCategoria(id);
     }  
      public List<CategoriaEntity> getAllCategorias() {
