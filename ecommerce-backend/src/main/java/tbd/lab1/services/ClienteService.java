@@ -6,7 +6,6 @@ import tbd.lab1.entities.ClienteEntity;
 import tbd.lab1.repositories.ClienteRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ClienteService {
@@ -15,20 +14,26 @@ public class ClienteService {
     private ClienteRepository clienteRepository;
 
     public List<ClienteEntity> getAllClientes() {
-        return clienteRepository.findAll();
+        return clienteRepository.getClientes();
     }
 
     public ClienteEntity getClienteById(Long id) {
-        return clienteRepository.findById(id).orElse(null);
+        ClienteEntity cliente = clienteRepository.getClienteById(id);
+        return cliente;
     }
 
-    public ClienteEntity createCliente(ClienteEntity cliente) {
-        return clienteRepository.save(cliente);
+    public ClienteEntity createCliente(ClienteEntity clienteEntity) {
+        return clienteRepository.saveCliente(clienteEntity);
     }
 
     public boolean deleteCliente(Long id) {
-        if (clienteRepository.existsById(id)) {
-            clienteRepository.deleteById(id);
+        ClienteEntity cliente = clienteRepository.getClienteById(id);
+        if (cliente != null) {
+            try {
+                clienteRepository.deleteCliente(id);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
             return true;
         } else {
             return false;

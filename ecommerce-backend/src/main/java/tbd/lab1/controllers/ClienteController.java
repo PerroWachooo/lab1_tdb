@@ -19,13 +19,13 @@ public class ClienteController {
     //crea un cliente
     @PostMapping("/")
     public ResponseEntity<ClienteEntity> saveCliente(@RequestBody ClienteEntity cliente) {
-        ClienteEntity NewCliente = clienteService.saveCliente(cliente);
+        ClienteEntity NewCliente = clienteService.createCliente(cliente);
         return ResponseEntity.ok(NewCliente);
     }
     //obtiene todos los clientes ingresados en la base de datos
     @GetMapping("/")
     public ResponseEntity<List<ClienteEntity>> listCliente() {
-        List<ClienteEntity> clientes = clienteService.getClientes();
+        List<ClienteEntity> clientes = clienteService.getAllClientes();
         return ResponseEntity.ok(clientes);
     }
 
@@ -41,6 +41,7 @@ public class ClienteController {
     }
 
     //actualiza cliente
+    /**
     @PutMapping("/")
     public ResponseEntity<ClienteEntity> updateCliente(@RequestBody ClienteEntity cliente) {
         boolean isUpdated = clienteService.updateCliente(cliente);
@@ -49,7 +50,7 @@ public class ClienteController {
         } else {
             return ResponseEntity.notFound().build();
         }
-    }
+    }*/
 
     // Borra un cliente específico por su ID
     @DeleteMapping("/{id}")
