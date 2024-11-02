@@ -24,12 +24,6 @@ public class CategoriaService {
     public CategoriaEntity getCategoryById(Long id) {
         return categoriaRepository.findByIdCategoria(id);
     }  
-     public List<CategoriaEntity> getAllCategorias() {
-        return categoriaRepository.findAll(); 
-    }
-    public CategoriaEntity createCategoria(CategoriaEntity categoria) {
-        return categoriaRepository.save(categoria); // Guarda la categoría en la base de datos
-    }
 
     public boolean deleteCategoria(Long id) throws Exception {
         try{

@@ -1,7 +1,10 @@
 package tbd.lab1.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tbd.lab1.controllers.OrdenController;
 import tbd.lab1.entities.OrdenEntity;
 import tbd.lab1.entities.ProductoEntity;
 import tbd.lab1.repositories.OrdenRepository;
@@ -11,9 +14,13 @@ import java.util.ArrayList;
 
 @Service
 public class OrdenService {
+
+    private static final Logger logger = LoggerFactory.getLogger(OrdenService.class);
+
     @Autowired
     OrdenRepository ordenRepository;
     public OrdenEntity saveOrden(OrdenEntity orden){
+        logger.info("Recibido objeto Orden: {}", orden);
         return ordenRepository.saveOrden(orden);
     }
 

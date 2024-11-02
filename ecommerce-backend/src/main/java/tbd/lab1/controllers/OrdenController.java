@@ -1,5 +1,7 @@
 package tbd.lab1.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +18,14 @@ import java.util.List;
 @CrossOrigin("*")
 public class OrdenController {
 
+    private static final Logger logger = LoggerFactory.getLogger(OrdenController.class);
+
     @Autowired
     OrdenService ordenService;
 
     @PostMapping("/")
     public ResponseEntity<OrdenEntity> saveProducto(@RequestBody OrdenEntity orden) {
+        logger.info("Recibido objeto Orden: {}", orden);
         OrdenEntity NewOrden = ordenService.saveOrden(orden);
         return ResponseEntity.ok(NewOrden);
     }

@@ -49,7 +49,7 @@ export default {
   methods: {
     async fetchClientes() {
       try {
-        const response = await axios.get("http://localhost:8090/api/v1/clientes");
+        const response = await axios.get("http://localhost:8090/api/v1/clientes/");
         this.clientes = response.data;
       } catch (error) {
         console.error("Error fetching clientes:", error);
@@ -57,7 +57,7 @@ export default {
     },
     async createCliente() {
       try {
-        const response = await axios.post("http://localhost:8090/api/v1/clientes", {
+        const response = await axios.post("http://localhost:8090/api/v1/clientes/", {
           nombre: this.newClienteName,
           direccion: this.newClienteDireccion,
           email: this.newClienteEmail,
