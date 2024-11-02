@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tbd.lab1.entities.CategoriaEntity;
 import tbd.lab1.repositories.CategoriaRepository;
+import java.util.List;
 
 import java.util.ArrayList;
 
@@ -22,6 +23,9 @@ public class CategoriaService {
 
     public CategoriaEntity getCategoryById(Long id) {
         return categoriaRepository.findByIdCategoria(id);
+    }  
+     public List<CategoriaEntity> getAllCategorias() {
+        return categoriaRepository.findAll(); 
     }
 
     public boolean deleteCategoria(Long id) throws Exception {

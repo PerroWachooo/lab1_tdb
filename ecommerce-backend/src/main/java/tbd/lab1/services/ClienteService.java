@@ -5,12 +5,14 @@ import org.springframework.stereotype.Service;
 import tbd.lab1.entities.ClienteEntity;
 import tbd.lab1.repositories.ClienteRepository;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClienteService {
+
     @Autowired
-    ClienteRepository clienteRepository;
+    private ClienteRepository clienteRepository;
 
     public ClienteEntity saveCliente(ClienteEntity cliente){
         return clienteRepository.saveCliente(cliente);
@@ -24,8 +26,8 @@ public class ClienteService {
         try{
             clienteRepository.deleteCliente(id);
             return true;
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
+        } else {
+            return false;
         }
     }
 
