@@ -25,7 +25,7 @@ public class CategoriaService {
         return categoriaRepository.findByIdCategoria(id);
     }  
      public List<CategoriaEntity> getAllCategorias() {
-        return categoriaRepository.findAll(); 
+        return categoriaRepository.getCategorias();
     }
 
     public boolean deleteCategoria(Long id) throws Exception {

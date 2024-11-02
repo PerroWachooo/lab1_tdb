@@ -52,7 +52,7 @@ export default {
   methods: {
     async fetchCategorias() {
       try {
-        const response = await axios.get("http://localhost:8090/api/v1/categorias");
+        const response = await axios.get("http://localhost:8090/categorias/");
         this.categorias = response.data;
       } catch (error) {
         console.error("Error fetching categorias:", error);
@@ -60,7 +60,7 @@ export default {
     },
     async createCategoria() {
       try {
-        const response = await axios.post("http://localhost:8090/api/v1/categorias", {
+        const response = await axios.post("http://localhost:8090/categorias", {
           nombre: this.newCategoriaName,
         });
         this.categorias.push(response.data);

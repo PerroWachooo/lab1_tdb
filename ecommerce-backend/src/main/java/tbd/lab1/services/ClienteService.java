@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import tbd.lab1.entities.ClienteEntity;
 import tbd.lab1.repositories.ClienteRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,8 +27,8 @@ public class ClienteService {
         try{
             clienteRepository.deleteCliente(id);
             return true;
-        } else {
-            return false;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

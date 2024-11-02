@@ -6,10 +6,11 @@ import org.springframework.web.bind.annotation.*;
 import tbd.lab1.entities.ClienteEntity;
 import tbd.lab1.services.ClienteService;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/clientes")
+@RequestMapping("/clientes")
 @CrossOrigin("*")
 public class ClienteController {
 
@@ -53,7 +54,7 @@ public class ClienteController {
 
     // Borra un cliente específico por su ID
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteClienteById(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteClienteById(@PathVariable Long id) throws Exception {
         boolean isDeleted = clienteService.deleteCliente(id);
         if (isDeleted) {
             return ResponseEntity.noContent().build();

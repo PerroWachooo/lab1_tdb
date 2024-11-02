@@ -1,4 +1,3 @@
-
 import vuetify from './plugins/vuetify'
 
 import { createApp } from 'vue'
