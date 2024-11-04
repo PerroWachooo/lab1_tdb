@@ -90,25 +90,25 @@ public class DetalleOrdenRepository {
         return detalleOrden;
     }
 
-    public ArrayList<DetalleOrdenEntity> getDetallesOrden() {
-        ArrayList<DetalleOrdenEntity> detallesOrden = new ArrayList<>();
+    public ArrayList<DetalleOrdenEntity> getDetalleOrden() {
+        ArrayList<DetalleOrdenEntity> detalleOrden = new ArrayList<>();
         String sql = "SELECT * FROM detalle_orden";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
-                DetalleOrdenEntity detalleOrden = new DetalleOrdenEntity();
-                detalleOrden.setIdDetalle(resultSet.getLong("id_detalle"));
-                detalleOrden.setCantidad(resultSet.getInt("cantidad"));
-                detalleOrden.setPrecioUnitario(resultSet.getBigDecimal("precio_unitario"));
+                DetalleOrdenEntity detallesOrden = new DetalleOrdenEntity();
+                detallesOrden.setIdDetalle(resultSet.getLong("id_detalle"));
+                detallesOrden.setCantidad(resultSet.getInt("cantidad"));
+                detallesOrden.setPrecioUnitario(resultSet.getBigDecimal("precio_unitario"));
 
                 // Cargar la Orden
                 Long idOrden = resultSet.getLong("id_orden");
                 if (idOrden != null) {
                     OrdenEntity orden = new OrdenEntity();
                     orden.setIdOrden(idOrden);
-                    detalleOrden.setOrden(orden);
+                    detallesOrden.setOrden(orden);
                 }
 
                 // Cargar el Producto
@@ -116,16 +116,16 @@ public class DetalleOrdenRepository {
                 if (idProducto != null) {
                     ProductoEntity producto = new ProductoEntity();
                     producto.setIdProducto(idProducto);
-                    detalleOrden.setProducto(producto);
+                    detallesOrden.setProducto(producto);
                 }
 
-                detallesOrden.add(detalleOrden);
+                detalleOrden.add(detallesOrden);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return detallesOrden;
+        return detalleOrden;
     }
 
     public boolean updateDetalleOrden(DetalleOrdenEntity detalleOrden) {

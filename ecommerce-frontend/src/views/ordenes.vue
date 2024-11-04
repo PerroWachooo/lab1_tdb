@@ -4,37 +4,79 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
 const ordenes = ref([]);
+const clientes = ref([]);
+const newOrden = ref({
+  fechaOrden: '',
+  estado: '',
+  cliente: null,
+  total: 0,
+});
 
+// Fetch orders
 const fetchOrdenes = async () => {
   try {
     const response = await axios.get("http://localhost:8090/ordenes/");
     ordenes.value = response.data;
+    console.log('Fetched ordenes:', JSON.stringify(ordenes.value, null, 2));
   } catch (error) {
     console.error("Error fetching ordenes:", error);
   }
 };
 
-const createOrdenes = async () => {
+// Fetch clients
+const fetchClientes = async () => {
   try {
-    const response = await axios.post("http://localhost:8090/ordenes/", newOrden.value);
+    const response = await axios.get("http://localhost:8090/clientes/");
+    clientes.value = response.data;
+    console.log('Fetched clientes:', JSON.stringify(clientes.value, null, 2));
+  } catch (error) {
+    console.error("Error fetching clientes:", error);
+  }
+};
+const createOrden = async () => {
+  const formattedDate = new Date(newOrden.value.fechaOrden).toISOString(); // Converts to ISO 8601
+  const payload = {
+    ...newOrden.value,
+    fechaOrden: formattedDate,
+    total: parseFloat(newOrden.value.total),
+    cliente: {
+      idCliente: newOrden.value.cliente.idCliente,
+      nombre: newOrden.value.cliente.nombre,
+    },
+  };
+
+  try {
+    const response = await axios.post("http://localhost:8090/ordenes/", payload);
+    console.log('Order created successfully:', response.data);
     ordenes.value.push(response.data);
-    newOrden.value = { fecha: '', total: 0, cliente: null };
+    newOrden.value = {
+      fechaOrden: '',
+      estado: '',
+      cliente: null,
+      total: 0,
+    };
   } catch (error) {
     console.error("Error creating orden:", error);
   }
 };
 
-onMounted(fetchOrdenes);
+
+onMounted(() => {
+  fetchOrdenes();
+  fetchClientes();
+});
 </script>
 
 <template>
   <v-container class="ordenes-page" fluid>
+    <!-- Header Section -->
     <v-row class="header" justify="center" align="center">
       <v-col cols="12" class="text-center">
         <h2 class="title">Órdenes</h2>
       </v-col>
     </v-row>
 
+    <!-- Orders Section -->
     <v-row class="ordenes-section" justify="center">
       <v-col cols="12">
         <v-row class="container" dense>
@@ -45,12 +87,25 @@ onMounted(fetchOrdenes);
       </v-col>
     </v-row>
 
+    <!-- Form to Create Orders -->
     <v-row class="form-section" justify="center">
       <v-col cols="12" md="6">
         <v-form @submit.prevent="createOrden" class="orden-form">
-          <v-text-field v-model="newOrden.fecha" label="Fecha" outlined clearable />
-          <v-text-field v-model="newOrden.total" label="Total" outlined clearable />
-          <v-text-field v-model="newOrden.cliente" label="Cliente" outlined clearable />
+          <v-text-field v-model="newOrden.fechaOrden" label="Fecha" outlined clearable />
+          <v-text-field v-model="newOrden.estado" label="Estado" outlined clearable />
+          <v-text-field v-model="newOrden.total" label="Total" outlined clearable type="number" />
+
+          <!-- Styled client dropdown -->
+          <label for="cliente-select" class="styled-select-label">Cliente</label>
+          <div class="styled-select">
+            <select v-model="newOrden.cliente" id="cliente-select">
+              <option value="" disabled selected>Seleccione un cliente</option>
+              <option v-for="cliente in clientes" :key="cliente.idCliente" :value="cliente">
+                {{ cliente.nombre }}
+              </option>
+            </select>
+          </div>
+
           <v-btn color="primary" @click="createOrden">Crear Orden</v-btn>
         </v-form>
       </v-col>
@@ -58,62 +113,6 @@ onMounted(fetchOrdenes);
   </v-container>
 </template>
 
-
 <style scoped>
-.categorias-page {
-  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-  color: #ffffff;
-  min-height: 100vh;
-  padding-top: 20px;
-  font-family: 'Poppins', sans-serif;
-}
-
-/* Header Styles */
-.header .title {
-  font-size: 2.5rem;
-  color: #ff6ec7;
-  text-shadow: 0px 0px 8px rgba(255, 110, 199, 0.8);
-  font-weight: 700;
-}
-
-/* Container for Categories */
-.container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  padding: 20px;
-}
-
-.container .v-col {
-  display: flex;
-  justify-content: center;
-}
-
-/* Form Styles */
-.categoria-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  padding: 20px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
-}
-
-.v-text-field input {
-  color: #ffffff;
-}
-
-.v-btn {
-  background-color: #ff6ec7;
-  color: #0e0732;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-.v-btn:hover {
-  background-color: #00d4ff;
-  color: #ffffff;
-}
+/* Add styles similar to productos.vue */
 </style>

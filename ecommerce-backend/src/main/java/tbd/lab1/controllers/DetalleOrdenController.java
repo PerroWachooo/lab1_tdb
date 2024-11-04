@@ -30,8 +30,8 @@ public class DetalleOrdenController {
 
     @GetMapping("/")
     public ResponseEntity<List<DetalleOrdenEntity>> listDetalle() {
-        List<DetalleOrdenEntity> detalles = detalleOrdenService.getDetalles();
-        return ResponseEntity.ok(detalles);
+        List<DetalleOrdenEntity> detalle = detalleOrdenService.getDetalle();
+        return ResponseEntity.ok(detalle);
     }
 
     @PutMapping("/")

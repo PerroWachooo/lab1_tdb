@@ -27,7 +27,7 @@ import templatecard from '@/components/templatecard.vue';
         <templatecard :categoria="{ nombre: 'ordenes' }" title="Ordenes"></templatecard>
       </v-col>
       <v-col cols="12" md="4">
-        <templatecard :categoria="{ nombre: 'detallesOrden' }" title="Detalles de Orden"></templatecard>
+        <templatecard :categoria="{ nombre: 'detalleordenes' }" title="Detalle de Orden"></templatecard>
       </v-col>
       <!-- Agrega más tarjetas aquí si es necesario -->
     </v-row>

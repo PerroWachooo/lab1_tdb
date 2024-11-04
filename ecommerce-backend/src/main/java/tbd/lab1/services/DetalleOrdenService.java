@@ -21,8 +21,8 @@ public class DetalleOrdenService {
         return detalleOrdenRepository.getDetalleOrdenById(id);
     }
 
-    public ArrayList<DetalleOrdenEntity> getDetalles(){
-        return (ArrayList<DetalleOrdenEntity>) detalleOrdenRepository.getDetallesOrden();
+    public ArrayList<DetalleOrdenEntity> getDetalle(){
+        return (ArrayList<DetalleOrdenEntity>) detalleOrdenRepository.getDetalleOrden();
     }
 
     public boolean updateDetalle(DetalleOrdenEntity detalle) {
