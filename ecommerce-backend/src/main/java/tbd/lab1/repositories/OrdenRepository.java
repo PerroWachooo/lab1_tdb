@@ -4,11 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import tbd.lab1.entities.CategoriaEntity;
 import tbd.lab1.entities.ClienteEntity;
 import tbd.lab1.entities.OrdenEntity;
-import tbd.lab1.services.OrdenService;
-
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -35,7 +32,7 @@ public class OrdenRepository {
         String sql = "INSERT INTO orden (fecha_orden, estado, id_cliente, total) VALUES (?, ?, ?, ?) RETURNING id_orden";
 
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+                PreparedStatement statement = connection.prepareStatement(sql)) {
             logger.info("Recibido objeto Orden4: {}", orden);
             // Establecer valores en el PreparedStatement
             statement.setObject(1, orden.getFechaOrden());
@@ -66,14 +63,15 @@ public class OrdenRepository {
         String sql = "SELECT * FROM orden WHERE id_orden = ?";
         OrdenEntity orden = null;
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+                PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setLong(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     orden = new OrdenEntity();
                     orden.setIdOrden(resultSet.getLong("id_orden"));
-                    orden.setFechaOrden(resultSet.getObject("fecha_orden", LocalDateTime.class)); // Cambiar según el tipo de dato
+                    orden.setFechaOrden(resultSet.getObject("fecha_orden", LocalDateTime.class)); // Cambiar según el
+                                                                                                  // tipo de dato
                     orden.setEstado(resultSet.getString("estado"));
                     orden.setTotal(resultSet.getBigDecimal("total"));
                     // Asegúrate de que la columna total esté presente en tu consulta
@@ -94,8 +92,8 @@ public class OrdenRepository {
         ArrayList<OrdenEntity> ordenes = new ArrayList<>();
         String sql = "SELECT * FROM orden";
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
+                PreparedStatement statement = connection.prepareStatement(sql);
+                ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
                 OrdenEntity orden = new OrdenEntity();
@@ -122,7 +120,7 @@ public class OrdenRepository {
         ClienteEntity cliente = null;
 
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+                PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setLong(1, idCliente);
 
@@ -148,7 +146,7 @@ public class OrdenRepository {
         String sql = "UPDATE orden SET fecha_orden = ?, estado = ?, total = ?, id_cliente = ? WHERE id_orden = ?";
 
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+                PreparedStatement statement = connection.prepareStatement(sql)) {
 
             // Establecer los valores para la consulta
             statement.setObject(1, orden.getFechaOrden());
@@ -177,7 +175,7 @@ public class OrdenRepository {
     public boolean deleteOrden(Long id) throws Exception {
         String sql = "DELETE FROM orden WHERE id_orden = ?";
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+                PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setLong(1, id);
             int affectedRows = statement.executeUpdate();
@@ -188,7 +186,5 @@ public class OrdenRepository {
             throw new Exception("Error al eliminar la orden: " + e.getMessage());
         }
     }
-
-
 
 }

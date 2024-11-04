@@ -4,11 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tbd.lab1.controllers.OrdenController;
 import tbd.lab1.entities.OrdenEntity;
-import tbd.lab1.entities.ProductoEntity;
 import tbd.lab1.repositories.OrdenRepository;
-import tbd.lab1.repositories.ProductoRepository;
 
 import java.util.ArrayList;
 
@@ -19,16 +16,17 @@ public class OrdenService {
 
     @Autowired
     OrdenRepository ordenRepository;
-    public OrdenEntity saveOrden(OrdenEntity orden){
+
+    public OrdenEntity saveOrden(OrdenEntity orden) {
         logger.info("Recibido objeto Orden: {}", orden);
         return ordenRepository.saveOrden(orden);
     }
 
-    public OrdenEntity getOrdenById(Long id){
+    public OrdenEntity getOrdenById(Long id) {
         return ordenRepository.getOrdenById(id);
     }
 
-    public ArrayList<OrdenEntity> getOrdenes(){
+    public ArrayList<OrdenEntity> getOrdenes() {
         return (ArrayList<OrdenEntity>) ordenRepository.getOrdenes();
     }
 
@@ -42,7 +40,7 @@ public class OrdenService {
     }
 
     public boolean deleteOrden(Long id) throws Exception {
-        try{
+        try {
             ordenRepository.deleteOrden(id);
             return true;
         } catch (Exception e) {

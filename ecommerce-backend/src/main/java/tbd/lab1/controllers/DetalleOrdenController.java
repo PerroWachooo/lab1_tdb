@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tbd.lab1.entities.DetalleOrdenEntity;
-import tbd.lab1.entities.ProductoEntity;
 import tbd.lab1.services.DetalleOrdenService;
 
 import java.util.List;
@@ -46,7 +45,7 @@ public class DetalleOrdenController {
 
     @DeleteMapping("/delete-detalle/{id}")
     public ResponseEntity<Boolean> deleteDetalleById(@PathVariable Long id) throws Exception {
-        var isDeleted = detalleOrdenService.deleteDetalle(id);
+        detalleOrdenService.deleteDetalle(id);
         return ResponseEntity.noContent().build();
     }
 

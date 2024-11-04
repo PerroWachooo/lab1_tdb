@@ -27,35 +27,21 @@ public class ClienteService {
         return clienteRepository.saveCliente(clienteEntity);
     }
 
-    public boolean deleteCliente(Long id) {
-        ClienteEntity cliente = clienteRepository.getClienteById(id);
-        if (cliente != null) {
-            try {
-                clienteRepository.deleteCliente(id);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-    public ClienteEntity saveCliente(ClienteEntity cliente){
+    public ClienteEntity saveCliente(ClienteEntity cliente) {
         return clienteRepository.saveCliente(cliente);
     }
 
-    public ArrayList<ClienteEntity> getClientes(){
+    public ArrayList<ClienteEntity> getClientes() {
         return (ArrayList<ClienteEntity>) clienteRepository.getClientes();
     }
 
     public boolean deleteCliente(Long id) throws Exception {
-        try{
+        try {
             clienteRepository.deleteCliente(id);
             return true;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-<<<<<<<<< Temporary merge branch 1
-=========
-
-    public ClienteEntity getClienteById(Long id){
-        return clienteRepository.getClienteById(id);
     }
 
     public boolean updateCliente(ClienteEntity cliente) {
@@ -67,5 +53,4 @@ public class ClienteService {
         return false;
     }
 
->>>>>>>>> Temporary merge branch 2
 }
