@@ -61,6 +61,48 @@ onMounted(fetchClientes);
 </template>
 
 
+export default {
+  data() {
+    return {
+      clientes: [],
+      newClienteName: "",
+      newClienteDireccion: "",
+      newClienteEmail: "",
+      newClienteTelefono: "",
+    };
+  },
+  mounted() {
+    this.fetchClientes();
+  },
+  methods: {
+    async fetchClientes() {
+      try {
+        const response = await axios.get("http://localhost:8090/api/v1/clientes/");
+        this.clientes = response.data;
+      } catch (error) {
+        console.error("Error fetching clientes:", error);
+      }
+    },
+    async createCliente() {
+      try {
+        const response = await axios.post("http://localhost:8090/api/v1/clientes/", {
+          nombre: this.newClienteName,
+          direccion: this.newClienteDireccion,
+          email: this.newClienteEmail,
+          telefono: this.newClienteTelefono,
+        });
+        this.clientes.push(response.data);
+        this.newClienteName = "";
+        this.newClienteDireccion = "";
+        this.newClienteEmail = "";
+        this.newClienteTelefono = "";
+      } catch (error) {
+        console.error("Error creating cliente:", error);
+      }
+    },
+  },
+};
+</script>
 <style scoped>
 .categorias-page {
   background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);

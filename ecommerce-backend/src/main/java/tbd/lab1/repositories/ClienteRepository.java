@@ -134,5 +134,9 @@ public class ClienteRepository {
         return false;
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> BranchThomas
 
 }

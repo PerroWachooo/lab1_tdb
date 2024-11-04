@@ -1,10 +1,13 @@
 package tbd.lab1.repositories;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import tbd.lab1.entities.CategoriaEntity;
 import tbd.lab1.entities.ClienteEntity;
 import tbd.lab1.entities.OrdenEntity;
+import tbd.lab1.services.OrdenService;
 
 
 import javax.sql.DataSource;
@@ -17,6 +20,9 @@ import java.util.ArrayList;
 
 @Repository
 public class OrdenRepository {
+
+    private static final Logger logger = LoggerFactory.getLogger(OrdenRepository.class);
+
     private final DataSource dataSource;
 
     @Autowired
@@ -25,22 +31,24 @@ public class OrdenRepository {
     }
 
     public OrdenEntity saveOrden(OrdenEntity orden) {
+        logger.info("Recibido objeto Orden3: {}", orden);
         String sql = "INSERT INTO orden (fecha_orden, estado, id_cliente, total) VALUES (?, ?, ?, ?) RETURNING id_orden";
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-
+            logger.info("Recibido objeto Orden4: {}", orden);
             // Establecer valores en el PreparedStatement
             statement.setObject(1, orden.getFechaOrden());
             statement.setString(2, orden.getEstado());
             statement.setLong(3, orden.getCliente() != null ? orden.getCliente().getIdCliente() : null);
             statement.setBigDecimal(4, orden.getTotal());
-
+            logger.info("Recibido objeto Orden5: {}", orden);
             // Ejecutar la inserción y obtener el id_orden generado
             try (ResultSet generatedKeys = statement.executeQuery()) {
                 if (generatedKeys.next()) {
                     long idOrden = generatedKeys.getLong(1);
                     // Asignar el idOrden a la entidad y devolverla
+                    logger.info("Recibido objeto Orden6: {}", orden);
                     orden.setIdOrden(idOrden);
                     return orden; // Devolver la orden guardada
                 } else {
@@ -96,8 +104,9 @@ public class OrdenRepository {
                 orden.setEstado(resultSet.getString("estado"));
                 orden.setTotal(resultSet.getBigDecimal("total"));
 
-                ClienteEntity cliente = new ClienteEntity();
-                cliente.setIdCliente(resultSet.getLong("id_cliente"));
+                Long idCliente = resultSet.getLong("id_cliente");
+                ClienteEntity cliente = getClienteById(idCliente);
+                orden.setCliente(cliente);
 
                 ordenes.add(orden);
             }
@@ -106,6 +115,33 @@ public class OrdenRepository {
             e.printStackTrace();
         }
         return ordenes;
+    }
+
+    private ClienteEntity getClienteById(Long idCliente) {
+        String sql = "SELECT * FROM cliente WHERE id_cliente = ?";
+        ClienteEntity cliente = null;
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setLong(1, idCliente);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    cliente = new ClienteEntity();
+                    cliente.setIdCliente(resultSet.getLong("id_cliente"));
+                    cliente.setNombre(resultSet.getString("nombre"));
+                    cliente.setDireccion(resultSet.getString("direccion"));
+                    cliente.setEmail(resultSet.getString("email"));
+                    cliente.setTelefono(resultSet.getString("telefono"));
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return cliente;
     }
 
     public boolean updateOrden(OrdenEntity orden) {

@@ -26,9 +26,9 @@ public class ProductoService {
     }
 
     public boolean updateProducto(ProductoEntity producto) {
-        // vemos si el cliente existe en la base de datos
+        // vemos si el producto existe en la base de datos
         if (productoRepository.getProductoById(producto.getIdProducto()) != null) {
-            // actualizamos el cliente usando el método del repositorio
+            // actualizamos el product usando el método del repositorio
             return productoRepository.updateProducto(producto);
         }
         return false;

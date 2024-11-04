@@ -7,7 +7,6 @@ import tbd.lab1.repositories.ClienteRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ClienteService {
@@ -15,6 +14,27 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
+    public List<ClienteEntity> getAllClientes() {
+        return clienteRepository.getClientes();
+    }
+
+    public ClienteEntity getClienteById(Long id) {
+        ClienteEntity cliente = clienteRepository.getClienteById(id);
+        return cliente;
+    }
+
+    public ClienteEntity createCliente(ClienteEntity clienteEntity) {
+        return clienteRepository.saveCliente(clienteEntity);
+    }
+
+    public boolean deleteCliente(Long id) {
+        ClienteEntity cliente = clienteRepository.getClienteById(id);
+        if (cliente != null) {
+            try {
+                clienteRepository.deleteCliente(id);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
     public ClienteEntity saveCliente(ClienteEntity cliente){
         return clienteRepository.saveCliente(cliente);
     }
@@ -31,6 +51,8 @@ public class ClienteService {
             throw new RuntimeException(e);
         }
     }
+<<<<<<<<< Temporary merge branch 1
+=========
 
     public ClienteEntity getClienteById(Long id){
         return clienteRepository.getClienteById(id);
@@ -45,4 +67,5 @@ public class ClienteService {
         return false;
     }
 
+>>>>>>>>> Temporary merge branch 2
 }
