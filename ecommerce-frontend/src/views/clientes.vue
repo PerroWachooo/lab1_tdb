@@ -60,7 +60,7 @@ onMounted(fetchClientes);
   </v-container>
 </template>
 
-
+<script>
 export default {
   data() {
     return {

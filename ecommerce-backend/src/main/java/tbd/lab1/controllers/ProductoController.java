@@ -33,7 +33,7 @@ public class ProductoController {
         return ResponseEntity.ok(productos);
     }
 
-    //actualiza producto
+    // actualiza producto
     @PutMapping("/")
     public ResponseEntity<ProductoEntity> updateProducto(@RequestBody ProductoEntity producto) {
         boolean isUpdated = productoService.updateProducto(producto);
@@ -44,11 +44,10 @@ public class ProductoController {
         }
     }
 
-    //borra un solo producto
+    // borra un solo producto
     @DeleteMapping("/delete-producto/{id}")
     public ResponseEntity<Boolean> deleteProductoById(@PathVariable Long id) throws Exception {
-        var isDeleted = productoService.deleteProducto(id);
+        productoService.deleteProducto(id);
         return ResponseEntity.noContent().build();
     }
 }
-
