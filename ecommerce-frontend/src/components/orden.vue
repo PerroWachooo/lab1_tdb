@@ -15,13 +15,14 @@
     </template>
 
     <v-card-item>
-      <v-card-title>{{ cliente.nombre }}</v-card-title>
-      <v-card-subtitle>{{ cliente.email }}</v-card-subtitle>
+      <v-card-title>Orden #{{ orden.idOrden }}</v-card-title>
+      <v-card-subtitle>{{ formatFecha(orden.fechaOrden) }}</v-card-subtitle>
     </v-card-item>
 
     <v-card-text>
-      <p><strong>Dirección:</strong> {{ cliente.direccion }}</p>
-      <p><strong>Teléfono:</strong> {{ cliente.telefono }}</p>
+      <p><strong>Cliente:</strong> {{ orden.cliente.nombre }}</p>
+      <p><strong>Estado:</strong> {{ orden.estado }}</p>
+      <p><strong>Total:</strong> {{ formatCurrency(orden.total) }}</p>
     </v-card-text>
 
     <v-card-actions>
@@ -41,13 +42,13 @@
 <script>
 export default {
   props: {
-    cliente: {
+    orden: {
       type: Object,
       required: true,
     },
     maxWidth: {
       type: [String, Number],
-      default: 400,
+      default: 500,
     },
   },
 
@@ -61,6 +62,20 @@ export default {
     actualizar() {
       this.loading = true;
       setTimeout(() => (this.loading = false), 2000);
+    },
+
+    formatFecha(fecha) {
+      return new Date(fecha).toLocaleDateString('es-CL', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    },
+
+    formatCurrency(value) {
+      return new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(value);
     },
   },
 };

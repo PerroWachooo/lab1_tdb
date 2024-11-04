@@ -11,5 +11,7 @@ import { RouterLink } from 'vue-router'
     <v-btn text to="/productos">Productos</v-btn>
     <v-btn text to="/clientes">Clientes</v-btn>
     <v-btn text to="/categorias">Categorias</v-btn>
+    <v-btn text to="/ordenes">Ordenes</v-btn>
+    <v-btn text to="/detalleordenes">About</v-btn>
   </v-app-bar>
 </template>

@@ -20,6 +20,15 @@ import templatecard from '@/components/templatecard.vue';
       <v-col cols="12" md="4">
         <templatecard :categoria="{ nombre: 'categorias' }" title="Categorias"></templatecard>
       </v-col>
+      <v-col cols="12" md="4">
+        <templatecard :categoria="{ nombre: 'productos' }" title="Productos"></templatecard>
+      </v-col>
+      <v-col cols="12" md="4">
+        <templatecard :categoria="{ nombre: 'ordenes' }" title="Ordenes"></templatecard>
+      </v-col>
+      <v-col cols="12" md="4">
+        <templatecard :categoria="{ nombre: 'detallesOrden' }" title="Detalles de Orden"></templatecard>
+      </v-col>
       <!-- Agrega más tarjetas aquí si es necesario -->
     </v-row>
   </v-container>

@@ -1,46 +1,45 @@
 <script setup>
-import Cliente from '@/components/cliente.vue';
+import DetalleOrden from '@/components/detalleorden.vue';
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
-const clientes = ref([]);
-const newCliente = ref({ nombre: '', direccion: '', email: '', telefono: '' });
+const detallesOrden = ref([]);
 
-const fetchClientes = async () => {
+const fetchDetallesOrden = async () => {
   try {
-    const response = await axios.get("http://localhost:8090/clientes/");
-    clientes.value = response.data;
+    const response = await axios.get("http://localhost:8090/detalleordenes/");
+    detallesOrden.value = response.data;
   } catch (error) {
-    console.error("Error fetching clientes:", error);
+    console.error("Error fetching detallesOrden:", error);
   }
 };
 
-const createCliente = async () => {
+const createDetalleOrden = async () => {
   try {
-    const response = await axios.post("http://localhost:8090/clientes/", newCliente.value);
-    clientes.value.push(response.data);
-    newCliente.value = { nombre: '', direccion: '', email: '', telefono: '' };
+    const response = await axios.post("http://localhost:8090/detalleordenes/", newDetalleOrden.value);
+    detallesOrden.value.push(response.data);
+    newDetalleOrden.value = { cantidad: 0, precio: 0, producto: null, orden: null };
   } catch (error) {
-    console.error("Error creating cliente:", error);
+    console.error("Error creating detalleOrden:", error);
   }
 };
 
-onMounted(fetchClientes);
+onMounted(fetchDetallesOrden);
 </script>
 
 <template>
-  <v-container class="clientes-page" fluid>
+  <v-container class="detalles-orden-page" fluid>
     <v-row class="header" justify="center" align="center">
       <v-col cols="12" class="text-center">
-        <h2 class="title">Clientes</h2>
+        <h2 class="title">Detalles de Orden</h2>
       </v-col>
     </v-row>
 
-    <v-row class="clientes-section" justify="center">
+    <v-row class="detalles-orden-section" justify="center">
       <v-col cols="12">
         <v-row class="container" dense>
-          <v-col v-for="cliente in clientes" :key="cliente.idCliente" cols="12" sm="6" md="4" lg="3">
-            <Cliente :cliente="cliente" />
+          <v-col v-for="detalle in detallesOrden" :key="detalle.idDetalle" cols="12" sm="6" md="4" lg="3">
+            <DetalleOrden :detalleOrden="detalle" />
           </v-col>
         </v-row>
       </v-col>
@@ -48,12 +47,12 @@ onMounted(fetchClientes);
 
     <v-row class="form-section" justify="center">
       <v-col cols="12" md="6">
-        <v-form @submit.prevent="createCliente" class="cliente-form">
-          <v-text-field v-model="newCliente.nombre" label="Nombre" outlined clearable />
-          <v-text-field v-model="newCliente.direccion" label="Dirección" outlined clearable />
-          <v-text-field v-model="newCliente.email" label="Email" outlined clearable />
-          <v-text-field v-model="newCliente.telefono" label="Teléfono" outlined clearable />
-          <v-btn color="primary" @click="createCliente">Crear Cliente</v-btn>
+        <v-form @submit.prevent="createDetalleOrden" class="detalle-orden-form">
+          <v-text-field v-model="newDetalleOrden.cantidad" label="Cantidad" outlined clearable />
+          <v-text-field v-model="newDetalleOrden.precio" label="Precio" outlined clearable />
+          <v-text-field v-model="newDetalleOrden.producto" label="Producto" outlined clearable />
+          <v-text-field v-model="newDetalleOrden.orden" label="Orden" outlined clearable />
+          <v-btn color="primary" @click="createDetalleOrden">Crear Detalle de Orden</v-btn>
         </v-form>
       </v-col>
     </v-row>

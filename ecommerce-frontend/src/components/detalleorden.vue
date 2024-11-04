@@ -15,13 +15,14 @@
     </template>
 
     <v-card-item>
-      <v-card-title>{{ cliente.nombre }}</v-card-title>
-      <v-card-subtitle>{{ cliente.email }}</v-card-subtitle>
+      <v-card-title>Detalle Orden</v-card-title>
     </v-card-item>
 
     <v-card-text>
-      <p><strong>Dirección:</strong> {{ cliente.direccion }}</p>
-      <p><strong>Teléfono:</strong> {{ cliente.telefono }}</p>
+      <p><strong>Orden ID:</strong> {{ detalleOrden.orden.idOrden }}</p>
+      <p><strong>Producto:</strong> {{ detalleOrden.producto.nombre }}</p>
+      <p><strong>Cantidad:</strong> {{ detalleOrden.cantidad }}</p>
+      <p><strong>Precio Unitario:</strong> {{ formatCurrency(detalleOrden.precioUnitario) }}</p>
     </v-card-text>
 
     <v-card-actions>
@@ -41,13 +42,13 @@
 <script>
 export default {
   props: {
-    cliente: {
+    detalleOrden: {
       type: Object,
       required: true,
     },
     maxWidth: {
       type: [String, Number],
-      default: 400,
+      default: 500,
     },
   },
 
@@ -61,6 +62,10 @@ export default {
     actualizar() {
       this.loading = true;
       setTimeout(() => (this.loading = false), 2000);
+    },
+
+    formatCurrency(value) {
+      return new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(value);
     },
   },
 };

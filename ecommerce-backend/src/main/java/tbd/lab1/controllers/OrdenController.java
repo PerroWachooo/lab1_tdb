@@ -12,7 +12,7 @@ import tbd.lab1.services.ProductoService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/orden")
+@RequestMapping("/ordenes")
 @CrossOrigin("*")
 public class OrdenController {
 

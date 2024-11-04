@@ -1,46 +1,45 @@
 <script setup>
-import Cliente from '@/components/cliente.vue';
+import Orden from '@/components/orden.vue';
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
-const clientes = ref([]);
-const newCliente = ref({ nombre: '', direccion: '', email: '', telefono: '' });
+const ordenes = ref([]);
 
-const fetchClientes = async () => {
+const fetchOrdenes = async () => {
   try {
-    const response = await axios.get("http://localhost:8090/clientes/");
-    clientes.value = response.data;
+    const response = await axios.get("http://localhost:8090/ordenes/");
+    ordenes.value = response.data;
   } catch (error) {
-    console.error("Error fetching clientes:", error);
+    console.error("Error fetching ordenes:", error);
   }
 };
 
-const createCliente = async () => {
+const createOrdenes = async () => {
   try {
-    const response = await axios.post("http://localhost:8090/clientes/", newCliente.value);
-    clientes.value.push(response.data);
-    newCliente.value = { nombre: '', direccion: '', email: '', telefono: '' };
+    const response = await axios.post("http://localhost:8090/ordenes/", newOrden.value);
+    ordenes.value.push(response.data);
+    newOrden.value = { fecha: '', total: 0, cliente: null };
   } catch (error) {
-    console.error("Error creating cliente:", error);
+    console.error("Error creating orden:", error);
   }
 };
 
-onMounted(fetchClientes);
+onMounted(fetchOrdenes);
 </script>
 
 <template>
-  <v-container class="clientes-page" fluid>
+  <v-container class="ordenes-page" fluid>
     <v-row class="header" justify="center" align="center">
       <v-col cols="12" class="text-center">
-        <h2 class="title">Clientes</h2>
+        <h2 class="title">Órdenes</h2>
       </v-col>
     </v-row>
 
-    <v-row class="clientes-section" justify="center">
+    <v-row class="ordenes-section" justify="center">
       <v-col cols="12">
         <v-row class="container" dense>
-          <v-col v-for="cliente in clientes" :key="cliente.idCliente" cols="12" sm="6" md="4" lg="3">
-            <Cliente :cliente="cliente" />
+          <v-col v-for="orden in ordenes" :key="orden.idOrden" cols="12" sm="6" md="4" lg="3">
+            <Orden :orden="orden" />
           </v-col>
         </v-row>
       </v-col>
@@ -48,12 +47,11 @@ onMounted(fetchClientes);
 
     <v-row class="form-section" justify="center">
       <v-col cols="12" md="6">
-        <v-form @submit.prevent="createCliente" class="cliente-form">
-          <v-text-field v-model="newCliente.nombre" label="Nombre" outlined clearable />
-          <v-text-field v-model="newCliente.direccion" label="Dirección" outlined clearable />
-          <v-text-field v-model="newCliente.email" label="Email" outlined clearable />
-          <v-text-field v-model="newCliente.telefono" label="Teléfono" outlined clearable />
-          <v-btn color="primary" @click="createCliente">Crear Cliente</v-btn>
+        <v-form @submit.prevent="createOrden" class="orden-form">
+          <v-text-field v-model="newOrden.fecha" label="Fecha" outlined clearable />
+          <v-text-field v-model="newOrden.total" label="Total" outlined clearable />
+          <v-text-field v-model="newOrden.cliente" label="Cliente" outlined clearable />
+          <v-btn color="primary" @click="createOrden">Crear Orden</v-btn>
         </v-form>
       </v-col>
     </v-row>
