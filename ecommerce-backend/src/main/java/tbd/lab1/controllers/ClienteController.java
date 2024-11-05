@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import tbd.lab1.entities.ClienteEntity;
 import tbd.lab1.services.ClienteService;
 
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -17,13 +16,14 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
-    //crea un cliente
+    // crea un cliente
     @PostMapping("/")
     public ResponseEntity<ClienteEntity> saveCliente(@RequestBody ClienteEntity cliente) {
         ClienteEntity NewCliente = clienteService.createCliente(cliente);
         return ResponseEntity.ok(NewCliente);
     }
-    //obtiene todos los clientes ingresados en la base de datos
+
+    // obtiene todos los clientes ingresados en la base de datos
     @GetMapping("/")
     public ResponseEntity<List<ClienteEntity>> listCliente() {
         List<ClienteEntity> clientes = clienteService.getAllClientes();
@@ -41,8 +41,8 @@ public class ClienteController {
         }
     }
 
-    //actualiza cliente
-    /**
+    // actualiza cliente
+
     @PutMapping("/")
     public ResponseEntity<ClienteEntity> updateCliente(@RequestBody ClienteEntity cliente) {
         boolean isUpdated = clienteService.updateCliente(cliente);

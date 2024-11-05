@@ -9,13 +9,11 @@ import java.util.ArrayList;
 import org.springframework.stereotype.Repository;
 import tbd.lab1.entities.CategoriaEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import tbd.lab1.entities.ClienteEntity;
-
 
 import javax.sql.DataSource;
 
 @Repository
-public class CategoriaRepository{
+public class CategoriaRepository {
     private final DataSource dataSource;
 
     @Autowired
@@ -26,7 +24,8 @@ public class CategoriaRepository{
     public CategoriaEntity saveCategoria(CategoriaEntity categoria) {
         String sql = "INSERT INTO categoria (nombre) VALUES (?)";
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement statement = connection.prepareStatement(sql,
+                        PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             statement.setString(1, categoria.getNombre());
 
@@ -52,8 +51,8 @@ public class CategoriaRepository{
         ArrayList<CategoriaEntity> categorias = new ArrayList<>();
         String sql = "SELECT * FROM categoria";
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
+                PreparedStatement statement = connection.prepareStatement(sql);
+                ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
                 CategoriaEntity categoria = new CategoriaEntity();
@@ -73,7 +72,7 @@ public class CategoriaRepository{
         CategoriaEntity categoria = null;
 
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+                PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setLong(1, id);
 
@@ -95,7 +94,7 @@ public class CategoriaRepository{
     public boolean deleteCategoria(Long id) throws Exception {
         String sql = "DELETE FROM categoria WHERE id_categoria = ?";
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+                PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setLong(1, id);
             int affectedRows = statement.executeUpdate();
@@ -110,13 +109,13 @@ public class CategoriaRepository{
     public boolean updateCategoria(CategoriaEntity categoria) {
         String sql = "UPDATE categoria SET nombre = ? WHERE id_categoria = ?";
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+                PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, categoria.getNombre());
             statement.setLong(2, categoria.getIdCategoria());
 
             int affectedRows = statement.executeUpdate();
-            return affectedRows > 0;  // Devuelve true si se actualizó al menos una fila
+            return affectedRows > 0; // Devuelve true si se actualizó al menos una fila
 
         } catch (SQLException e) {
             e.printStackTrace();

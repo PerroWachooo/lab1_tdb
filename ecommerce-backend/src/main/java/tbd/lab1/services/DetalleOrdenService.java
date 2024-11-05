@@ -2,9 +2,7 @@ package tbd.lab1.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tbd.lab1.controllers.DetalleOrdenController;
 import tbd.lab1.entities.DetalleOrdenEntity;
-import tbd.lab1.entities.ProductoEntity;
 import tbd.lab1.repositories.DetalleOrdenRepository;
 
 import java.util.ArrayList;
@@ -13,15 +11,16 @@ import java.util.ArrayList;
 public class DetalleOrdenService {
     @Autowired
     DetalleOrdenRepository detalleOrdenRepository;
-    public DetalleOrdenEntity saveDetalle(DetalleOrdenEntity detalle){
+
+    public DetalleOrdenEntity saveDetalle(DetalleOrdenEntity detalle) {
         return detalleOrdenRepository.saveDetalleOrden(detalle);
     }
 
-    public DetalleOrdenEntity getDetalleById(Long id){
+    public DetalleOrdenEntity getDetalleById(Long id) {
         return detalleOrdenRepository.getDetalleOrdenById(id);
     }
 
-    public ArrayList<DetalleOrdenEntity> getDetalle(){
+    public ArrayList<DetalleOrdenEntity> getDetalle() {
         return (ArrayList<DetalleOrdenEntity>) detalleOrdenRepository.getDetalleOrden();
     }
 
@@ -35,7 +34,7 @@ public class DetalleOrdenService {
     }
 
     public boolean deleteDetalle(Long id) throws Exception {
-        try{
+        try {
             detalleOrdenRepository.deleteDetalleOrden(id);
             return true;
         } catch (Exception e) {
