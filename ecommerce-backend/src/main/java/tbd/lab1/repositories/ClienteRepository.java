@@ -1,56 +1,42 @@
 package tbd.lab1.repositories;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
+import org.sql2o.Connection;
+import org.sql2o.Sql2o;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import tbd.lab1.entities.ClienteEntity;
-import org.springframework.beans.factory.annotation.Autowired;
-import javax.sql.DataSource;
 
+import java.sql.SQLException;
+import java.util.List;
 @Repository
 public class ClienteRepository {
 
-    private final DataSource dataSource;
-
     @Autowired
-    public ClienteRepository(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
+    private Sql2o sql2o;
 
     // guarda un cliente sin jpa ;C
+    // Guarda un cliente usando sql2o
     public ClienteEntity saveCliente(ClienteEntity cliente) {
-        String sql = "INSERT INTO cliente (nombre, direccion, email, telefono) VALUES (?, ?, ?, ?)";
-        try (Connection connection = dataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql,
-                        PreparedStatement.RETURN_GENERATED_KEYS)) {
+        String sql = "INSERT INTO cliente (nombre, direccion, email, telefono) VALUES (:nombre, :direccion, :email, :telefono)";
+        try (Connection con = sql2o.open()) {
+            // Insertar el cliente en la base de datos
+            Integer id = (Integer) con.createQuery(sql, true)  // true indica que se quiere obtener el ID generado
+                    .addParameter("nombre", cliente.getNombre())
+                    .addParameter("direccion", cliente.getDireccion())
+                    .addParameter("email", cliente.getEmail())
+                    .addParameter("telefono", cliente.getTelefono())
+                    .executeUpdate()
+                    .getKey(); // Obtener el ID generado
 
-            statement.setString(1, cliente.getNombre());
-            statement.setString(2, cliente.getDireccion());
-            statement.setString(3, cliente.getEmail());
-            statement.setString(4, cliente.getTelefono());
+            // Establecer el ID generado al cliente
+            cliente.setIdCliente(id);
 
-            int affectedRows = statement.executeUpdate();
-
-            if (affectedRows > 0) {
-                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        cliente.setIdCliente(generatedKeys.getLong(1));
-                    }
-                }
-            } else {
-                throw new SQLException("Error al insertar el cliente, no se generaron filas.");
-            }
-
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return cliente;
     }
-
+    /*
     // obtiene todos los clientes ingresados en la base de datos
     public ArrayList<ClienteEntity> getClientes() {
         ArrayList<ClienteEntity> clientes = new ArrayList<>();
@@ -134,4 +120,5 @@ public class ClienteRepository {
         return false;
     }
 
+     */
 }

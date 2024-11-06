@@ -9,7 +9,7 @@ import tbd.lab1.services.DetalleOrdenService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/detalleordenes")
+@RequestMapping("/api/detalleordenes")
 @CrossOrigin("*")
 public class DetalleOrdenController {
     @Autowired

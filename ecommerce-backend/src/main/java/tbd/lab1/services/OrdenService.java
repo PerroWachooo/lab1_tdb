@@ -17,7 +17,7 @@ public class OrdenService {
     @Autowired
     OrdenRepository ordenRepository;
 
-    public OrdenEntity saveOrden(OrdenEntity orden) {
+    /*public OrdenEntity saveOrden(OrdenEntity orden) {
         logger.info("Recibido objeto Orden: {}", orden);
         return ordenRepository.saveOrden(orden);
     }
@@ -46,5 +46,5 @@ public class OrdenService {
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
-    }
+    }*/
 }

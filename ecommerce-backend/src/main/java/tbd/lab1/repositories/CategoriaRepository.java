@@ -1,125 +1,87 @@
 package tbd.lab1.repositories;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
+import org.sql2o.Connection;
+import org.sql2o.Sql2o;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import tbd.lab1.entities.CategoriaEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.sql.DataSource;
+import java.util.List;
 
 @Repository
-public class CategoriaRepository {
-    private final DataSource dataSource;
+public class CategoriaRepository implements CategoriaRepositoryInt {
 
     @Autowired
-    public CategoriaRepository(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
+    private Sql2o sql2o;
+
 
     public CategoriaEntity saveCategoria(CategoriaEntity categoria) {
-        String sql = "INSERT INTO categoria (nombre) VALUES (?)";
-        try (Connection connection = dataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql,
-                        PreparedStatement.RETURN_GENERATED_KEYS)) {
+        String sql = "INSERT INTO categoria (nombre) VALUES (:nombre)";
+        try (Connection con = sql2o.open()) {
+            // Cambiar Long a Integer
+            Integer id = (Integer) con.createQuery(sql, true)
+                    .addParameter("nombre", categoria.getNombre())
+                    .executeUpdate()
+                    .getKey();
 
-            statement.setString(1, categoria.getNombre());
-
-            int affectedRows = statement.executeUpdate();
-
-            if (affectedRows > 0) {
-                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        categoria.setIdCategoria(generatedKeys.getLong(1));
-                    }
-                }
-            } else {
-                throw new SQLException("Error al insertar la categoria, no se generaron filas.");
-            }
-
-        } catch (SQLException e) {
+            // Establecer el id en la entidad, ahora el id es de tipo int
+            categoria.setId_categoria(id); // idCategoria ahora es un int en la entidad
+            return categoria;
+        } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return categoria;
     }
 
-    public ArrayList<CategoriaEntity> getCategorias() {
-        ArrayList<CategoriaEntity> categorias = new ArrayList<>();
+    public List<CategoriaEntity> getCategorias() {
         String sql = "SELECT * FROM categoria";
-        try (Connection connection = dataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql);
-                ResultSet resultSet = statement.executeQuery()) {
-
-            while (resultSet.next()) {
-                CategoriaEntity categoria = new CategoriaEntity();
-                categoria.setIdCategoria(resultSet.getLong("id_categoria"));
-                categoria.setNombre(resultSet.getString("nombre"));
-                categorias.add(categoria);
-            }
-
-        } catch (SQLException e) {
+        try (Connection con = sql2o.open()) {
+            return con.createQuery(sql)
+                    .executeAndFetch(CategoriaEntity.class);
+        } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return categorias;
     }
 
-    public CategoriaEntity findByIdCategoria(Long id) {
-        String sql = "SELECT * FROM categoria WHERE id_categoria = ?";
-        CategoriaEntity categoria = null;
-
-        try (Connection connection = dataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setLong(1, id);
-
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    categoria = new CategoriaEntity();
-                    categoria.setIdCategoria(resultSet.getLong("id_categoria"));
-                    categoria.setNombre(resultSet.getString("nombre"));
-                }
-            }
-
-        } catch (SQLException e) {
+    public CategoriaEntity findByIdCategoria(int id) { // Cambiar Long a int
+        String sql = "SELECT * FROM categoria WHERE id_categoria = :id";
+        try (Connection con = sql2o.open()) {
+            return con.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeAndFetchFirst(CategoriaEntity.class);
+        } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-
-        return categoria;
     }
 
-    public boolean deleteCategoria(Long id) throws Exception {
-        String sql = "DELETE FROM categoria WHERE id_categoria = ?";
-        try (Connection connection = dataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setLong(1, id);
-            int affectedRows = statement.executeUpdate();
-
-            return affectedRows > 0; // Devuelve true si se eliminó al menos una fila
-
-        } catch (SQLException e) {
-            throw new Exception("Error al eliminar la categoria: " + e.getMessage());
+    public boolean deleteCategoria(int id) { // Cambiar Long a int
+        String sql = "DELETE FROM categoria WHERE id_categoria = :id";
+        try (Connection con = sql2o.open()) {
+            int affectedRows = con.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeUpdate()
+                    .getResult();
+            return affectedRows > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
     public boolean updateCategoria(CategoriaEntity categoria) {
-        String sql = "UPDATE categoria SET nombre = ? WHERE id_categoria = ?";
-        try (Connection connection = dataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setString(1, categoria.getNombre());
-            statement.setLong(2, categoria.getIdCategoria());
-
-            int affectedRows = statement.executeUpdate();
-            return affectedRows > 0; // Devuelve true si se actualizó al menos una fila
-
-        } catch (SQLException e) {
+        String sql = "UPDATE categoria SET nombre = :nombre WHERE id_categoria = :id";
+        try (Connection con = sql2o.open()) {
+            int affectedRows = con.createQuery(sql)
+                    .addParameter("nombre", categoria.getNombre())
+                    .addParameter("id", categoria.getId_categoria()) // idCategoria ahora es un int en la entidad
+                    .executeUpdate()
+                    .getResult();
+            return affectedRows > 0;
+        } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 }

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 @Repository
 public class OrdenRepository {
-
+/*
     private static final Logger logger = LoggerFactory.getLogger(OrdenRepository.class);
 
     private final DataSource dataSource;
@@ -186,5 +186,5 @@ public class OrdenRepository {
             throw new Exception("Error al eliminar la orden: " + e.getMessage());
         }
     }
-
+ */
 }

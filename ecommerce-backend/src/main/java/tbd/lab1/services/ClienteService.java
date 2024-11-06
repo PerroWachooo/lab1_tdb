@@ -10,9 +10,14 @@ import java.util.List;
 
 @Service
 public class ClienteService {
-
     @Autowired
     private ClienteRepository clienteRepository;
+
+    public ClienteEntity createCliente(ClienteEntity clienteEntity) {
+        return clienteRepository.saveCliente(clienteEntity);
+    }
+/*
+
 
     public List<ClienteEntity> getAllClientes() {
         return clienteRepository.getClientes();
@@ -21,10 +26,6 @@ public class ClienteService {
     public ClienteEntity getClienteById(Long id) {
         ClienteEntity cliente = clienteRepository.getClienteById(id);
         return cliente;
-    }
-
-    public ClienteEntity createCliente(ClienteEntity clienteEntity) {
-        return clienteRepository.saveCliente(clienteEntity);
     }
 
     public ClienteEntity saveCliente(ClienteEntity cliente) {
@@ -53,4 +54,5 @@ public class ClienteService {
         return false;
     }
 
+ */
 }

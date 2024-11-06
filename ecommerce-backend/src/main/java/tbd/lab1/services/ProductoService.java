@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class ProductoService {
     @Autowired
     ProductoRepository productoRepository;
-
+/*
     public ProductoEntity saveProducto(ProductoEntity producto){
         return productoRepository.saveProducto(producto);
     }
@@ -42,4 +42,6 @@ public class ProductoService {
             throw new Exception(e.getMessage());
         }
     }
+
+ */
 }

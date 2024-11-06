@@ -9,12 +9,12 @@ import tbd.lab1.services.ProductoService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/productos")
+@RequestMapping("/api/productos")
 @CrossOrigin("*")
 public class ProductoController {
     @Autowired
     ProductoService productoService;
-
+/*
     @PostMapping("/")
     public ResponseEntity<ProductoEntity> saveProducto(@RequestBody ProductoEntity producto) {
         ProductoEntity NewProducto = productoService.saveProducto(producto);
@@ -50,4 +50,6 @@ public class ProductoController {
         productoService.deleteProducto(id);
         return ResponseEntity.noContent().build();
     }
+
+ */
 }

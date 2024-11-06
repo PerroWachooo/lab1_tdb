@@ -9,7 +9,7 @@ import tbd.lab1.services.ClienteService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/clientes")
+@RequestMapping("/api/clientes")
 @CrossOrigin("*")
 public class ClienteController {
 
@@ -22,7 +22,7 @@ public class ClienteController {
         ClienteEntity NewCliente = clienteService.createCliente(cliente);
         return ResponseEntity.ok(NewCliente);
     }
-
+/*
     // obtiene todos los clientes ingresados en la base de datos
     @GetMapping("/")
     public ResponseEntity<List<ClienteEntity>> listCliente() {
@@ -63,5 +63,5 @@ public class ClienteController {
             return ResponseEntity.notFound().build();
         }
     }
-
+ */
 }

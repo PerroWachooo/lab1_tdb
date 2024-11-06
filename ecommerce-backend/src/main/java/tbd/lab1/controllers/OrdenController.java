@@ -11,7 +11,7 @@ import tbd.lab1.services.OrdenService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/ordenes")
+@RequestMapping("/api/ordenes")
 @CrossOrigin("*")
 public class OrdenController {
 
@@ -20,7 +20,7 @@ public class OrdenController {
     @Autowired
     OrdenService ordenService;
 
-    @PostMapping("/")
+    /*@PostMapping("/")
     public ResponseEntity<OrdenEntity> saveProducto(@RequestBody OrdenEntity orden) {
         logger.info("Recibido objeto Orden: {}", orden);
         OrdenEntity NewOrden = ordenService.saveOrden(orden);
@@ -53,6 +53,6 @@ public class OrdenController {
     public ResponseEntity<Boolean> deleteOrdenById(@PathVariable Long id) throws Exception {
         ordenService.deleteOrden(id);
         return ResponseEntity.noContent().build();
-    }
+    }*/
 
 }
