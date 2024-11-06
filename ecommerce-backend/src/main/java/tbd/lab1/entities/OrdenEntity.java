@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 
 public class OrdenEntity {
 
-    private Long idOrden;
+    private Integer id_orden;
 
-    private LocalDateTime fechaOrden;
+    private LocalDateTime fecha_orden;
 
     private String estado;
 

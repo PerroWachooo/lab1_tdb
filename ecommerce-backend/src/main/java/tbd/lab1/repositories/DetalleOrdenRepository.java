@@ -15,8 +15,8 @@ import java.util.ArrayList;
 
 @Repository
 public class DetalleOrdenRepository {
-    private final DataSource dataSource;
 
+/*
     @Autowired
     public DetalleOrdenRepository(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -176,7 +176,7 @@ public class DetalleOrdenRepository {
         }
     }
 
-
+*/
 
 
 

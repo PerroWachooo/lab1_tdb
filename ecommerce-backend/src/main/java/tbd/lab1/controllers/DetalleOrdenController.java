@@ -14,7 +14,7 @@ import java.util.List;
 public class DetalleOrdenController {
     @Autowired
     DetalleOrdenService detalleOrdenService;
-
+/*
     @PostMapping("/")
     public ResponseEntity<DetalleOrdenEntity> saveDetalle(@RequestBody DetalleOrdenEntity detalle) {
         DetalleOrdenEntity NewDetalle = detalleOrdenService.saveDetalle(detalle);
@@ -48,5 +48,7 @@ public class DetalleOrdenController {
         detalleOrdenService.deleteDetalle(id);
         return ResponseEntity.noContent().build();
     }
+
+ */
 
 }

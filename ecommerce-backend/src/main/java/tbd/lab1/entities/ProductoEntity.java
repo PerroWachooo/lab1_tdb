@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 public class ProductoEntity {
 
-    private Long idProducto;
+    private Integer idProducto;
 
     private String nombre;
 

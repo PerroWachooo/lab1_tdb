@@ -11,10 +11,10 @@ public interface CategoriaRepositoryInt {
     List<CategoriaEntity> getCategorias();
 
     // Método para encontrar una categoría por su ID
-    CategoriaEntity findByIdCategoria(int id);
+    CategoriaEntity findByIdCategoria(Integer id);
 
     // Método para eliminar una categoría por su ID
-    boolean deleteCategoria(int id);
+    boolean deleteCategoria(Integer id);
 
     // Método para actualizar una categoría
     boolean updateCategoria(CategoriaEntity categoria);

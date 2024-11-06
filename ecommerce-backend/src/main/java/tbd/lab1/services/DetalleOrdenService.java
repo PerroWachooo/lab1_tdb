@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class DetalleOrdenService {
     @Autowired
     DetalleOrdenRepository detalleOrdenRepository;
-
+/*
     public DetalleOrdenEntity saveDetalle(DetalleOrdenEntity detalle) {
         return detalleOrdenRepository.saveDetalleOrden(detalle);
     }
@@ -41,4 +41,6 @@ public class DetalleOrdenService {
             throw new Exception(e.getMessage());
         }
     }
+
+ */
 }

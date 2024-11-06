@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 public class DetalleOrdenEntity {
 
-    private Long idDetalle;
+    private Integer idDetalle;
 
     private OrdenEntity orden;
 

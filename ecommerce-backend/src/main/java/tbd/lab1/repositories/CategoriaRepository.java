@@ -9,11 +9,11 @@ import tbd.lab1.entities.CategoriaEntity;
 import java.util.List;
 
 @Repository
+
 public class CategoriaRepository implements CategoriaRepositoryInt {
 
     @Autowired
     private Sql2o sql2o;
-
 
     public CategoriaEntity saveCategoria(CategoriaEntity categoria) {
         String sql = "INSERT INTO categoria (nombre) VALUES (:nombre)";
@@ -44,7 +44,8 @@ public class CategoriaRepository implements CategoriaRepositoryInt {
         }
     }
 
-    public CategoriaEntity findByIdCategoria(int id) { // Cambiar Long a int
+
+    public CategoriaEntity findByIdCategoria(Integer id) { // Cambiar Long a int
         String sql = "SELECT * FROM categoria WHERE id_categoria = :id";
         try (Connection con = sql2o.open()) {
             return con.createQuery(sql)
@@ -56,7 +57,7 @@ public class CategoriaRepository implements CategoriaRepositoryInt {
         }
     }
 
-    public boolean deleteCategoria(int id) { // Cambiar Long a int
+    public boolean deleteCategoria(Integer id) { // Cambiar Long a int
         String sql = "DELETE FROM categoria WHERE id_categoria = :id";
         try (Connection con = sql2o.open()) {
             int affectedRows = con.createQuery(sql)

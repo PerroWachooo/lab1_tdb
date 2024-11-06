@@ -1,6 +1,6 @@
 -- Crear tabla categoria
 CREATE TABLE categoria (
-                           id_categoria INTEGER not null PRIMARY KEY,
+                           id_categoria SERIAL PRIMARY KEY,
                            nombre VARCHAR(100) NOT NULL
 );
 
