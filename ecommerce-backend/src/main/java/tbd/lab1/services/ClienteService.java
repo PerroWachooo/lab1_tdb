@@ -10,21 +10,20 @@ import java.util.List;
 
 @Service
 public class ClienteService {
-
     @Autowired
     private ClienteRepository clienteRepository;
+
+    public ClienteEntity createCliente(ClienteEntity clienteEntity) {
+        return clienteRepository.saveCliente(clienteEntity);
+    }
 
     public List<ClienteEntity> getAllClientes() {
         return clienteRepository.getClientes();
     }
 
-    public ClienteEntity getClienteById(Long id) {
+    public ClienteEntity getClienteById(Integer id) {
         ClienteEntity cliente = clienteRepository.getClienteById(id);
         return cliente;
-    }
-
-    public ClienteEntity createCliente(ClienteEntity clienteEntity) {
-        return clienteRepository.saveCliente(clienteEntity);
     }
 
     public ClienteEntity saveCliente(ClienteEntity cliente) {
@@ -35,7 +34,7 @@ public class ClienteService {
         return (ArrayList<ClienteEntity>) clienteRepository.getClientes();
     }
 
-    public boolean deleteCliente(Long id) throws Exception {
+    public boolean deleteCliente(Integer id) throws Exception {
         try {
             clienteRepository.deleteCliente(id);
             return true;
@@ -46,11 +45,12 @@ public class ClienteService {
 
     public boolean updateCliente(ClienteEntity cliente) {
         // vemos si el cliente existe en la base de datos
-        if (clienteRepository.getClienteById(cliente.getIdCliente()) != null) {
+        if (clienteRepository.getClienteById(cliente.getId_cliente()) != null) {
             // actualizamos el cliente usando el método del repositorio
             return clienteRepository.updateCliente(cliente);
         }
         return false;
     }
+
 
 }

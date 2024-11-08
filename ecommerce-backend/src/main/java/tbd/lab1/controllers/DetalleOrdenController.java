@@ -9,7 +9,7 @@ import tbd.lab1.services.DetalleOrdenService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/detalleordenes")
+@RequestMapping("/api/detalleorden")
 @CrossOrigin("*")
 public class DetalleOrdenController {
     @Autowired
@@ -21,17 +21,20 @@ public class DetalleOrdenController {
         return ResponseEntity.ok(NewDetalle);
     }
 
+    @GetMapping("/")
+    public ResponseEntity<List<DetalleOrdenEntity>> listDetalle() {
+        List<DetalleOrdenEntity> detalle = detalleOrdenService.getDetalle();
+        return ResponseEntity.ok(detalle);
+    }
+
+    /*
     @GetMapping("/id-detalle/{id}")
     public ResponseEntity<DetalleOrdenEntity> getDetalleById(@PathVariable Long id) {
         DetalleOrdenEntity detalle = detalleOrdenService.getDetalleById(id);
         return ResponseEntity.ok(detalle);
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<DetalleOrdenEntity>> listDetalle() {
-        List<DetalleOrdenEntity> detalle = detalleOrdenService.getDetalle();
-        return ResponseEntity.ok(detalle);
-    }
+
 
     @PutMapping("/")
     public ResponseEntity<DetalleOrdenEntity> updateDetalle(@RequestBody DetalleOrdenEntity detalle) {
@@ -48,5 +51,7 @@ public class DetalleOrdenController {
         detalleOrdenService.deleteDetalle(id);
         return ResponseEntity.noContent().build();
     }
+
+ */
 
 }

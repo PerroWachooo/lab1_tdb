@@ -1,30 +1,21 @@
 package tbd.lab1.entities;
-import jakarta.persistence.*;
-import lombok.Data;
 
+import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-@Entity
-@Table(name = "detalle_orden")
+
 public class DetalleOrdenEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_detalle")
-    private Long idDetalle;
+    private Integer id_detalle;
 
-    @ManyToOne
-    @JoinColumn(name = "id_orden", referencedColumnName = "id_orden")
-    private OrdenEntity orden;
+    //este era la entidad orden, se cambio por integer
+    private Integer id_orden;
 
-    @ManyToOne
-    @JoinColumn(name = "id_producto", referencedColumnName = "id_producto")
-    private ProductoEntity producto;
+    //este era la entidad producto, se cambio por integer
+    private Integer id_producto;
 
-    @Column(name = "cantidad")
     private Integer cantidad;
 
-    @Column(name = "precio_unitario", precision = 10, scale = 2)
-    private BigDecimal precioUnitario;
+    private BigDecimal precio_unitario;
 }

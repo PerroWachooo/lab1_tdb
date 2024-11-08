@@ -21,14 +21,23 @@ public class CategoriaService {
         return (ArrayList<CategoriaEntity>) categoriaRepository.getCategorias();
     }
 
-    public CategoriaEntity getCategoryById(Long id) {
+    public CategoriaEntity getCategoryById(int id) {
         return categoriaRepository.findByIdCategoria(id);
     }  
      public List<CategoriaEntity> getAllCategorias() {
         return categoriaRepository.getCategorias();
     }
 
-    public boolean deleteCategoria(Long id) throws Exception {
+    public boolean updateCategoria(CategoriaEntity categoria) {
+        // vemos si categoria existe en la base de datos
+        if (categoriaRepository.findByIdCategoria(categoria.getId_categoria()) != null) {
+            // actualizamos el categoria usando el método del repositorio
+            return categoriaRepository.updateCategoria(categoria);
+        }
+        return false;
+    }
+
+    public boolean deleteCategoria(int id) throws Exception {
         try{
             categoriaRepository.deleteCategoria(id);
             return true;
@@ -37,12 +46,5 @@ public class CategoriaService {
         }
     }
 
-    public boolean updateCategoria(CategoriaEntity categoria) {
-        // vemos si categoria existe en la base de datos
-        if (categoriaRepository.findByIdCategoria(categoria.getIdCategoria()) != null) {
-            // actualizamos el categoria usando el método del repositorio
-            return categoriaRepository.updateCategoria(categoria);
-        }
-        return false;
-    }
+
 }
