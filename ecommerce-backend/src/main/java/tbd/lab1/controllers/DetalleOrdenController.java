@@ -4,13 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tbd.lab1.entities.DetalleOrdenEntity;
-import tbd.lab1.entities.ProductoEntity;
 import tbd.lab1.services.DetalleOrdenService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/detalleordenes")
+@RequestMapping("/api/detalleorden")
 @CrossOrigin("*")
 public class DetalleOrdenController {
     @Autowired
@@ -22,17 +21,20 @@ public class DetalleOrdenController {
         return ResponseEntity.ok(NewDetalle);
     }
 
+    @GetMapping("/")
+    public ResponseEntity<List<DetalleOrdenEntity>> listDetalle() {
+        List<DetalleOrdenEntity> detalle = detalleOrdenService.getDetalle();
+        return ResponseEntity.ok(detalle);
+    }
+
+    /*
     @GetMapping("/id-detalle/{id}")
     public ResponseEntity<DetalleOrdenEntity> getDetalleById(@PathVariable Long id) {
         DetalleOrdenEntity detalle = detalleOrdenService.getDetalleById(id);
         return ResponseEntity.ok(detalle);
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<DetalleOrdenEntity>> listDetalle() {
-        List<DetalleOrdenEntity> detalle = detalleOrdenService.getDetalle();
-        return ResponseEntity.ok(detalle);
-    }
+
 
     @PutMapping("/")
     public ResponseEntity<DetalleOrdenEntity> updateDetalle(@RequestBody DetalleOrdenEntity detalle) {
@@ -46,8 +48,10 @@ public class DetalleOrdenController {
 
     @DeleteMapping("/delete-detalle/{id}")
     public ResponseEntity<Boolean> deleteDetalleById(@PathVariable Long id) throws Exception {
-        var isDeleted = detalleOrdenService.deleteDetalle(id);
+        detalleOrdenService.deleteDetalle(id);
         return ResponseEntity.noContent().build();
     }
+
+ */
 
 }

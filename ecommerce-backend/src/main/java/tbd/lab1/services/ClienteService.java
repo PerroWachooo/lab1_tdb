@@ -10,62 +10,47 @@ import java.util.List;
 
 @Service
 public class ClienteService {
-
     @Autowired
     private ClienteRepository clienteRepository;
-
-    public List<ClienteEntity> getAllClientes() {
-        return clienteRepository.getClientes();
-    }
-
-    public ClienteEntity getClienteById(Long id) {
-        ClienteEntity cliente = clienteRepository.getClienteById(id);
-        return cliente;
-    }
 
     public ClienteEntity createCliente(ClienteEntity clienteEntity) {
         return clienteRepository.saveCliente(clienteEntity);
     }
 
-    public boolean deleteCliente(Long id) {
+    public List<ClienteEntity> getAllClientes() {
+        return clienteRepository.getClientes();
+    }
+
+    public ClienteEntity getClienteById(Integer id) {
         ClienteEntity cliente = clienteRepository.getClienteById(id);
-        if (cliente != null) {
-            try {
-                clienteRepository.deleteCliente(id);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-    public ClienteEntity saveCliente(ClienteEntity cliente){
+        return cliente;
+    }
+
+    public ClienteEntity saveCliente(ClienteEntity cliente) {
         return clienteRepository.saveCliente(cliente);
     }
 
-    public ArrayList<ClienteEntity> getClientes(){
+    public ArrayList<ClienteEntity> getClientes() {
         return (ArrayList<ClienteEntity>) clienteRepository.getClientes();
     }
 
-    public boolean deleteCliente(Long id) throws Exception {
-        try{
+    public boolean deleteCliente(Integer id) throws Exception {
+        try {
             clienteRepository.deleteCliente(id);
             return true;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-<<<<<<<<< Temporary merge branch 1
-=========
-
-    public ClienteEntity getClienteById(Long id){
-        return clienteRepository.getClienteById(id);
-    }
 
     public boolean updateCliente(ClienteEntity cliente) {
         // vemos si el cliente existe en la base de datos
-        if (clienteRepository.getClienteById(cliente.getIdCliente()) != null) {
+        if (clienteRepository.getClienteById(cliente.getId_cliente()) != null) {
             // actualizamos el cliente usando el método del repositorio
             return clienteRepository.updateCliente(cliente);
         }
         return false;
     }
 
->>>>>>>>> Temporary merge branch 2
+
 }

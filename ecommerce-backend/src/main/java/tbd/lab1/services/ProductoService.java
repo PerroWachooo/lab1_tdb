@@ -16,15 +16,18 @@ public class ProductoService {
         return productoRepository.saveProducto(producto);
     }
 
+    /*
     //obtiene producto segun su id
     public ProductoEntity getProductoById(Long id){
         return productoRepository.getProductoById(id);
     }
+    */
 
     public ArrayList<ProductoEntity> getProductos(){
         return (ArrayList<ProductoEntity>) productoRepository.getProductos();
     }
 
+    /*
     public boolean updateProducto(ProductoEntity producto) {
         // vemos si el producto existe en la base de datos
         if (productoRepository.getProductoById(producto.getIdProducto()) != null) {
@@ -42,4 +45,6 @@ public class ProductoService {
             throw new Exception(e.getMessage());
         }
     }
+
+ */
 }

@@ -6,24 +6,23 @@ import org.springframework.web.bind.annotation.*;
 import tbd.lab1.entities.ClienteEntity;
 import tbd.lab1.services.ClienteService;
 
-import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/clientes")
+@RequestMapping("/api/cliente")
 @CrossOrigin("*")
 public class ClienteController {
 
     @Autowired
     private ClienteService clienteService;
 
-    //crea un cliente
+    // crea un cliente
     @PostMapping("/")
     public ResponseEntity<ClienteEntity> saveCliente(@RequestBody ClienteEntity cliente) {
         ClienteEntity NewCliente = clienteService.createCliente(cliente);
         return ResponseEntity.ok(NewCliente);
     }
-    //obtiene todos los clientes ingresados en la base de datos
+    // obtiene todos los clientes ingresados en la base de datos
     @GetMapping("/")
     public ResponseEntity<List<ClienteEntity>> listCliente() {
         List<ClienteEntity> clientes = clienteService.getAllClientes();
@@ -31,8 +30,8 @@ public class ClienteController {
     }
 
     // Obtiene un cliente específico por su ID
-    @GetMapping("/{id}")
-    public ResponseEntity<ClienteEntity> getClienteById(@PathVariable Long id) {
+    @GetMapping("/id-cliente/{id}")
+    public ResponseEntity<ClienteEntity> getClienteById(@PathVariable Integer id) {
         ClienteEntity cliente = clienteService.getClienteById(id);
         if (cliente != null) {
             return ResponseEntity.ok(cliente);
@@ -41,8 +40,8 @@ public class ClienteController {
         }
     }
 
-    //actualiza cliente
-    /**
+    // actualiza cliente
+
     @PutMapping("/")
     public ResponseEntity<ClienteEntity> updateCliente(@RequestBody ClienteEntity cliente) {
         boolean isUpdated = clienteService.updateCliente(cliente);
@@ -54,8 +53,8 @@ public class ClienteController {
     }
 
     // Borra un cliente específico por su ID
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteClienteById(@PathVariable Long id) throws Exception {
+    @DeleteMapping("/delete-cliente/{id}")
+    public ResponseEntity<Void> deleteClienteById(@PathVariable Integer id) throws Exception {
         boolean isDeleted = clienteService.deleteCliente(id);
         if (isDeleted) {
             return ResponseEntity.noContent().build();
