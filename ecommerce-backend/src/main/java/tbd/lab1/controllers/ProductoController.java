@@ -18,6 +18,8 @@ public class ProductoController {
     @PostMapping("/")
     public ResponseEntity<ProductoEntity> saveProducto(@RequestBody ProductoEntity producto) {
         ProductoEntity NewProducto = productoService.saveProducto(producto);
+        System.out.println("Producto recibido: " + producto);
+
         return ResponseEntity.ok(NewProducto);
     }
 

@@ -1,118 +1,162 @@
-<script setup>
-import Orden from '@/components/orden.vue';
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
-
-const ordenes = ref([]);
-const clientes = ref([]);
-const newOrden = ref({
-  fechaOrden: '',
-  estado: '',
-  cliente: null,
-  total: 0,
-});
-
-// Fetch orders
-const fetchOrdenes = async () => {
-  try {
-    const response = await axios.get("http://localhost:8090/ordenes/");
-    ordenes.value = response.data;
-    console.log('Fetched ordenes:', JSON.stringify(ordenes.value, null, 2));
-  } catch (error) {
-    console.error("Error fetching ordenes:", error);
-  }
-};
-
-// Fetch clients
-const fetchClientes = async () => {
-  try {
-    const response = await axios.get("http://localhost:8090/clientes/");
-    clientes.value = response.data;
-    console.log('Fetched clientes:', JSON.stringify(clientes.value, null, 2));
-  } catch (error) {
-    console.error("Error fetching clientes:", error);
-  }
-};
-const createOrden = async () => {
-  const formattedDate = new Date(newOrden.value.fechaOrden).toISOString(); // Converts to ISO 8601
-  const payload = {
-    ...newOrden.value,
-    fechaOrden: formattedDate,
-    total: parseFloat(newOrden.value.total),
-    cliente: {
-      idCliente: newOrden.value.cliente.idCliente,
-      nombre: newOrden.value.cliente.nombre,
-    },
-  };
-
-  try {
-    const response = await axios.post("http://localhost:8090/ordenes/", payload);
-    console.log('Order created successfully:', response.data);
-    ordenes.value.push(response.data);
-    newOrden.value = {
-      fechaOrden: '',
-      estado: '',
-      cliente: null,
-      total: 0,
-    };
-  } catch (error) {
-    console.error("Error creating orden:", error);
-  }
-};
-
-
-onMounted(() => {
-  fetchOrdenes();
-  fetchClientes();
-});
-</script>
-
 <template>
-  <v-container class="ordenes-page" fluid>
-    <!-- Header Section -->
-    <v-row class="header" justify="center" align="center">
-      <v-col cols="12" class="text-center">
-        <h2 class="title">Órdenes</h2>
-      </v-col>
-    </v-row>
-
-    <!-- Orders Section -->
-    <v-row class="ordenes-section" justify="center">
-      <v-col cols="12">
-        <v-row class="container" dense>
-          <v-col v-for="orden in ordenes" :key="orden.idOrden" cols="12" sm="6" md="4" lg="3">
-            <Orden :orden="orden" />
+  <div>
+    <v-container>
+      <!-- Formulario para agregar una nueva orden -->
+      <v-form ref="form" @submit.prevent="guardarOrden">
+        <v-row>
+          <v-col cols="12" md="6">
+            <v-text-field
+              v-model="nuevaOrden.fecha_orden"
+              label="Fecha de la Orden"
+              type="datetime-local"
+              required
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="6">
+            <v-select
+              v-model="nuevaOrden.estado"
+              :items="estados"
+              label="Estado"
+              required
+            ></v-select>
+          </v-col>
+          <!-- Cliente Select Dropdown using native HTML select element -->
+          <v-col cols="12" md="6">
+            <label for="cliente-select" class="styled-select-label">Cliente</label>
+            <div class="styled-select">
+              <select v-model="nuevaOrden.cliente" id="cliente-select">
+                <option value="" disabled>Seleccione un cliente</option>
+                <option
+                  v-for="cliente in clientes"
+                  :key="cliente.id_cliente"
+                  :value="cliente.id_cliente"
+                >
+                  {{ cliente.id_cliente }} - {{ cliente.nombre }}
+                </option>
+              </select>
+            </div>
+          </v-col>
+          <v-col cols="12" md="6">
+            <v-text-field
+              v-model="nuevaOrden.total"
+              label="Total"
+              type="number"
+              required
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12">
+            <v-btn color="primary" @click="guardarOrden">Guardar Orden</v-btn>
           </v-col>
         </v-row>
-      </v-col>
-    </v-row>
+      </v-form>
+      <v-divider class="my-4"></v-divider>
 
-    <!-- Form to Create Orders -->
-    <v-row class="form-section" justify="center">
-      <v-col cols="12" md="6">
-        <v-form @submit.prevent="createOrden" class="orden-form">
-          <v-text-field v-model="newOrden.fechaOrden" label="Fecha" outlined clearable />
-          <v-text-field v-model="newOrden.estado" label="Estado" outlined clearable />
-          <v-text-field v-model="newOrden.total" label="Total" outlined clearable type="number" />
-
-          <!-- Styled client dropdown -->
-          <label for="cliente-select" class="styled-select-label">Cliente</label>
-          <div class="styled-select">
-            <select v-model="newOrden.cliente" id="cliente-select">
-              <option value="" disabled selected>Seleccione un cliente</option>
-              <option v-for="cliente in clientes" :key="cliente.idCliente" :value="cliente">
-                {{ cliente.nombre }}
-              </option>
-            </select>
-          </div>
-
-          <v-btn color="primary" @click="createOrden">Crear Orden</v-btn>
-        </v-form>
-      </v-col>
-    </v-row>
-  </v-container>
+      <!-- Mostrar las órdenes -->
+      <v-row>
+        <v-col v-for="orden in ordenes" :key="orden.id_orden" cols="12" md="4">
+          <v-card>
+            <v-card-title>Orden #{{ orden.id_orden }}</v-card-title>
+            <v-card-subtitle>
+              Cliente: {{ obtenerClienteNombre(orden.cliente) }}
+            </v-card-subtitle>
+            <v-card-text>
+              Fecha: {{ orden.fecha_orden }}<br />
+              Estado: {{ orden.estado }}<br />
+              Total: {{ orden.total }}
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
 </template>
 
+<script>
+import axios from 'axios';
+
+export default {
+  data() {
+    return {
+      ordenes: [],
+      nuevaOrden: {
+        fecha_orden: '',
+        estado: '',
+        cliente: null,
+        total: null,
+      },
+      clientes: [],
+      estados: ['DISPONIBLE', 'AGOTADO', 'PENDIENTE'],
+    };
+  },
+  mounted() {
+    this.fetchOrdenes();
+    this.fetchClientes();
+  },
+  methods: {
+    async fetchOrdenes() {
+      try {
+        const response = await axios.get('http://localhost:8090/api/orden/');
+        this.ordenes = response.data;
+      } catch (error) {
+        console.error('Error al obtener las órdenes:', error);
+      }
+    },
+    async fetchClientes() {
+      try {
+        const response = await axios.get('http://localhost:8090/api/cliente/');
+        this.clientes = response.data;
+      } catch (error) {
+        console.error('Error al obtener los clientes:', error);
+      }
+    },
+    async guardarOrden() {
+  try {
+    // Create a copy of nuevaOrden to ensure proper structure
+    const ordenToSend = {
+      id_orden: this.ordenes.length + 1, // Temporary ID, assuming this is generated by backend or increment locally
+      fecha_orden: this.nuevaOrden.fecha_orden,
+      estado: this.nuevaOrden.estado,
+      cliente: this.nuevaOrden.cliente, // Cliente should be the ID (integer)
+      total: parseFloat(this.nuevaOrden.total), // Ensure total is a number
+    };
+
+    const response = await axios.post('http://localhost:8090/api/orden/', ordenToSend);
+    
+    // Push the response from backend (assuming it has the final ID, etc.)
+    this.ordenes.push(response.data);
+
+    // Reset the nuevaOrden object to clear the form
+    this.nuevaOrden = {
+      fecha_orden: '',
+      estado: '',
+      cliente: null,
+      total: null,
+    };
+  } catch (error) {
+    console.error('Error al guardar la orden:', error);
+  }
+},
+
+    obtenerClienteNombre(clienteId) {
+      const cliente = this.clientes.find(c => c.id_cliente === clienteId);
+      return cliente ? `${cliente.id_cliente} - ${cliente.nombre}` : 'Cliente no encontrado';
+    },
+  },
+};
+</script>
+
 <style scoped>
-/* Add styles similar to productos.vue */
+.v-container {
+  margin-top: 20px;
+}
+
+.styled-select {
+  margin: 8px 0;
+}
+
+.styled-select select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+}
 </style>

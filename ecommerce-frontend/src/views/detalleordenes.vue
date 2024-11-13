@@ -17,9 +17,8 @@ const newDetalleOrden = ref({
 // Fetch existing DetalleOrden entries
 const fetchDetalleOrdenes = async () => {
   try {
-    const response = await axios.get('http://localhost:8090/detalleordenes/');
+    const response = await axios.get('http://localhost:8090/api/detalleorden/');
     detalleOrdenes.value = response.data;
-    console.log('Fetched detalleOrdenes:', JSON.stringify(detalleOrdenes.value, null, 2));
   } catch (error) {
     console.error('Error fetching detalleOrdenes:', error);
   }
@@ -28,9 +27,8 @@ const fetchDetalleOrdenes = async () => {
 // Fetch Orden options
 const fetchOrdenes = async () => {
   try {
-    const response = await axios.get('http://localhost:8090/ordenes/');
+    const response = await axios.get('http://localhost:8090/api/orden/');
     ordenes.value = response.data;
-    console.log('Fetched ordenes:', JSON.stringify(ordenes.value, null, 2));
   } catch (error) {
     console.error('Error fetching ordenes:', error);
   }
@@ -39,9 +37,8 @@ const fetchOrdenes = async () => {
 // Fetch Producto options
 const fetchProductos = async () => {
   try {
-    const response = await axios.get('http://localhost:8090/productos/');
+    const response = await axios.get('http://localhost:8090/api/productos/');
     productos.value = response.data;
-    console.log('Fetched productos:', JSON.stringify(productos.value, null, 2));
   } catch (error) {
     console.error('Error fetching productos:', error);
   }
@@ -49,22 +46,27 @@ const fetchProductos = async () => {
 
 // Create new DetalleOrden
 const createDetalleOrden = async () => {
+  // Construir el payload con la estructura esperada
   const payload = {
-    ...newDetalleOrden.value,
-    orden: { idOrden: newDetalleOrden.value.orden.idOrden },
-    producto: { idProducto: newDetalleOrden.value.producto.idProducto },
+    id_orden: newDetalleOrden.value.orden,
+    id_producto: newDetalleOrden.value.producto,
+    cantidad: newDetalleOrden.value.cantidad,
+    precio_unitario: newDetalleOrden.value.precioUnitario,
   };
 
-  console.log('Preparing to create new detalleOrden:', JSON.stringify(payload, null, 2));
+  console.log('Payload que se enviará al servidor:', JSON.stringify(payload, null, 2));
 
   try {
-    const response = await axios.post('http://localhost:8090/detalleordenes/', payload);
-    console.log('DetalleOrden created successfully:', response.data);
+    const response = await axios.post('http://localhost:8090/api/detalleorden/', payload);
+    console.log('DetalleOrden creado exitosamente:', response.data);
 
+    // Agregar el nuevo DetalleOrden a la lista
     detalleOrdenes.value.push(response.data);
+
+    // Reiniciar el formulario
     newDetalleOrden.value = { orden: null, producto: null, cantidad: 1, precioUnitario: 0 };
   } catch (error) {
-    console.error('Error creating detalleOrden:', error);
+    console.error('Error al crear el DetalleOrden:', error);
   }
 };
 
@@ -88,7 +90,7 @@ onMounted(() => {
     <v-row class="detalle-ordenes-section" justify="center">
       <v-col cols="12">
         <v-row class="container" dense>
-          <v-col v-for="detalle in detalleOrdenes" :key="detalle.idDetalle" cols="12" sm="6" md="4" lg="3">
+          <v-col v-for="detalle in detalleOrdenes" :key="detalle.id_detalle" cols="12" sm="6" md="4" lg="3">
             <DetalleOrden :detalle="detalle" />
           </v-col>
         </v-row>
@@ -99,22 +101,25 @@ onMounted(() => {
     <v-row class="form-section" justify="center">
       <v-col cols="12" md="6">
         <v-form @submit.prevent="createDetalleOrden" class="detalle-orden-form">
+          
+          <!-- Orden Select Dropdown using native HTML select element, only ID -->
           <label for="orden-select" class="styled-select-label">Orden</label>
           <div class="styled-select">
             <select v-model="newDetalleOrden.orden" id="orden-select">
-              <option value="" disabled selected>Seleccione una orden</option>
-              <option v-for="orden in ordenes" :key="orden.idOrden" :value="orden">
-                Orden ID: {{ orden.idOrden }}
+              <option value="" disabled>Seleccione una orden</option>
+              <option v-for="orden in ordenes" :key="orden.id_orden" :value="orden.id_orden">
+                Orden ID: {{ orden.id_orden }}
               </option>
             </select>
           </div>
 
+          <!-- Producto Select Dropdown using native HTML select element -->
           <label for="producto-select" class="styled-select-label">Producto</label>
           <div class="styled-select">
             <select v-model="newDetalleOrden.producto" id="producto-select">
-              <option value="" disabled selected>Seleccione un producto</option>
-              <option v-for="producto in productos" :key="producto.idProducto" :value="producto">
-                {{ producto.nombre }}
+              <option value="" disabled>Seleccione un producto</option>
+              <option v-for="producto in productos" :key="producto.idProducto" :value="producto.idProducto">
+                {{ producto.idProducto }} - {{ producto.nombre }}
               </option>
             </select>
           </div>
@@ -185,6 +190,7 @@ onMounted(() => {
 }
 
 .styled-select {
+  margin-bottom: 15px;
   position: relative;
   display: inline-block;
   width: 100%;
@@ -198,7 +204,7 @@ onMounted(() => {
   width: 100%;
   padding: 10px;
   background: transparent;
-  color: #000000;
+  color: #ffffff;
   border: none;
   appearance: none;
   font-size: 16px;

@@ -8,7 +8,7 @@ const newCliente = ref({ nombre: '', direccion: '', email: '', telefono: '' });
 
 const fetchClientes = async () => {
   try {
-    const response = await axios.get("http://localhost:8090/clientes/");
+    const response = await axios.get("http://localhost:8090/api/cliente/");
     clientes.value = response.data;
   } catch (error) {
     console.error("Error fetching clientes:", error);
@@ -17,7 +17,7 @@ const fetchClientes = async () => {
 
 const createCliente = async () => {
   try {
-    const response = await axios.post("http://localhost:8090/clientes/", newCliente.value);
+    const response = await axios.post("http://localhost:8090/api/cliente/", newCliente.value);
     clientes.value.push(response.data);
     newCliente.value = { nombre: '', direccion: '', email: '', telefono: '' };
   } catch (error) {
@@ -77,7 +77,7 @@ export default {
   methods: {
     async fetchClientes() {
       try {
-        const response = await axios.get("http://localhost:8090/api/v1/clientes/");
+        const response = await axios.get("http://localhost:8090/api/cliente/");
         this.clientes = response.data;
       } catch (error) {
         console.error("Error fetching clientes:", error);
@@ -85,7 +85,7 @@ export default {
     },
     async createCliente() {
       try {
-        const response = await axios.post("http://localhost:8090/api/v1/clientes/", {
+        const response = await axios.post("http://localhost:8090/api/cliente/", {
           nombre: this.newClienteName,
           direccion: this.newClienteDireccion,
           email: this.newClienteEmail,

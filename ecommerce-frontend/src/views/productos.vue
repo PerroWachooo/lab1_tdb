@@ -1,6 +1,6 @@
 <script setup>
 import Producto from '@/components/producto.vue';
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
 const productos = ref([]);
@@ -11,13 +11,14 @@ const newProducto = ref({
   precio: 0,
   stock: 0,
   estado: '',
-  categoria: null,
+  id_categoria: 0, // Cambiado para reflejar el ID de la categoría
 });
+
 
 // Fetch products
 const fetchProductos = async () => {
   try {
-    const response = await axios.get("http://localhost:8090/productos/");
+    const response = await axios.get("http://localhost:8090/api/productos/");
     productos.value = response.data;
     console.log('Fetched productos:', JSON.stringify(productos.value, null, 2));
   } catch (error) {
@@ -28,27 +29,34 @@ const fetchProductos = async () => {
 // Fetch categories
 const fetchCategorias = async () => {
   try {
-    const response = await axios.get("http://localhost:8090/categorias/");
+    const response = await axios.get("http://localhost:8090/api/categorias/");
     categorias.value = response.data;
     console.log('Fetched categorias:', JSON.stringify(categorias.value, null, 2));
   } catch (error) {
     console.error("Error fetching categorias:", error);
   }
 };
+
+// Create a new product
 const createProducto = async () => {
+  
   console.log('Preparing to create new product:', JSON.stringify(newProducto.value, null, 2));
 
-  // Ensure categoria is an object with both idCategoria and nombre
+  // Asegurarse de que el payload tenga solo el idCategoria
   const payload = {
-    ...newProducto.value,
-    categoria: {
-      idCategoria: newProducto.value.categoria.idCategoria,
-      nombre: newProducto.value.categoria.nombre
-    }
-  };
+  nombre: newProducto.value.nombre,
+  descripcion: newProducto.value.descripcion,
+  precio: parseFloat(newProducto.value.precio),
+  stock: parseInt(newProducto.value.stock),
+  estado: newProducto.value.estado,
+  id_categoria: newProducto.value.id_categoria
+};
+
+
+  console.log('Payload preparado para enviar:', JSON.stringify(payload, null, 2));
 
   try {
-    const response = await axios.post("http://localhost:8090/productos/", payload);
+    const response = await axios.post("http://localhost:8090/api/productos/", payload);
     console.log('Product created successfully:', response.data);
 
     productos.value.push(response.data);
@@ -62,15 +70,12 @@ const createProducto = async () => {
     };
   } catch (error) {
     console.error("Error creating producto:", error);
+    if (error.response && error.response.data) {
+      console.error("Detalles del error desde el backend:", error.response.data);
+    }
+    alert("Ocurrió un error al crear el producto. Por favor, revisa los datos ingresados.");
   }
 };
-
-
-
-// Watch changes on categoria selection
-watch(newProducto.categoria, (newVal) => {
-  console.log('Selected categoria ID:', newVal);
-});
 
 onMounted(() => {
   fetchProductos();
@@ -88,49 +93,48 @@ onMounted(() => {
     </v-row>
 
     <!-- Products Section -->
-    <v-row class="productos-section" justify="center">
-      <v-col cols="12">
-        <v-row class="container" dense>
-          <v-col v-for="producto in productos" :key="producto.idProducto" cols="12" sm="6" md="4" lg="3">
-            <Producto :producto="producto" />
-          </v-col>
-        </v-row>
+    <Producto > </Producto>
+
+    <!-- Form to Create Products -->
+    <v-row class="form-section" justify="center">
+      <v-col cols="12" md="6">
+        <v-form @submit.prevent="createProducto" class="producto-form">
+          <v-text-field v-model="newProducto.nombre" label="Nombre" outlined clearable />
+          <v-text-field v-model="newProducto.descripcion" label="Descripción" outlined clearable />
+          <v-text-field v-model.number="newProducto.precio" label="Precio" outlined clearable type="number" />
+          <v-text-field v-model.number="newProducto.stock" label="Stock" outlined clearable type="number" />
+
+          <!-- Estado select -->
+          <v-select
+            v-model="newProducto.estado"
+            :items="['disponible', 'agotado']"
+            label="Estado"
+            outlined
+            clearable
+          ></v-select>
+
+          <!-- Styled simple dropdown for Categoria -->
+          <label for="categoria-select" class="styled-select-label">Categoría</label>
+          <div class="styled-select">
+            <select v-model="newProducto.id_categoria" id="categoria-select">
+              <option value="" disabled>Seleccione una categoría</option>
+              <option
+                v-for="categoria in categorias"
+                :key="categoria.id_categoria"
+                :value="categoria.id_categoria"
+              >
+                {{ categoria.nombre }}
+              </option>
+            </select>
+
+          </div>
+
+          <v-btn color="primary" @click="createProducto">Crear Producto</v-btn>
+        </v-form>
       </v-col>
     </v-row>
-
-<!-- Form to Create Products -->
-<v-row class="form-section" justify="center">
-  <v-col cols="12" md="6">
-    <v-form @submit.prevent="createProducto" class="producto-form">
-      <v-text-field v-model="newProducto.nombre" label="Nombre" outlined clearable />
-      <v-text-field v-model="newProducto.descripcion" label="Descripción" outlined clearable />
-      <v-text-field v-model="newProducto.precio" label="Precio" outlined clearable type="number" />
-      <v-text-field v-model="newProducto.stock" label="Stock" outlined clearable type="number" />
-      <v-text-field v-model="newProducto.estado" label="Estado" outlined clearable />
-
-      <!-- Styled simple dropdown -->
-      <label for="categoria-select" class="styled-select-label">Categoría</label>
-      <div class="styled-select">
-        <select v-model="newProducto.categoria" id="categoria-select">
-          <option value="" disabled selected>Seleccione una categoría</option>
-          <option v-for="categoria in categorias" :key="categoria.idCategoria" :value="categoria">
-            {{ categoria.nombre }}
-          </option>
-        </select>
-      </div>
-
-      <v-btn color="primary" @click="createProducto">Crear Producto</v-btn>
-    </v-form>
-  </v-col>
-</v-row>
-
   </v-container>
 </template>
-
-<style scoped>
-/* Add the styles as provided earlier */
-</style>
-
 
 <style scoped>
 .productos-page {
@@ -209,7 +213,6 @@ onMounted(() => {
 
 .styled-select select:focus {
   outline: none;
-
 }
 
 .styled-select::after {

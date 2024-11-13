@@ -8,7 +8,7 @@ const newCategoriaName = ref("");
 
 const fetchCategorias = async () => {
   try {
-    const response = await axios.get("http://localhost:8090/categorias/");
+    const response = await axios.get("http://localhost:8090/api/categorias/");
     categorias.value = response.data;
   } catch (error) {
     console.error("Error fetching categorias:", error);
@@ -17,7 +17,7 @@ const fetchCategorias = async () => {
 
 const createCategoria = async () => {
   try {
-    const response = await axios.post("http://localhost:8090/categorias/", {
+    const response = await axios.post("http://localhost:8090/api/categorias/", {
       nombre: newCategoriaName.value,
     });
     categorias.value.push(response.data);
@@ -43,7 +43,7 @@ onMounted(fetchCategorias);
     <v-row class="categorias-section" justify="center">
       <v-col cols="12">
         <v-row class="container" dense>
-          <v-col v-for="categoria in categorias" :key="categoria.id" cols="12" sm="6" md="4" lg="3">
+          <v-col v-for="categoria in categorias" :key="categoria.idCategoria" cols="12" sm="6" md="4" lg="3">
             <Categoria :categoria="categoria" />
           </v-col>
         </v-row>
