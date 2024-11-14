@@ -2,7 +2,7 @@
   <v-card
     :disabled="loading"
     :loading="loading"
-    class="mx-auto my-12 full-width-card"
+    class="mx-auto my-200 full-width-card"
     max-width="100%"
     outlined
   >
@@ -26,14 +26,14 @@
         ></v-img>
       </v-col>
 
-      <v-col :cols="contentColWidth" class="p-6 text-overlay">
-        <div class="text-background">
+      <v-col :cols="12 - imageColWidth" class="p-6 text-overlay">
+        <div class="text-background full-width-content">
           <v-card-title>{{ title }}</v-card-title>
           <v-card-subtitle class="text--primary">{{ categoria.nombre }}</v-card-subtitle>
           <v-card-text class="text-body-1">
             {{ description }}
           </v-card-text>
-          <v-divider class="my-4"></v-divider>
+          <v-divider class="my-200"></v-divider>
           <v-card-actions>
             <v-btn
               color="deep-purple lighten-2"
@@ -89,10 +89,6 @@ export default {
       type: [String, Number],
       default: 5,
     },
-    contentColWidth: {
-      type: [String, Number],
-      default: 7,
-    },
   },
 
   data() {
@@ -137,7 +133,7 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
 .full-width-card {
-  width: 100%;
+  width: 500%;
   border-radius: 12px;
 }
 
@@ -158,6 +154,10 @@ export default {
   color: #ffffff;
   font-family: 'Poppins', sans-serif; /* Futuristic font */
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6); /* Text shadow for readability */
+}
+
+.full-width-content {
+  width: 100%;
 }
 
 .v-card-title {

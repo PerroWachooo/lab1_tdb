@@ -8,6 +8,7 @@ const newCategoriaName = ref("");
 
 // Variables para las imágenes de fondo de cada categoría
 const categoriaImages = ref([]);
+const backgroundImageSrc = ref(''); // Imagen de fondo
 
 // Función para obtener las categorías desde la API
 const fetchCategorias = async () => {
@@ -51,19 +52,37 @@ const fetchCategoriaImages = async () => {
   }
 };
 
-onMounted(fetchCategorias);
+// Función para obtener una imagen de fondo para el parallax
+const fetchBackgroundImage = async (query) => {
+  try {
+    const response = await fetch(
+      `https://api.unsplash.com/search/photos?query=${query}&client_id=QkjMm1DzbXbkQDPZha7IrUSE_8UYBb-JHMrMbskJgis&per_page=1`
+    );
+    const data = await response.json();
+    backgroundImageSrc.value = data.results?.[0]?.urls.regular || 'https://example.com/default-background.jpg';
+  } catch (error) {
+    console.error('Error fetching background image:', error);
+    backgroundImageSrc.value = 'https://example.com/default-background.jpg';
+  }
+};
+
+onMounted(() => {
+  fetchCategorias();
+  fetchBackgroundImage('cyberpunk'); // Ajusta el término de búsqueda para la imagen de fondo
+});
 </script>
 
 <template>
   <v-container class="categorias-page" fluid>
-    <!-- Header Section -->
-    <v-row class="header" justify="center" align="center">
-      <v-col cols="12" class="text-center">
-        <h2 class="title">Categorías</h2>
-      </v-col>
-    </v-row>
-
-    <!-- Categories Section -->
+    <!-- Parallax Background Section -->
+    <v-parallax :src="backgroundImageSrc" height="auto" style="padding-top: 100px;">
+      <!-- Header Section -->
+      <v-row class="header" justify="center" align="center">
+        <v-col cols="12" class="text-center">
+          <h2 class="title">Categorías</h2>
+        </v-col>
+      </v-row>
+      <!-- Categories Section -->
     <v-row class="categorias-section" justify="center">
       <v-col cols="12">
         <v-row class="container" dense>
@@ -73,6 +92,9 @@ onMounted(fetchCategorias);
         </v-row>
       </v-col>
     </v-row>
+
+    </v-parallax>
+
 
     <!-- Form to Create Categories -->
     <v-row class="form-section" justify="center">

@@ -6,6 +6,7 @@ import axios from 'axios';
 const detalleOrdenes = ref([]);
 const ordenes = ref([]);
 const productos = ref([]);
+const backgroundImageSrc = ref(''); // Imagen de fondo
 
 const newDetalleOrden = ref({
   orden: null,
@@ -70,32 +71,60 @@ const createDetalleOrden = async () => {
   }
 };
 
+// Función para obtener una imagen de fondo para el parallax
+const fetchBackgroundImage = async (query) => {
+  try {
+    const response = await fetch(
+      `https://api.unsplash.com/search/photos?query=${query}&client_id=QkjMm1DzbXbkQDPZha7IrUSE_8UYBb-JHMrMbskJgis&per_page=1`
+    );
+    const data = await response.json();
+    backgroundImageSrc.value = data.results?.[0]?.urls.regular || 'https://example.com/default-background.jpg';
+  } catch (error) {
+    console.error('Error fetching background image:', error);
+    backgroundImageSrc.value = 'https://example.com/default-background.jpg';
+  }
+};
+
 onMounted(() => {
   fetchDetalleOrdenes();
   fetchOrdenes();
   fetchProductos();
+  fetchBackgroundImage('cyberpunk'); // Ajusta el término de búsqueda para la imagen de fondo
 });
 </script>
 
 <template>
   <v-container class="detalle-ordenes-page" fluid>
-    <!-- Header Section -->
-    <v-row class="header" justify="center" align="center">
-      <v-col cols="12" class="text-center">
-        <h2 class="title">Detalle Ordenes</h2>
-      </v-col>
-    </v-row>
-
-    <!-- DetalleOrdenes Section -->
-    <v-row class="detalle-ordenes-section" justify="center">
-      <v-col cols="12">
-        <v-row class="container" dense>
-          <v-col v-for="detalle in detalleOrdenes" :key="detalle.id_detalle" cols="12" sm="6" md="4" lg="3">
-            <DetalleOrden :detalle="detalle" />
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
+    <!-- Parallax Background Section -->
+    <v-parallax :src="backgroundImageSrc" height="auto" style="padding-top: 100px;">
+      <!-- Header Section -->
+      <v-row class="header" justify="center" align="center">
+        <v-col cols="12" class="text-center">
+          <h2 class="title">Detalle Ordenes</h2>
+        </v-col>
+      </v-row>
+       <!-- DetalleOrdenes Section -->
+      <v-row class="detalle-ordenes-section" justify="center">
+        <v-col cols="12">
+          <v-row class="container" dense>
+            <v-col v-for="detalle in detalleOrdenes" :key="detalle.id_detalle" cols="12" sm="6" md="4" lg="3">
+              <v-card class="detalle-card" outlined>
+                <v-card-title class="detalle-card-title">
+                  Orden ID: {{ detalle.id_orden }}
+                </v-card-title>
+                <v-card-subtitle>
+                  Producto ID: {{ detalle.id_producto }}
+                </v-card-subtitle>
+                <v-card-text>
+                  Cantidad: {{ detalle.cantidad }}<br />
+                  Precio Unitario: {{ detalle.precio_unitario }}
+                </v-card-text>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-parallax>
 
     <!-- Form to Create DetalleOrden -->
     <v-row class="form-section" justify="center">
@@ -137,7 +166,7 @@ onMounted(() => {
 <style scoped>
 /* Add consistent styles */
 .detalle-ordenes-page {
-  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+  background: linear-gradient(135deg, #360041, #1d0866, #2dccfd);
   color: #ffffff;
   min-height: 100vh;
   padding-top: 20px;
@@ -163,6 +192,24 @@ onMounted(() => {
 .container .v-col {
   display: flex;
   justify-content: center;
+}
+
+/* Detalle Orden Card Styles */
+.detalle-card {
+  background: rgba(255, 255, 255, 0.8);
+  color: #000;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease-in-out;
+}
+
+.detalle-card:hover {
+  transform: scale(1.05);
+}
+
+.detalle-card-title {
+  font-weight: bold;
+  color: #ff6ec7;
+  text-shadow: 0px 0px 5px rgba(255, 110, 199, 0.8);
 }
 
 /* Form Styles */

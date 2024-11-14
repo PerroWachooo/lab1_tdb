@@ -41,8 +41,8 @@ async function fetchCarouselImages(queries) {
 
 // Llamar a las funciones de fondo y carrusel cuando el componente se monte
 onMounted(() => {
-  fetchBackgroundImage('vaporwave'); // Ajusta el término de búsqueda para la imagen de fondo
-  fetchCarouselImages(['cyberpunk','retrowave', 'synthwave', 'synth']); // Temas para las imágenes del carrusel
+  fetchBackgroundImage('cyberpunk'); // Ajusta el término de búsqueda para la imagen de fondo
+  fetchCarouselImages(['records','retrowave', 'synthwave', 'synth']); // Temas para las imágenes del carrusel
 });
 </script>
 <template>
@@ -74,45 +74,38 @@ onMounted(() => {
         </v-col>
       </v-row>
 
-      
-      <templatecard
-  :categoria="{ nombre: 'clientes' }"
-  title="Clientes"
-  description="Clientes are our core focus. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-  position="left"
-  imageQuery="business meeting"
-/>
-
 <templatecard
   :categoria="{ nombre: 'categorias' }"
   title="Categorias"
-  description="Explore various categories. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  description="Explore various categories."
   position="right"
-  imageQuery="category icons"
+  imageQuery="category vaporwave"
 />
 
-<templatecard
-  :categoria="{ nombre: 'productos' }"
-  title="Productos"
-  description="Check out our products. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-  position="left"
-  imageQuery="product showcase"
-/>
 
 <templatecard
   :categoria="{ nombre: 'ordenes' }"
   title="Ordenes"
-  description="Manage your orders efficiently. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  description="Manage your orders efficiently."
   position="right"
-  imageQuery="order management"
+  imageQuery="books retro"
 />
 
 <templatecard
   :categoria="{ nombre: 'detalleordenes' }"
   title="Detalle de Orden"
-  description="View order details in depth. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  description="View order details in depth. "
   position="left"
-  imageQuery="order details"
+  imageQuery="cityscape"
+/>
+
+      
+<templatecard
+  :categoria="{ nombre: 'clientes' }"
+  title="Clientes"
+  description="Clientes are our core focus. "
+  position="left"
+  imageQuery="eyes"
 />
 
 
@@ -121,8 +114,11 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.landing-page {
+.landing-page {/* Add consistent styles */
+  background: linear-gradient(135deg, #360041, #1d0866, #2dccfd);
   color: #ffffff;
+  min-height: 100vh;
+  padding-top: 20px;
   font-family: 'Poppins', sans-serif;
 }
 
