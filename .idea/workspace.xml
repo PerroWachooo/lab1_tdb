@@ -6,17 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="c390a82c-caef-4d1d-ba62-a7531994a67a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ecommerce-frontend/src/components/categoria.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-frontend/src/components/categoria.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ecommerce-frontend/src/components/cliente.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-frontend/src/components/cliente.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ecommerce-frontend/src/components/navbar.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-frontend/src/components/navbar.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ecommerce-frontend/src/components/orden.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-frontend/src/components/orden.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ecommerce-frontend/src/components/producto.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-frontend/src/components/producto.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ecommerce-frontend/src/components/templatecard.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-frontend/src/components/templatecard.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ecommerce-frontend/src/views/HomeView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-frontend/src/views/HomeView.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ecommerce-frontend/src/views/categorias.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-frontend/src/views/categorias.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ecommerce-frontend/src/views/clientes.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-frontend/src/views/clientes.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ecommerce-frontend/src/views/detalleordenes.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-frontend/src/views/detalleordenes.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ecommerce-frontend/src/views/ordenes.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-frontend/src/views/ordenes.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ecommerce-frontend/src/views/productos.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-frontend/src/views/productos.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,7 +125,7 @@
       <workItem from="1731377326063" duration="304000" />
       <workItem from="1731426888135" duration="9490000" />
       <workItem from="1731535558688" duration="1181000" />
-      <workItem from="1731598504737" duration="1427000" />
+      <workItem from="1731598504737" duration="3431000" />
     </task>
     <servers />
   </component>

@@ -12,20 +12,31 @@
       </v-row>
        <!-- Mostrar las órdenes -->
        <v-row>
-        <v-col v-for="orden in ordenes" :key="orden.id_orden" cols="12" md="4">
-          <v-card class="detalle-card vaporwave-card">
-            <v-card-title class="detalle-card-title vaporwave-title">Orden #{{ orden.id_orden }}</v-card-title>
-            <v-card-subtitle class="vaporwave-subtitle">
-              Cliente: {{ obtenerClienteNombre(orden.cliente) }}
-            </v-card-subtitle>
-            <v-card-text class="vaporwave-text">
-              Fecha: {{ orden.fecha_orden }}<br />
-              Estado: {{ orden.estado }}<br />
-              Total: ${{ orden.total }}
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
+  <v-col v-for="orden in ordenes" :key="orden.id_orden" cols="12" md="4">
+    <v-card class="detalle-card vaporwave-card">
+      <v-card-title class="detalle-card-title vaporwave-title">Orden #{{ orden.id_orden }}</v-card-title>
+      <v-card-subtitle class="vaporwave-subtitle">
+        Cliente: {{ obtenerClienteNombre(orden.cliente) }}
+      </v-card-subtitle>
+      <v-card-text class="vaporwave-text">
+        Fecha: {{ orden.fecha_orden }}<br />
+        Estado: {{ orden.estado }}<br />
+        Total: ${{ orden.total }}
+      </v-card-text>
+      <v-card-actions>
+  <v-btn
+    class="v-btn-card-action vaporwave-btn vaporwave-btn-delete"
+    @click="eliminarOrden"
+    style="background-color: #5e17eb; color: #ffffff; width: 100px;"
+  >
+    Eliminar
+  </v-btn>
+</v-card-actions>
+
+    </v-card>
+  </v-col>
+</v-row>
+
     </v-parallax>
 
     <v-container>
@@ -150,6 +161,23 @@ export default {
         console.error('Error al guardar la orden:', error);
       }
     },
+    async eliminarOrden(ordenId) {
+      try {
+        // Confirmación antes de eliminar
+        if (!confirm('¿Estás seguro de que deseas eliminar esta orden?')) {
+          return;
+        }
+
+        // Hacer la solicitud DELETE
+        await axios.delete(`http://localhost:8090/api/orden/delete-orden/${ordenId}`);
+        // Filtrar la orden eliminada del arreglo
+        this.ordenes = this.ordenes.filter((orden) => orden.id_orden !== ordenId);
+        alert('Orden eliminada exitosamente');
+      } catch (error) {
+        console.error('Error al eliminar la orden:', error);
+        alert('Error al eliminar la orden');
+      }
+    },
     obtenerClienteNombre(clienteId) {
       const cliente = this.clientes.find((c) => c.id_cliente === clienteId);
       return cliente ? `${cliente.id_cliente} - ${cliente.nombre}` : 'Cliente no encontrado';
@@ -169,6 +197,7 @@ export default {
   },
 };
 </script>
+
 
 <style scoped>
 /* Estilo Vaporwave */

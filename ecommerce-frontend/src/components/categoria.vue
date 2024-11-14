@@ -25,14 +25,15 @@
     </v-card-item>
 
     <v-card-actions>
+      
       <v-btn
-        color="deep-purple-lighten-2"
-        text="Buscar"
+        color="red lighten-2"
+        text="Borrar"
         block
         border
-        @click="buscar"
+        @click="borrarCategoria"
       >
-        Buscar
+        Borrar
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -89,6 +90,22 @@ export default {
       } catch (error) {
         console.error('Error fetching image:', error);
         this.imageSrc = 'https://example.com/default.jpg'; // Fallback in case of error
+      }
+    },
+
+    async borrarCategoria() {
+      if (confirm(`¿Está seguro de que quiere borrar la categoría "${this.categoria.nombre}"?`)) {
+        this.loading = true;
+        try {
+          await fetch(`http://localhost:8090/api/categorias/delete-categoria/${this.categoria.id_categoria}`, {
+            method: 'DELETE',
+          });
+          this.$emit('categoriaBorrada', this.categoria.id_categoria);
+        } catch (error) {
+          console.error('Error deleting category:', error);
+        } finally {
+          this.loading = false;
+        }
       }
     },
   },

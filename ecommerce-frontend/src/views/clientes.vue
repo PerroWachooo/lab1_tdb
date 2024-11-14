@@ -33,6 +33,16 @@ const createCliente = async () => {
   }
 };
 
+const deleteCliente = async (clienteId) => {
+  try {
+    await axios.delete(`http://localhost:8090/api/cliente/delete-cliente/${clienteId}`);
+    clientes.value = clientes.value.filter((cliente) => cliente.idCliente !== clienteId);
+    fetchClienteImages(); // Actualizar las imágenes tras eliminar un cliente
+  } catch (error) {
+    console.error("Error deleting cliente:", error);
+  }
+};
+
 // Función para obtener las imágenes de los clientes desde Unsplash
 const fetchClienteImages = async () => {
   try {

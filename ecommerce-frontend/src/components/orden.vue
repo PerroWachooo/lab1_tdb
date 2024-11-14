@@ -1,5 +1,5 @@
 <template>
-  <v-card class="detalle-card vaporwave-card">
+  <v-card class="detalle-card vaporwave-card" style="min-height: 300px;">
     <v-card-title class="detalle-card-title vaporwave-title">{{ orden.idOrden }}</v-card-title>
     <v-card-subtitle class="vaporwave-subtitle"> 
       Cliente: {{ orden.cliente ? orden.cliente.nombre : 'Sin cliente' }}
@@ -9,11 +9,26 @@
       Estado: {{ orden.estado }}<br />
       Total: ${{ orden.total }}
     </v-card-text>
-    <v-card-actions>
-      <v-btn class="v-btn-card-action vaporwave-btn" text @click="actualizarOrden">Actualizar</v-btn>
-    </v-card-actions>
+    <v-card-title class="detalle-card-title vaporwave-title">
+  {{ orden.idOrden }}
+  <v-card-actions>
+  <v-btn
+    class="v-btn-card-action vaporwave-btn vaporwave-btn-delete"
+    @click="eliminarOrden"
+    style="background-color: #5e17eb; color: #ffffff; width: 100px;"
+  >
+    Eliminar
+  </v-btn>
+</v-card-actions>
+
+</v-card-title>
+
+
   </v-card>
 </template>
+
+
+
 
 <script>
 export default {
@@ -24,26 +39,46 @@ export default {
     },
   },
   methods: {
-    actualizarOrden() {
-      // Aquí podrías agregar la lógica para actualizar la orden
-      console.log("Actualizar orden:", this.orden);
+    
+
+    eliminarOrden() {
+      // Añadimos un mensaje de confirmación antes de eliminar
+      if (!confirm("¿Estás seguro de que deseas eliminar esta orden?")) {
+        return;
+      }
+
+      const ordenId = this.orden.idOrden; // Ajusta el nombre del campo si es diferente
+
+      if (!ordenId) {
+        console.error("El ID de la orden no está definido");
+        alert("Error: No se puede eliminar la orden debido a que el ID no está definido.");
+        return;
+      }
+
+      // Llamada DELETE al backend para eliminar la orden
+      fetch(`http://localhost:8090/api/orden/delete-orden/${ordenId}`, {
+        method: "DELETE",
+      })
+        .then((response) => {
+          if (response.ok) {
+            this.$emit("orden-eliminada", ordenId); // Emitir un evento para que el componente padre actualice la lista
+            alert("Orden eliminada exitosamente");
+          } else {
+            alert("Error al eliminar la orden");
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("Ocurrió un error al eliminar la orden");
+        });
     },
   },
 };
 </script>
 
-<style scoped>
-/* Estilo Vaporwave para las Cards */
 
-/* Estilo base de la tarjeta (detalle-card) */
-.detalle-card.vaporwave-card {
-  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d); /* Fondo con degradado estilo vaporwave */
-  color: #ffffff; /* Texto blanco para destacar sobre el fondo */
-  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5); /* Sombra para efecto de elevación */
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Transición suave */
-  border-radius: 15px; /* Bordes redondeados */
-  overflow: hidden; /* Para evitar que los elementos internos se salgan */
-}
+<style scoped>
+
 
 .detalle-card:hover {
   transform: scale(1.05); /* Aumenta ligeramente el tamaño al pasar el ratón */

@@ -27,14 +27,15 @@
     </v-card-text>
 
     <v-card-actions>
+      
       <v-btn
-        class="v-btn-card-action"
-        text="Actualizar"
+        class="v-btn-card-action delete-btn"
+        text="Eliminar"
         block
         border
-        @click="actualizar"
+        @click="eliminar"
       >
-        Actualizar
+        Eliminar
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -60,10 +61,45 @@ export default {
   },
 
   methods: {
-    actualizar() {
-      this.loading = true;
-      setTimeout(() => (this.loading = false), 2000);
-    },
+   
+
+    eliminar() {
+  this.loading = true;
+
+  // Verificar el contenido completo del cliente (para depuración)
+  console.log("Objeto cliente:", this.cliente);
+
+  const clienteId = this.cliente.id_cliente; // Cambiado de 'id' a 'id_cliente'
+
+  // Verificar si el ID está definido
+  if (!clienteId) {
+    console.error("El ID del cliente no está definido");
+    alert("Error: No se puede eliminar el cliente debido a que el ID no está definido.");
+    this.loading = false;
+    return;
+  }
+
+  console.log("Cliente ID a eliminar:", clienteId); // Log para verificar el valor del ID
+
+  fetch(`http://localhost:8090/api/cliente/delete-cliente/${clienteId}`, {
+    method: "DELETE",
+  })
+    .then((response) => {
+      if (response.ok) {
+        this.$emit("cliente-eliminado", clienteId); // Emitir un evento para que el componente padre actualice la lista
+        alert("Cliente eliminado exitosamente");
+      } else {
+        alert("Error al eliminar el cliente");
+      }
+      this.loading = false;
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      alert("Ocurrió un error al eliminar el cliente");
+      this.loading = false;
+    });
+}
+
   },
 };
 </script>
