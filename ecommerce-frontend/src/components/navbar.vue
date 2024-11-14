@@ -1,17 +1,34 @@
 <script setup>
-import { RouterLink } from 'vue-router'
+import { ref } from 'vue';
+import { RouterLink } from 'vue-router';
 </script>
 
 <template>
   <v-app-bar app color="primary">
     <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-    <v-toolbar-title>Navbar</v-toolbar-title>
+    <RouterLink to="/">
+      <v-btn text>E-commerce</v-btn>
+    </RouterLink>
     <v-spacer></v-spacer>
-    <v-btn text to="/">Home</v-btn>
-    <v-btn text to="/productos">Productos</v-btn>
-    <v-btn text to="/clientes">Clientes</v-btn>
-    <v-btn text to="/categorias">Categorias</v-btn>
-    <v-btn text to="/ordenes">Ordenes</v-btn>
-    <v-btn text to="/detalleordenes">About</v-btn>
+    
+    <!-- Wrap v-btns in RouterLink for navigation -->
+    <RouterLink to="/">
+      <v-btn text>Home</v-btn>
+    </RouterLink>
+    <RouterLink to="/productos">
+      <v-btn text>Productos</v-btn>
+    </RouterLink>
+    <RouterLink to="/clientes">
+      <v-btn text>Clientes</v-btn>
+    </RouterLink>
+    <RouterLink to="/categorias">
+      <v-btn text>Categorias</v-btn>
+    </RouterLink>
+    <RouterLink to="/ordenes">
+      <v-btn text>Ordenes</v-btn>
+    </RouterLink>
+    <RouterLink to="/detalleordenes">
+      <v-btn text>Detalle Ordenes</v-btn>
+    </RouterLink>
   </v-app-bar>
 </template>

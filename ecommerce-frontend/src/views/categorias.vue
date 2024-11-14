@@ -6,15 +6,21 @@ import axios from 'axios';
 const categorias = ref([]);
 const newCategoriaName = ref("");
 
+// Variables para las imágenes de fondo de cada categoría
+const categoriaImages = ref([]);
+
+// Función para obtener las categorías desde la API
 const fetchCategorias = async () => {
   try {
     const response = await axios.get("http://localhost:8090/api/categorias/");
     categorias.value = response.data;
+    fetchCategoriaImages(); // Llama la función para obtener las imágenes de las categorías
   } catch (error) {
     console.error("Error fetching categorias:", error);
   }
 };
 
+// Función para crear una nueva categoría
 const createCategoria = async () => {
   try {
     const response = await axios.post("http://localhost:8090/api/categorias/", {
@@ -22,8 +28,26 @@ const createCategoria = async () => {
     });
     categorias.value.push(response.data);
     newCategoriaName.value = "";
+    fetchCategoriaImages(); // Actualizar las imágenes tras añadir una categoría
   } catch (error) {
     console.error("Error creating categoria:", error);
+  }
+};
+
+// Función para obtener las imágenes de las categorías desde Unsplash
+const fetchCategoriaImages = async () => {
+  try {
+    const promises = categorias.value.map(async (categoria) => {
+      const response = await fetch(
+        `https://api.unsplash.com/search/photos?query=${categoria.nombre}&client_id=QkjMm1DzbXbkQDPZha7IrUSE_8UYBb-JHMrMbskJgis&per_page=1`
+      );
+      const data = await response.json();
+      return data.results?.[0]?.urls.regular || 'https://example.com/default-category.jpg';
+    });
+    categoriaImages.value = await Promise.all(promises);
+  } catch (error) {
+    console.error('Error fetching category images:', error);
+    categoriaImages.value = categorias.value.map(() => 'https://example.com/default-category.jpg');
   }
 };
 
@@ -43,8 +67,8 @@ onMounted(fetchCategorias);
     <v-row class="categorias-section" justify="center">
       <v-col cols="12">
         <v-row class="container" dense>
-          <v-col v-for="categoria in categorias" :key="categoria.idCategoria" cols="12" sm="6" md="4" lg="3">
-            <Categoria :categoria="categoria" />
+          <v-col v-for="(categoria, index) in categorias" :key="categoria.idCategoria" cols="12" sm="6" md="4" lg="3">
+            <Categoria :categoria="categoria" :backgroundImage="categoriaImages[index]" />
           </v-col>
         </v-row>
       </v-col>
