@@ -2,8 +2,9 @@
   <v-card
     :disabled="loading"
     :loading="loading"
-    class="mx-auto my-12"
-    :max-width="maxWidth"
+    class="mx-auto my-200 full-width-card"
+    max-width="100%"
+    outlined
   >
     <template v-slot:loader="{ isActive }">
       <v-progress-linear
@@ -14,27 +15,46 @@
       ></v-progress-linear>
     </template>
 
-    <v-img
-      :height="imageHeight"
-      :src="imageSrc"
-      cover
-    ></v-img>
+    <v-row no-gutters>
+      <!-- Conditionally place image on left or right -->
+      <v-col v-if="position === 'left'" :cols="imageColWidth">
+        <v-img
+          :height="imageHeight"
+          :src="imageSrc"
+          class="rounded-l-lg"
+          cover
+        ></v-img>
+      </v-col>
 
-    <v-card-item>
-      <v-card-title>{{ categoria.nombre }}</v-card-title>
-    </v-card-item>
+      <v-col :cols="12 - imageColWidth" class="p-6 text-overlay">
+        <div class="text-background full-width-content">
+          <v-card-title>{{ title }}</v-card-title>
+          <v-card-subtitle class="text--primary">{{ categoria.nombre }}</v-card-subtitle>
+          <v-card-text class="text-body-1">
+            {{ description }}
+          </v-card-text>
+          <v-divider class="my-200"></v-divider>
+          <v-card-actions>
+            <v-btn
+              color="deep-purple lighten-2"
+              block
+              @click="buscar"
+            >
+              See More
+            </v-btn>
+          </v-card-actions>
+        </div>
+      </v-col>
 
-    <v-card-actions>
-      <v-btn
-        color="deep-purple-lighten-2"
-        text="Buscar"
-        block
-        border
-        @click="buscar"
-      >
-        Buscar
-      </v-btn>
-    </v-card-actions>
+      <v-col v-if="position === 'right'" :cols="imageColWidth">
+        <v-img
+          :height="imageHeight"
+          :src="imageSrc"
+          class="rounded-r-lg"
+          cover
+        ></v-img>
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 
@@ -45,13 +65,29 @@ export default {
       type: Object,
       required: true,
     },
-    maxWidth: {
-      type: [String, Number],
-      default: 374,
+    title: {
+      type: String,
+      default: '',
+    },
+    description: {
+      type: String,
+      default: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    },
+    position: {
+      type: String,
+      default: 'left', // 'left' or 'right' for image position
+    },
+    imageQuery: {
+      type: String,
+      default: '', // Término de búsqueda para la imagen
     },
     imageHeight: {
       type: [String, Number],
-      default: 200,
+      default: 300,
+    },
+    imageColWidth: {
+      type: [String, Number],
+      default: 5,
     },
   },
 
@@ -63,35 +99,85 @@ export default {
   },
 
   watch: {
-    categoria: {
+    imageQuery: {
       immediate: true,
-      handler(newVal) {
-        this.fetchImage(newVal.nombre);
+      handler(newQuery) {
+        this.fetchImage(newQuery || this.categoria.nombre);
       },
     },
   },
 
   methods: {
     buscar() {
-      // Redirigir dinámicamente a la página basada en el nombre de la categoría
       const routeName = this.categoria.nombre.toLowerCase();
       this.$router.push({ name: routeName });
     },
 
     async fetchImage(query) {
       try {
-        const response = await fetch(`https://api.unsplash.com/search/photos?query=${query}&client_id=QkjMm1DzbXbkQDPZha7IrUSE_8UYBb-JHMrMbskJgis&per_page=1`);
+        const response = await fetch(
+          `https://api.unsplash.com/search/photos?query=${query}&client_id=QkjMm1DzbXbkQDPZha7IrUSE_8UYBb-JHMrMbskJgis&per_page=1`
+        );
         const data = await response.json();
-        if (data.results && data.results.length > 0) {
-          this.imageSrc = data.results[0].urls.small;
-        } else {
-          this.imageSrc = 'https://example.com/default.jpg'; // Imagen de respaldo
-        }
+        this.imageSrc = data.results?.[0]?.urls?.small || 'https://example.com/default.jpg';
       } catch (error) {
         console.error('Error fetching image:', error);
-        this.imageSrc = 'https://example.com/default.jpg'; // Imagen de respaldo en caso de error
+        this.imageSrc = 'https://example.com/default.jpg';
       }
     },
   },
 };
 </script>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+.full-width-card {
+  width: 500%;
+  border-radius: 12px;
+}
+
+.v-img {
+  border-radius: 12px;
+}
+
+.text-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-background {
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+  padding: 20px;
+  border-radius: 8px;
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif; /* Futuristic font */
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6); /* Text shadow for readability */
+}
+
+.full-width-content {
+  width: 100%;
+}
+
+.v-card-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #E0E0E0; /* Lighter color for title */
+}
+
+.v-card-subtitle {
+  color: #A3A3FF; /* Slightly lighter purple for subtitle */
+  font-size: 1.2rem;
+}
+
+.v-card-text {
+  color: #f0f0f0;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.v-card-actions {
+  padding: 0;
+}
+</style>

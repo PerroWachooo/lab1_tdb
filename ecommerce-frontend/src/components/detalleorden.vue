@@ -1,10 +1,10 @@
 <template>
   <v-card class="detalle-card">
-    <v-card-title>Orden ID: {{ detalle.orden.idOrden }}</v-card-title>
-    <v-card-subtitle>Producto: {{ detalle.producto.nombre }}</v-card-subtitle>
+    <v-card-title>Orden ID: {{ detalle.id_orden }}</v-card-title>
+    <v-card-subtitle>Producto ID: {{ detalle.id_producto }}</v-card-subtitle>
     <v-card-text>
       Cantidad: {{ detalle.cantidad }}<br />
-      Precio Unitario: {{ detalle.precioUnitario }}
+      Precio Unitario: {{ detalle.precio_unitario }}
     </v-card-text>
   </v-card>
 </template>

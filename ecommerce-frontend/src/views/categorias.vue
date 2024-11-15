@@ -6,49 +6,95 @@ import axios from 'axios';
 const categorias = ref([]);
 const newCategoriaName = ref("");
 
+// Variables para las imágenes de fondo de cada categoría
+const categoriaImages = ref([]);
+const backgroundImageSrc = ref(''); // Imagen de fondo
+
+// Función para obtener las categorías desde la API
 const fetchCategorias = async () => {
   try {
-    const response = await axios.get("http://localhost:8090/categorias/");
+    const response = await axios.get("http://localhost:8090/api/categorias/");
     categorias.value = response.data;
+    fetchCategoriaImages(); // Llama la función para obtener las imágenes de las categorías
   } catch (error) {
     console.error("Error fetching categorias:", error);
   }
 };
 
+// Función para crear una nueva categoría
 const createCategoria = async () => {
   try {
-    const response = await axios.post("http://localhost:8090/categorias/", {
+    const response = await axios.post("http://localhost:8090/api/categorias/", {
       nombre: newCategoriaName.value,
     });
     categorias.value.push(response.data);
     newCategoriaName.value = "";
+    fetchCategoriaImages(); // Actualizar las imágenes tras añadir una categoría
   } catch (error) {
     console.error("Error creating categoria:", error);
   }
 };
 
-onMounted(fetchCategorias);
+// Función para obtener las imágenes de las categorías desde Unsplash
+const fetchCategoriaImages = async () => {
+  try {
+    const promises = categorias.value.map(async (categoria) => {
+      const response = await fetch(
+        `https://api.unsplash.com/search/photos?query=${categoria.nombre}&client_id=QkjMm1DzbXbkQDPZha7IrUSE_8UYBb-JHMrMbskJgis&per_page=1`
+      );
+      const data = await response.json();
+      return data.results?.[0]?.urls.regular || 'https://example.com/default-category.jpg';
+    });
+    categoriaImages.value = await Promise.all(promises);
+  } catch (error) {
+    console.error('Error fetching category images:', error);
+    categoriaImages.value = categorias.value.map(() => 'https://example.com/default-category.jpg');
+  }
+};
+
+// Función para obtener una imagen de fondo para el parallax
+const fetchBackgroundImage = async (query) => {
+  try {
+    const response = await fetch(
+      `https://api.unsplash.com/search/photos?query=${query}&client_id=QkjMm1DzbXbkQDPZha7IrUSE_8UYBb-JHMrMbskJgis&per_page=1`
+    );
+    const data = await response.json();
+    backgroundImageSrc.value = data.results?.[0]?.urls.regular || 'https://example.com/default-background.jpg';
+  } catch (error) {
+    console.error('Error fetching background image:', error);
+    backgroundImageSrc.value = 'https://example.com/default-background.jpg';
+  }
+};
+
+onMounted(() => {
+  fetchCategorias();
+  fetchBackgroundImage('cyberpunk'); // Ajusta el término de búsqueda para la imagen de fondo
+});
 </script>
 
 <template>
   <v-container class="categorias-page" fluid>
-    <!-- Header Section -->
-    <v-row class="header" justify="center" align="center">
-      <v-col cols="12" class="text-center">
-        <h2 class="title">Categorías</h2>
-      </v-col>
-    </v-row>
-
-    <!-- Categories Section -->
+    <!-- Parallax Background Section -->
+    <v-parallax :src="backgroundImageSrc" height="auto" style="padding-top: 100px;">
+      <!-- Header Section -->
+      <v-row class="header" justify="center" align="center">
+        <v-col cols="12" class="text-center">
+          <h2 class="title">Categorías</h2>
+        </v-col>
+      </v-row>
+      <!-- Categories Section -->
     <v-row class="categorias-section" justify="center">
       <v-col cols="12">
         <v-row class="container" dense>
-          <v-col v-for="categoria in categorias" :key="categoria.id" cols="12" sm="6" md="4" lg="3">
-            <Categoria :categoria="categoria" />
+          <v-col v-for="(categoria, index) in categorias" :key="categoria.idCategoria" cols="12" sm="6" md="4" lg="3">
+            <Categoria :categoria="categoria" :backgroundImage="categoriaImages[index]" />
           </v-col>
         </v-row>
       </v-col>
     </v-row>
+
+    </v-parallax>
+
 
     <!-- Form to Create Categories -->
     <v-row class="form-section" justify="center">

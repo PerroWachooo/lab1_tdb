@@ -6,6 +6,7 @@ import axios from 'axios';
 const detalleOrdenes = ref([]);
 const ordenes = ref([]);
 const productos = ref([]);
+const backgroundImageSrc = ref(''); // Imagen de fondo
 
 const newDetalleOrden = ref({
   orden: null,
@@ -17,9 +18,8 @@ const newDetalleOrden = ref({
 // Fetch existing DetalleOrden entries
 const fetchDetalleOrdenes = async () => {
   try {
-    const response = await axios.get('http://localhost:8090/detalleordenes/');
+    const response = await axios.get('http://localhost:8090/api/detalleorden/');
     detalleOrdenes.value = response.data;
-    console.log('Fetched detalleOrdenes:', JSON.stringify(detalleOrdenes.value, null, 2));
   } catch (error) {
     console.error('Error fetching detalleOrdenes:', error);
   }
@@ -28,9 +28,8 @@ const fetchDetalleOrdenes = async () => {
 // Fetch Orden options
 const fetchOrdenes = async () => {
   try {
-    const response = await axios.get('http://localhost:8090/ordenes/');
+    const response = await axios.get('http://localhost:8090/api/orden/');
     ordenes.value = response.data;
-    console.log('Fetched ordenes:', JSON.stringify(ordenes.value, null, 2));
   } catch (error) {
     console.error('Error fetching ordenes:', error);
   }
@@ -39,9 +38,8 @@ const fetchOrdenes = async () => {
 // Fetch Producto options
 const fetchProductos = async () => {
   try {
-    const response = await axios.get('http://localhost:8090/productos/');
+    const response = await axios.get('http://localhost:8090/api/productos/');
     productos.value = response.data;
-    console.log('Fetched productos:', JSON.stringify(productos.value, null, 2));
   } catch (error) {
     console.error('Error fetching productos:', error);
   }
@@ -49,22 +47,41 @@ const fetchProductos = async () => {
 
 // Create new DetalleOrden
 const createDetalleOrden = async () => {
+  // Construir el payload con la estructura esperada
   const payload = {
-    ...newDetalleOrden.value,
-    orden: { idOrden: newDetalleOrden.value.orden.idOrden },
-    producto: { idProducto: newDetalleOrden.value.producto.idProducto },
+    id_orden: newDetalleOrden.value.orden,
+    id_producto: newDetalleOrden.value.producto,
+    cantidad: newDetalleOrden.value.cantidad,
+    precio_unitario: newDetalleOrden.value.precioUnitario,
   };
 
-  console.log('Preparing to create new detalleOrden:', JSON.stringify(payload, null, 2));
+  console.log('Payload que se enviará al servidor:', JSON.stringify(payload, null, 2));
 
   try {
-    const response = await axios.post('http://localhost:8090/detalleordenes/', payload);
-    console.log('DetalleOrden created successfully:', response.data);
+    const response = await axios.post('http://localhost:8090/api/detalleorden/', payload);
+    console.log('DetalleOrden creado exitosamente:', response.data);
 
+    // Agregar el nuevo DetalleOrden a la lista
     detalleOrdenes.value.push(response.data);
+
+    // Reiniciar el formulario
     newDetalleOrden.value = { orden: null, producto: null, cantidad: 1, precioUnitario: 0 };
   } catch (error) {
-    console.error('Error creating detalleOrden:', error);
+    console.error('Error al crear el DetalleOrden:', error);
+  }
+};
+
+// Función para obtener una imagen de fondo para el parallax
+const fetchBackgroundImage = async (query) => {
+  try {
+    const response = await fetch(
+      `https://api.unsplash.com/search/photos?query=${query}&client_id=QkjMm1DzbXbkQDPZha7IrUSE_8UYBb-JHMrMbskJgis&per_page=1`
+    );
+    const data = await response.json();
+    backgroundImageSrc.value = data.results?.[0]?.urls.regular || 'https://example.com/default-background.jpg';
+  } catch (error) {
+    console.error('Error fetching background image:', error);
+    backgroundImageSrc.value = 'https://example.com/default-background.jpg';
   }
 };
 
@@ -72,49 +89,66 @@ onMounted(() => {
   fetchDetalleOrdenes();
   fetchOrdenes();
   fetchProductos();
+  fetchBackgroundImage('cyberpunk'); // Ajusta el término de búsqueda para la imagen de fondo
 });
 </script>
 
 <template>
   <v-container class="detalle-ordenes-page" fluid>
-    <!-- Header Section -->
-    <v-row class="header" justify="center" align="center">
-      <v-col cols="12" class="text-center">
-        <h2 class="title">Detalle Ordenes</h2>
-      </v-col>
-    </v-row>
-
-    <!-- DetalleOrdenes Section -->
-    <v-row class="detalle-ordenes-section" justify="center">
-      <v-col cols="12">
-        <v-row class="container" dense>
-          <v-col v-for="detalle in detalleOrdenes" :key="detalle.idDetalle" cols="12" sm="6" md="4" lg="3">
-            <DetalleOrden :detalle="detalle" />
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
+    <!-- Parallax Background Section -->
+    <v-parallax :src="backgroundImageSrc" height="auto" style="padding-top: 100px;">
+      <!-- Header Section -->
+      <v-row class="header" justify="center" align="center">
+        <v-col cols="12" class="text-center">
+          <h2 class="title">Detalle Ordenes</h2>
+        </v-col>
+      </v-row>
+       <!-- DetalleOrdenes Section -->
+      <v-row class="detalle-ordenes-section" justify="center">
+        <v-col cols="12">
+          <v-row class="container" dense>
+            <v-col v-for="detalle in detalleOrdenes" :key="detalle.id_detalle" cols="12" sm="6" md="4" lg="3">
+              <v-card class="detalle-card" outlined>
+                <v-card-title class="detalle-card-title">
+                  Orden ID: {{ detalle.id_orden }}
+                </v-card-title>
+                <v-card-subtitle>
+                  Producto ID: {{ detalle.id_producto }}
+                </v-card-subtitle>
+                <v-card-text>
+                  Cantidad: {{ detalle.cantidad }}<br />
+                  Precio Unitario: {{ detalle.precio_unitario }}
+                </v-card-text>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-parallax>
 
     <!-- Form to Create DetalleOrden -->
     <v-row class="form-section" justify="center">
       <v-col cols="12" md="6">
         <v-form @submit.prevent="createDetalleOrden" class="detalle-orden-form">
+          
+          <!-- Orden Select Dropdown using native HTML select element, only ID -->
           <label for="orden-select" class="styled-select-label">Orden</label>
           <div class="styled-select">
             <select v-model="newDetalleOrden.orden" id="orden-select">
-              <option value="" disabled selected>Seleccione una orden</option>
-              <option v-for="orden in ordenes" :key="orden.idOrden" :value="orden">
-                Orden ID: {{ orden.idOrden }}
+              <option value="" disabled>Seleccione una orden</option>
+              <option v-for="orden in ordenes" :key="orden.id_orden" :value="orden.id_orden">
+                Orden ID: {{ orden.id_orden }}
               </option>
             </select>
           </div>
 
+          <!-- Producto Select Dropdown using native HTML select element -->
           <label for="producto-select" class="styled-select-label">Producto</label>
           <div class="styled-select">
             <select v-model="newDetalleOrden.producto" id="producto-select">
-              <option value="" disabled selected>Seleccione un producto</option>
-              <option v-for="producto in productos" :key="producto.idProducto" :value="producto">
-                {{ producto.nombre }}
+              <option value="" disabled>Seleccione un producto</option>
+              <option v-for="producto in productos" :key="producto.idProducto" :value="producto.idProducto">
+                {{ producto.idProducto }} - {{ producto.nombre }}
               </option>
             </select>
           </div>
@@ -132,7 +166,7 @@ onMounted(() => {
 <style scoped>
 /* Add consistent styles */
 .detalle-ordenes-page {
-  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+  background: linear-gradient(135deg, #360041, #1d0866, #2dccfd);
   color: #ffffff;
   min-height: 100vh;
   padding-top: 20px;
@@ -160,6 +194,24 @@ onMounted(() => {
   justify-content: center;
 }
 
+/* Detalle Orden Card Styles */
+.detalle-card {
+  background: rgba(255, 255, 255, 0.8);
+  color: #000;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease-in-out;
+}
+
+.detalle-card:hover {
+  transform: scale(1.05);
+}
+
+.detalle-card-title {
+  font-weight: bold;
+  color: #ff6ec7;
+  text-shadow: 0px 0px 5px rgba(255, 110, 199, 0.8);
+}
+
 /* Form Styles */
 .detalle-orden-form {
   display: flex;
@@ -185,6 +237,7 @@ onMounted(() => {
 }
 
 .styled-select {
+  margin-bottom: 15px;
   position: relative;
   display: inline-block;
   width: 100%;
@@ -198,7 +251,7 @@ onMounted(() => {
   width: 100%;
   padding: 10px;
   background: transparent;
-  color: #000000;
+  color: #ffffff;
   border: none;
   appearance: none;
   font-size: 16px;

@@ -16,13 +16,15 @@ public class DetalleOrdenService {
         return detalleOrdenRepository.saveDetalleOrden(detalle);
     }
 
+    public ArrayList<DetalleOrdenEntity> getDetalle() {
+        return (ArrayList<DetalleOrdenEntity>) detalleOrdenRepository.getDetalleOrden();
+    }
+/*
     public DetalleOrdenEntity getDetalleById(Long id) {
         return detalleOrdenRepository.getDetalleOrdenById(id);
     }
 
-    public ArrayList<DetalleOrdenEntity> getDetalle() {
-        return (ArrayList<DetalleOrdenEntity>) detalleOrdenRepository.getDetalleOrden();
-    }
+
 
     public boolean updateDetalle(DetalleOrdenEntity detalle) {
         // vemos si el cliente existe en la base de datos
@@ -41,4 +43,6 @@ public class DetalleOrdenService {
             throw new Exception(e.getMessage());
         }
     }
+
+ */
 }

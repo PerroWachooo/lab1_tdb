@@ -2,54 +2,70 @@ package tbd.lab1.repositories;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.sql2o.Sql2o;
 import tbd.lab1.entities.DetalleOrdenEntity;
 import tbd.lab1.entities.OrdenEntity;
 import tbd.lab1.entities.ProductoEntity;
+import org.sql2o.Connection;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+
+
+import java.sql.SQLException;
 
 @Repository
 public class DetalleOrdenRepository {
-    private final DataSource dataSource;
 
+    @Autowired
+    private Sql2o sql2o;
+
+    public DetalleOrdenEntity saveDetalleOrden(DetalleOrdenEntity detalleOrden) {
+        String sql = "INSERT INTO detalle_orden (id_orden, id_producto, cantidad, precio_unitario) VALUES (:idOrden, :idProducto, :cantidad, :precioUnitario) RETURNING id_detalle";
+
+        try (Connection con = sql2o.open()) {
+            // Ejecutar la consulta de inserción y obtener el id_detalle generado
+            Integer idDetalle = con.createQuery(sql)
+                    .addParameter("idOrden", detalleOrden.getId_orden() != null ? detalleOrden.getId_orden() : null)
+                    .addParameter("idProducto", detalleOrden.getId_producto() != null ? detalleOrden.getId_producto() : null)
+                    .addParameter("cantidad", detalleOrden.getCantidad())
+                    .addParameter("precioUnitario", detalleOrden.getPrecio_unitario())
+                    .executeUpdate()
+                    .getKey(Integer.class);
+
+            if (idDetalle == null) {
+                throw new RuntimeException("Failed to insert DetalleOrden. No ID returned.");
+            }
+
+            detalleOrden.setId_detalle(idDetalle);
+            return detalleOrden;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error occurred while saving DetalleOrden: " + e.getMessage());
+            return null; // En caso de error, devolver null
+        }
+    }
+
+    public List<DetalleOrdenEntity> getDetalleOrden() {
+        String sql = "SELECT id_detalle, id_orden, id_producto, cantidad, precio_unitario FROM detalle_orden";
+
+        try (Connection con = sql2o.open()) {
+            return con.createQuery(sql)
+                    .executeAndFetch(DetalleOrdenEntity.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+
+/*
     @Autowired
     public DetalleOrdenRepository(DataSource dataSource) {
         this.dataSource = dataSource;
-    }
-
-    public DetalleOrdenEntity saveDetalleOrden(DetalleOrdenEntity detalleOrden) {
-        String sql = "INSERT INTO detalle_orden (id_orden, id_producto, cantidad, precio_unitario) VALUES (?, ?, ?, ?) RETURNING id_detalle";
-
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            // Establecer valores en el PreparedStatement
-            statement.setLong(1, detalleOrden.getOrden() != null ? detalleOrden.getOrden().getIdOrden() : null);
-            statement.setLong(2, detalleOrden.getProducto() != null ? detalleOrden.getProducto().getIdProducto() : null);
-            statement.setInt(3, detalleOrden.getCantidad());
-            statement.setBigDecimal(4, detalleOrden.getPrecioUnitario());
-
-            // Ejecutar la inserción y obtener el id_detalle generado
-            try (ResultSet generatedKeys = statement.executeQuery()) {
-                if (generatedKeys.next()) {
-                    long idDetalle = generatedKeys.getLong(1);
-                    // Asignar el idDetalle a la entidad y devolverla
-                    detalleOrden.setIdDetalle(idDetalle);
-                    return detalleOrden; // Devolver el detalle de orden guardado
-                } else {
-                    throw new SQLException("No se pudo obtener el id del detalle.");
-                }
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null; // En caso de error, devolver null
-        }
     }
 
     public DetalleOrdenEntity getDetalleOrdenById(Long id) {
@@ -82,44 +98,6 @@ public class DetalleOrdenRepository {
                         detalleOrden.setProducto(producto);
                     }
                 }
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return detalleOrden;
-    }
-
-    public ArrayList<DetalleOrdenEntity> getDetalleOrden() {
-        ArrayList<DetalleOrdenEntity> detalleOrden = new ArrayList<>();
-        String sql = "SELECT * FROM detalle_orden";
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
-
-            while (resultSet.next()) {
-                DetalleOrdenEntity detallesOrden = new DetalleOrdenEntity();
-                detallesOrden.setIdDetalle(resultSet.getLong("id_detalle"));
-                detallesOrden.setCantidad(resultSet.getInt("cantidad"));
-                detallesOrden.setPrecioUnitario(resultSet.getBigDecimal("precio_unitario"));
-
-                // Cargar la Orden
-                Long idOrden = resultSet.getLong("id_orden");
-                if (idOrden != null) {
-                    OrdenEntity orden = new OrdenEntity();
-                    orden.setIdOrden(idOrden);
-                    detallesOrden.setOrden(orden);
-                }
-
-                // Cargar el Producto
-                Long idProducto = resultSet.getLong("id_producto");
-                if (idProducto != null) {
-                    ProductoEntity producto = new ProductoEntity();
-                    producto.setIdProducto(idProducto);
-                    detallesOrden.setProducto(producto);
-                }
-
-                detalleOrden.add(detallesOrden);
             }
 
         } catch (SQLException e) {
@@ -176,7 +154,7 @@ public class DetalleOrdenRepository {
         }
     }
 
-
+*/
 
 
 

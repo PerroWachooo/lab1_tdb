@@ -9,7 +9,7 @@ import tbd.lab1.services.ProductoService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/productos")
+@RequestMapping("/api/productos")
 @CrossOrigin("*")
 public class ProductoController {
     @Autowired
@@ -18,14 +18,18 @@ public class ProductoController {
     @PostMapping("/")
     public ResponseEntity<ProductoEntity> saveProducto(@RequestBody ProductoEntity producto) {
         ProductoEntity NewProducto = productoService.saveProducto(producto);
+        System.out.println("Producto recibido: " + producto);
+
         return ResponseEntity.ok(NewProducto);
     }
 
+    /*
     @GetMapping("/id-producto/{id}")
     public ResponseEntity<ProductoEntity> getProductoById(@PathVariable Long id) {
         ProductoEntity producto = productoService.getProductoById(id);
         return ResponseEntity.ok(producto);
     }
+    */
 
     @GetMapping("/")
     public ResponseEntity<List<ProductoEntity>> listProducto() {
@@ -33,6 +37,7 @@ public class ProductoController {
         return ResponseEntity.ok(productos);
     }
 
+    /*
     // actualiza producto
     @PutMapping("/")
     public ResponseEntity<ProductoEntity> updateProducto(@RequestBody ProductoEntity producto) {
@@ -50,4 +55,6 @@ public class ProductoController {
         productoService.deleteProducto(id);
         return ResponseEntity.noContent().build();
     }
+
+ */
 }
