@@ -19,20 +19,26 @@
         Cliente: {{ obtenerClienteNombre(orden.cliente) }}
       </v-card-subtitle>
       <v-card-text class="vaporwave-text">
-        Fecha: {{ orden.fecha_orden }}<br />
-        Estado: {{ orden.estado }}<br />
-        Total: ${{ orden.total }}
+        Fecha: <v-text-field v-model="orden.fecha_orden" type="datetime-local" outlined></v-text-field><br />
+        Estado: <v-select v-model="orden.estado" :items="estados" outlined></v-select><br />
+        Total: <v-text-field v-model="orden.total" type="number" outlined></v-text-field>
       </v-card-text>
       <v-card-actions>
-  <v-btn
-    class="v-btn-card-action vaporwave-btn vaporwave-btn-delete"
-    @click="eliminarOrden"
-    style="background-color: #5e17eb; color: #ffffff; width: 100px;"
-  >
-    Eliminar
-  </v-btn>
-</v-card-actions>
-
+        <v-btn
+          class="v-btn-card-action vaporwave-btn vaporwave-btn-delete"
+          @click="eliminarOrden(orden.id_orden)"
+          style="background-color: #5e17eb; color: #ffffff; width: 100px;"
+        >
+          Eliminar
+        </v-btn>
+        <v-btn
+          class="v-btn-card-action vaporwave-btn vaporwave-btn-edit"
+          @click="updateOrden(orden)"
+          style="background-color: #ff4081; color: #ffffff; width: 100px;"
+        >
+          Guardar
+        </v-btn>
+      </v-card-actions>
     </v-card>
   </v-col>
 </v-row>
@@ -178,10 +184,22 @@ export default {
         alert('Error al eliminar la orden');
       }
     },
+    
     obtenerClienteNombre(clienteId) {
       const cliente = this.clientes.find((c) => c.id_cliente === clienteId);
       return cliente ? `${cliente.id_cliente} - ${cliente.nombre}` : 'Cliente no encontrado';
     },
+
+    async updateOrden(orden) {
+      try {
+        await axios.put('http://localhost:8090/api/orden/', orden);
+        alert('Orden actualizada exitosamente');
+      } catch (error) {
+        console.error('Error al actualizar la orden:', error);
+        alert('Error al actualizar la orden');
+      }
+    },
+    
     async fetchBackgroundImage(query) {
       try {
         const response = await fetch(
@@ -197,8 +215,6 @@ export default {
   },
 };
 </script>
-
-
 <style scoped>
 /* Estilo Vaporwave */
 .vaporwave-gradient-background {

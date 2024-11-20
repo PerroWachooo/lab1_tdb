@@ -35,6 +35,7 @@ const createCategoria = async () => {
   }
 };
 
+
 // Función para obtener las imágenes de las categorías desde Unsplash
 const fetchCategoriaImages = async () => {
   try {

@@ -27,7 +27,7 @@ public class DetalleOrdenController {
         return ResponseEntity.ok(detalle);
     }
 
-    /*
+    
     @GetMapping("/id-detalle/{id}")
     public ResponseEntity<DetalleOrdenEntity> getDetalleById(@PathVariable Long id) {
         DetalleOrdenEntity detalle = detalleOrdenService.getDetalleById(id);
@@ -52,6 +52,6 @@ public class DetalleOrdenController {
         return ResponseEntity.noContent().build();
     }
 
- */
+ 
 
 }

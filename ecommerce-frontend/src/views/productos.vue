@@ -34,13 +34,21 @@ const fetchCategorias = async () => {
   try {
     const response = await axios.get("http://localhost:8090/api/categorias/");
     categorias.value = response.data;
+    console.log("Categorias:", categorias.value); // Agrega esto para confirmar que las categorías se obtienen correctamente
   } catch (error) {
     console.error("Error fetching categorias:", error);
   }
 };
 
+
 // Función para crear un nuevo producto
 const createProducto = async () => {
+  if (!newProducto.value.id_categoria) {
+    console.error("La categoría es obligatoria. Por favor selecciona una categoría.");
+    return;
+  }
+
+  console.log("Creating producto with:", newProducto.value); // Para depurar el valor antes de enviar
   try {
     const payload = {
       nombre: newProducto.value.nombre,
@@ -58,13 +66,15 @@ const createProducto = async () => {
       precio: 0,
       stock: 0,
       estado: '',
-      id_categoria: 0,
+      id_categoria: null,
     };
     fetchProductoImages(); // Actualizar las imágenes tras añadir un producto
   } catch (error) {
     console.error("Error creating producto:", error);
   }
 };
+
+
 
 // Función para obtener las imágenes de los productos desde Unsplash
 const fetchProductoImages = async () => {
@@ -145,8 +155,8 @@ onMounted(() => {
               <option value="" disabled>Seleccione una categoría</option>
               <option
                 v-for="categoria in categorias"
-                :key="categoria.idCategoria"
-                :value="categoria.idCategoria"
+                :key="categoria.id_categoria"
+                :value="categoria.id_categoria"
               >
                 {{ categoria.nombre }}
               </option>

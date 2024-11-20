@@ -61,6 +61,55 @@ public class DetalleOrdenRepository {
         }
     }
 
+    public DetalleOrdenEntity getDetalleOrdenById(Integer id) {
+        String sql = "SELECT id_detalle, id_orden, id_producto, cantidad, precio_unitario FROM detalle_orden WHERE id_detalle = :id";
+
+        try (Connection con = sql2o.open()) {
+            return con.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeAndFetchFirst(DetalleOrdenEntity.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public boolean updateDetalleOrden(DetalleOrdenEntity detalleOrden) {
+        String sql = "UPDATE detalle_orden SET id_orden = :idOrden, id_producto = :idProducto, cantidad = :cantidad, precio_unitario = :precioUnitario WHERE id_detalle = :idDetalle";
+
+        try (Connection con = sql2o.open()) {
+            int affectedRows = con.createQuery(sql)
+                    .addParameter("idOrden", detalleOrden.getId_orden() != null ? detalleOrden.getId_orden() : null)
+                    .addParameter("idProducto", detalleOrden.getId_producto() != null ? detalleOrden.getId_producto() : null)
+                    .addParameter("cantidad", detalleOrden.getCantidad())
+                    .addParameter("precioUnitario", detalleOrden.getPrecio_unitario())
+                    .addParameter("idDetalle", detalleOrden.getId_detalle())
+                    .executeUpdate()
+                    .getResult();
+
+            return affectedRows > 0; // Devuelve true si se actualizó al menos una fila
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteDetalleOrden(Integer id) {
+        String sql = "DELETE FROM detalle_orden WHERE id_detalle = :id";
+
+        try (Connection con = sql2o.open()) {
+            int affectedRows = con.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeUpdate()
+                    .getResult(); // Obtener el número de filas afectadas
+
+            return affectedRows > 0; // Devuelve true si se eliminó al menos una fila
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
 /*
     @Autowired

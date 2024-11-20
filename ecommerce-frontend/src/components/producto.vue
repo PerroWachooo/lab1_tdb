@@ -16,11 +16,50 @@
             </v-card-text>
             <v-card-actions>
               <v-btn class="v-btn-card-action" text @click="actualizarProducto(producto)">Actualizar</v-btn>
+              <v-btn class="v-btn-card-action" text @click="eliminarProducto(producto.idProducto)">Eliminar</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
       </v-row>
     </v-container>
+
+    <!-- Formulario para crear o actualizar producto -->
+    <v-dialog v-model="dialogoFormulario" max-width="500px">
+      <v-card>
+        <v-card-title>
+          <span>{{ productoSeleccionado ? 'Actualizar Producto' : 'Nuevo Producto' }}</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field v-model="formProducto.nombre" label="Nombre del Producto"></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field v-model="formProducto.descripcion" label="Descripción"></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field v-model="formProducto.precio" label="Precio" type="number"></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field v-model="formProducto.stock" label="Stock" type="number"></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-select v-model="formProducto.estado" :items="['disponible', 'agotado']" label="Estado"></v-select>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field v-model="formProducto.id_categoria" label = "Categoria" type="number"></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text @click="cerrarDialogo">Cancelar</v-btn>
+          <v-btn text @click="guardarProducto">Guardar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -31,10 +70,22 @@ export default {
   data() {
     return {
       productos: [],
+      categorias: [],
+      dialogoFormulario: false,
+      productoSeleccionado: null,
+      formProducto: {
+        nombre: '',
+        descripcion: '',
+        precio: null,
+        stock: null,
+        estado: '',
+        id_categoria: null,
+      },
     };
   },
   mounted() {
     this.fetchProductos();
+    this.fetchCategorias();
   },
   methods: {
     async fetchProductos() {
@@ -50,7 +101,7 @@ export default {
                 const categoriaResponse = await axios.get(
                   `http://localhost:8090/api/categorias/id-categoria/${producto.id_categoria}`
                 );
-                producto.categoria = categoriaResponse.data; // Asignar la categoría al producto
+                producto.categoria = categoriaResponse.data;
               } catch (error) {
                 console.error(`Error al obtener la categoría del producto ${producto.idProducto}:`, error);
               }
@@ -61,9 +112,67 @@ export default {
         console.error('Error al obtener los productos:', error);
       }
     },
+    async fetchCategorias() {
+      try {
+        const response = await axios.get('http://localhost:8090/api/categorias/');
+        this.categorias = response.data;
+      } catch (error) {
+        console.error('Error al obtener las categorías:', error);
+      }
+    },
     actualizarProducto(producto) {
-      // Lógica para actualizar el producto (opcional)
-      console.log('Actualizar producto:', producto);
+      this.productoSeleccionado = producto;
+      this.formProducto = { ...producto };
+      this.dialogoFormulario = true;
+    },
+    eliminarProducto(idProducto) {
+      axios
+        .delete(`http://localhost:8090/api/productos/delete-producto/${idProducto}`)
+        .then(() => {
+          this.fetchProductos();
+        })
+        .catch((error) => {
+          console.error('Error al eliminar el producto:', error);
+        });
+    },
+    guardarProducto() {
+      const producto = { ...this.formProducto };
+
+      if (this.productoSeleccionado) {
+        // Actualizar producto existente
+        axios
+          .put('http://localhost:8090/api/productos/', producto)
+          .then(() => {
+            this.fetchProductos();
+            this.cerrarDialogo();
+          })
+          .catch((error) => {
+            console.error('Error al actualizar el producto:', error);
+          });
+      } else {
+        // Crear nuevo producto
+        axios
+          .post('http://localhost:8090/api/productos/', producto)
+          .then(() => {
+            this.fetchProductos();
+            this.cerrarDialogo();
+          })
+          .catch((error) => {
+            console.error('Error al crear el producto:', error);
+          });
+      }
+    },
+    cerrarDialogo() {
+      this.dialogoFormulario = false;
+      this.productoSeleccionado = null;
+      this.formProducto = {
+        nombre: '',
+        descripcion: '',
+        precio: null,
+        stock: null,
+        estado: '',
+        id_categoria: 0,
+      };
     },
   },
 };

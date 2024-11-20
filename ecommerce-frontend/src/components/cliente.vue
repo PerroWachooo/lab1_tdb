@@ -15,20 +15,92 @@
     </template>
 
     <v-card-item>
-      <v-card-title class="detalle-card-title">{{ cliente.nombre }}</v-card-title>
+      <v-card-title class="detalle-card-title">
+        <v-text-field
+          v-if="isEditing"
+          v-model="editableCliente.nombre"
+          label="Nombre"
+          outlined
+          dense
+        />
+        <span v-else>{{ cliente.nombre }}</span>
+      </v-card-title>
       <v-card-subtitle>
-        {{ cliente.email }}
+        <v-text-field
+          v-if="isEditing"
+          v-model="editableCliente.email"
+          label="Email"
+          outlined
+          dense
+        />
+        <span v-else>{{ cliente.email }}</span>
       </v-card-subtitle>
     </v-card-item>
 
     <v-card-text>
-      <p><strong>Dirección:</strong> {{ cliente.direccion }}</p>
-      <p><strong>Teléfono:</strong> {{ cliente.telefono }}</p>
+      <div>
+        <strong>Dirección:</strong>
+        <v-text-field
+          v-if="isEditing"
+          v-model="editableCliente.direccion"
+          label="Dirección"
+          outlined
+          dense
+        />
+        <span v-else>{{ cliente.direccion }}</span>
+      </div>
+      <div>
+        <strong>Teléfono:</strong>
+        <v-text-field
+          v-if="isEditing"
+          v-model="editableCliente.telefono"
+          label="Teléfono"
+          outlined
+          dense
+        />
+        <span v-else>{{ cliente.telefono }}</span>
+      </div>
     </v-card-text>
 
     <v-card-actions>
-      
+      <!-- Botón para editar -->
       <v-btn
+        v-if="!isEditing"
+        class="v-btn-card-action edit-btn"
+        text="Editar"
+        block
+        border
+        @click="isEditing = true"
+      >
+        Editar
+      </v-btn>
+
+      <!-- Botones para guardar o cancelar la edición -->
+      <v-btn
+        v-if="isEditing"
+        class="v-btn-card-action save-btn"
+        text="Guardar"
+        block
+        border
+        @click="guardar"
+      >
+        Guardar
+      </v-btn>
+
+      <v-btn
+        v-if="isEditing"
+        class="v-btn-card-action cancel-btn"
+        text="Cancelar"
+        block
+        border
+        @click="cancelar"
+      >
+        Cancelar
+      </v-btn>
+
+      <!-- Botón para eliminar -->
+      <v-btn
+        v-if="!isEditing"
         class="v-btn-card-action delete-btn"
         text="Eliminar"
         block
@@ -57,115 +129,95 @@ export default {
   data() {
     return {
       loading: false,
+      isEditing: false,
+      editableCliente: { ...this.cliente }, // Clonamos el cliente para evitar modificar directamente el original
     };
   },
 
+  watch: {
+    cliente: {
+      handler(newValue) {
+        this.editableCliente = { ...newValue };
+      },
+      immediate: true,
+    },
+  },
+
   methods: {
-   
-
+    // Método para eliminar el cliente
     eliminar() {
-  this.loading = true;
-
-  // Verificar el contenido completo del cliente (para depuración)
-  console.log("Objeto cliente:", this.cliente);
-
-  const clienteId = this.cliente.id_cliente; // Cambiado de 'id' a 'id_cliente'
-
-  // Verificar si el ID está definido
-  if (!clienteId) {
-    console.error("El ID del cliente no está definido");
-    alert("Error: No se puede eliminar el cliente debido a que el ID no está definido.");
-    this.loading = false;
-    return;
-  }
-
-  console.log("Cliente ID a eliminar:", clienteId); // Log para verificar el valor del ID
-
-  fetch(`http://localhost:8090/api/cliente/delete-cliente/${clienteId}`, {
-    method: "DELETE",
-  })
-    .then((response) => {
-      if (response.ok) {
-        this.$emit("cliente-eliminado", clienteId); // Emitir un evento para que el componente padre actualice la lista
-        alert("Cliente eliminado exitosamente");
-      } else {
-        alert("Error al eliminar el cliente");
+      const clienteId = this.cliente.id_cliente;
+      if (clienteId) {
+        this.$emit("eliminar", clienteId);
       }
-      this.loading = false;
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      alert("Ocurrió un error al eliminar el cliente");
-      this.loading = false;
-    });
-}
+    },
 
+    // Método para guardar los cambios
+    guardar() {
+      this.$emit("guardar", this.editableCliente);
+      this.isEditing = false;
+    },
+
+    // Método para cancelar la edición
+    cancelar() {
+      this.isEditing = false;
+      this.editableCliente = { ...this.cliente }; // Restaurar los valores originales
+    },
   },
 };
 </script>
 
 <style scoped>
-/* Estilo para las Cards */
-
-/* Estilo base de la tarjeta (detalle-card) */
+/* Estilo base del componente Cliente.vue */
 .detalle-card {
-  background: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
-  color: #000; /* Texto en negro para buena legibilidad */
-  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5); /* Sombra para efecto de elevación */
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Transición suave */
-  border-radius: 10px; /* Bordes redondeados */
-  overflow: hidden; /* Para evitar que los elementos internos se salgan */
+  background: rgba(255, 255, 255, 0.8);
+  color: #000;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .detalle-card:hover {
-  transform: scale(1.05); /* Aumenta ligeramente el tamaño al pasar el ratón */
-  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.7); /* Mayor sombra al hacer hover */
+  transform: scale(1.05);
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.7);
 }
 
-/* Título de la tarjeta */
 .detalle-card-title {
-  font-weight: bold; /* Negrita para resaltar el título */
-  color: #ff6ec7; /* Color vibrante */
-  text-shadow: 0px 0px 5px rgba(255, 110, 199, 0.8); /* Sombra suave para profundidad */
-  font-size: 1.3rem; /* Tamaño del título */
-  padding: 10px 15px; /* Espaciado interno */
+  font-weight: bold;
+  color: #ff6ec7;
+  text-shadow: 0px 0px 5px rgba(255, 110, 199, 0.8);
+  font-size: 1.3rem;
+  padding: 10px 15px;
 }
 
-/* Estilo del subtítulo de la tarjeta */
 .v-card-subtitle {
-  font-size: 1rem; /* Tamaño más pequeño para el subtítulo */
-  color: #6b6b6b; /* Color apagado para el subtítulo */
-  margin: 0 15px; /* Margen lateral */
+  font-size: 1rem;
+  color: #6b6b6b;
+  margin: 0 15px;
 }
 
-/* Texto de la tarjeta */
 .v-card-text {
-  font-size: 1rem; /* Texto normal */
-  color: #333; /* Asegura buena legibilidad */
-  padding: 10px 15px; /* Espaciado interno */
+  font-size: 1rem;
+  color: #333;
+  padding: 10px 15px;
 }
 
-/* Botones dentro de la tarjeta */
 .v-card-actions {
-  display: flex; /* Flex para alinear los botones */
-  justify-content: flex-end; /* Alinear los botones a la derecha */
-  padding: 10px 15px; /* Espaciado interno */
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px;
 }
 
 .v-btn-card-action {
-  background-color: #ff6ec7; /* Color de fondo del botón */
-  color: #ffffff; /* Texto blanco */
-  font-weight: bold; /* Negrita */
-  transition: background-color 0.3s ease; /* Transición suave para el color de fondo */
+  background-color: #ff6ec7;
+  color: #ffffff;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
 .v-btn-card-action:hover {
-  background-color: #00d4ff; /* Cambio de color al hacer hover */
-  color: #ffffff; /* Asegurar que el color del texto siga siendo blanco */
-}
-
-/* Espaciado general para los párrafos dentro de la tarjeta */
-p {
-  margin: 0; /* Eliminar margen por defecto para los párrafos */
+  background-color: #00d4ff;
+  color: #ffffff;
 }
 </style>

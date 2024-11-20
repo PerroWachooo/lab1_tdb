@@ -15,6 +15,8 @@ const newDetalleOrden = ref({
   precioUnitario: 0,
 });
 
+const editableDetalleOrden = ref(null);
+
 // Fetch existing DetalleOrden entries
 const fetchDetalleOrdenes = async () => {
   try {
@@ -22,6 +24,15 @@ const fetchDetalleOrdenes = async () => {
     detalleOrdenes.value = response.data;
   } catch (error) {
     console.error('Error fetching detalleOrdenes:', error);
+  }
+};
+
+const deleteDetalleOrden = async (detalleOrdenId) => {
+  try {
+    await axios.delete(`http://localhost:8090/api/detalleorden/delete-detalle/${detalleOrdenId}`);
+    detalleOrdenes.value = detalleOrdenes.value.filter((detalle) => detalle.id_detalle !== detalleOrdenId);
+  } catch (error) {
+    console.error('Error deleting detalleOrden:', error);
   }
 };
 
@@ -47,7 +58,6 @@ const fetchProductos = async () => {
 
 // Create new DetalleOrden
 const createDetalleOrden = async () => {
-  // Construir el payload con la estructura esperada
   const payload = {
     id_orden: newDetalleOrden.value.orden,
     id_producto: newDetalleOrden.value.producto,
@@ -71,6 +81,34 @@ const createDetalleOrden = async () => {
   }
 };
 
+const updateDetalleOrden = async (detalleOrden) => {
+  try {
+    const payload = {
+      id_detalle: detalleOrden.id_detalle,
+      id_orden: detalleOrden.orden,
+      id_producto: detalleOrden.producto,
+      cantidad: detalleOrden.cantidad,
+      precio_unitario: detalleOrden.precioUnitario,
+    };
+    await axios.put(`http://localhost:8090/api/detalleorden/`, payload);
+    console.log('DetalleOrden actualizado exitosamente:', detalleOrden);
+    editableDetalleOrden.value = null; // Cerrar el modo de edición
+
+    // Actualizar la lista de detalleOrdenes después de la edición
+    await fetchDetalleOrdenes();
+  } catch (error) {
+    console.error('Error updating DetalleOrden:', error);
+  }
+};
+
+const editDetalleOrden = (detalle) => {
+  editableDetalleOrden.value = { ...detalle }; // Copiar el detalle para editarlo
+};
+
+const cancelEdit = () => {
+  editableDetalleOrden.value = null;
+};
+
 // Función para obtener una imagen de fondo para el parallax
 const fetchBackgroundImage = async (query) => {
   try {
@@ -89,9 +127,10 @@ onMounted(() => {
   fetchDetalleOrdenes();
   fetchOrdenes();
   fetchProductos();
-  fetchBackgroundImage('cyberpunk'); // Ajusta el término de búsqueda para la imagen de fondo
+  fetchBackgroundImage('cyberpunk');
 });
 </script>
+
 
 <template>
   <v-container class="detalle-ordenes-page" fluid>
@@ -109,16 +148,58 @@ onMounted(() => {
           <v-row class="container" dense>
             <v-col v-for="detalle in detalleOrdenes" :key="detalle.id_detalle" cols="12" sm="6" md="4" lg="3">
               <v-card class="detalle-card" outlined>
-                <v-card-title class="detalle-card-title">
-                  Orden ID: {{ detalle.id_orden }}
-                </v-card-title>
-                <v-card-subtitle>
-                  Producto ID: {{ detalle.id_producto }}
-                </v-card-subtitle>
-                <v-card-text>
-                  Cantidad: {{ detalle.cantidad }}<br />
-                  Precio Unitario: {{ detalle.precio_unitario }}
-                </v-card-text>
+                <template v-if="editableDetalleOrden && editableDetalleOrden.id_detalle === detalle.id_detalle">
+                  <!-- Edit Form -->
+                  <v-card-title class="detalle-card-title">
+                    Editando Orden ID: {{ editableDetalleOrden.id_orden }}
+                  </v-card-title>
+                  <v-card-text>
+                    <!-- Orden Select Dropdown using native HTML select element, only ID -->
+                    <label for="orden-select" class="styled-select-label">Orden</label>
+                    <div class="styled-select">
+                      <select v-model="editableDetalleOrden.orden" id="orden-select">
+                        <option value="" disabled>Seleccione una orden</option>
+                        <option v-for="orden in ordenes" :key="orden.id_orden" :value="orden.id_orden">
+                          Orden ID: {{ orden.id_orden }} - {{ orden.fecha_orden }} - {{ orden.estado }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <!-- Producto Select Dropdown using native HTML select element -->
+                    <label for="producto-select" class="styled-select-label">Producto</label>
+                    <div class="styled-select">
+                      <select v-model="editableDetalleOrden.producto" id="producto-select">
+                        <option value="" disabled>Seleccione un producto</option>
+                        <option v-for="producto in productos" :key="producto.idProducto" :value="producto.idProducto">
+                          {{ producto.idProducto }} - {{ producto.nombre }}
+                        </option>
+                      </select>
+                    </div>
+                    <v-text-field v-model="editableDetalleOrden.cantidad" label="Cantidad" type="number"></v-text-field>
+                    <v-text-field v-model="editableDetalleOrden.precioUnitario" label="Precio Unitario" type="number"></v-text-field>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-btn color="success" @click="() => updateDetalleOrden(editableDetalleOrden)">Guardar</v-btn>
+                    <v-btn color="secondary" @click="cancelEdit">Cancelar</v-btn>
+                  </v-card-actions>
+                </template>
+                <template v-else>
+                  <!-- Display Mode -->
+                  <v-card-title class="detalle-card-title">
+                    Orden ID: {{ detalle.id_orden }}
+                  </v-card-title>
+                  <v-card-subtitle>
+                    Producto ID: {{ detalle.id_producto }}
+                  </v-card-subtitle>
+                  <v-card-text>
+                    Cantidad: {{ detalle.cantidad }}<br />
+                    Precio Unitario: {{ detalle.precio_unitario }}
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-btn color="primary" @click="() => editDetalleOrden(detalle)">Editar</v-btn>
+                    <v-btn color="error" @click="() => deleteDetalleOrden(detalle.id_detalle)">Eliminar</v-btn>
+                  </v-card-actions>
+                </template>
               </v-card>
             </v-col>
           </v-row>
@@ -137,7 +218,7 @@ onMounted(() => {
             <select v-model="newDetalleOrden.orden" id="orden-select">
               <option value="" disabled>Seleccione una orden</option>
               <option v-for="orden in ordenes" :key="orden.id_orden" :value="orden.id_orden">
-                Orden ID: {{ orden.id_orden }}
+                Orden ID: {{ orden.id_orden }} - {{ orden.fecha_orden }} - {{ orden.estado }}
               </option>
             </select>
           </div>

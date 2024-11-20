@@ -5,12 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c390a82c-caef-4d1d-ba62-a7531994a67a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/deccd9fa-e39c-4aa1-a92a-5a6253a04695.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/deccd9fa-e39c-4aa1-a92a-5a6253a04695.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/deccd9fa-e39c-4aa1-a92a-5a6253a04695/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/deccd9fa-e39c-4aa1-a92a-5a6253a04695/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ecommerce-backend/src/main/java/tbd/lab1/controllers/DetalleOrdenController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-backend/src/main/java/tbd/lab1/controllers/DetalleOrdenController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ecommerce-backend/src/main/java/tbd/lab1/controllers/ProductoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-backend/src/main/java/tbd/lab1/controllers/ProductoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ecommerce-backend/src/main/java/tbd/lab1/repositories/DetalleOrdenRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-backend/src/main/java/tbd/lab1/repositories/DetalleOrdenRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ecommerce-backend/src/main/java/tbd/lab1/repositories/DetalleOrdenRepositoryInt.java" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-backend/src/main/java/tbd/lab1/repositories/DetalleOrdenRepositoryInt.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ecommerce-backend/src/main/java/tbd/lab1/repositories/ProductoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-backend/src/main/java/tbd/lab1/repositories/ProductoRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ecommerce-backend/src/main/java/tbd/lab1/repositories/ProductoRepositoryInt.java" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-backend/src/main/java/tbd/lab1/repositories/ProductoRepositoryInt.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ecommerce-backend/src/main/java/tbd/lab1/services/DetalleOrdenService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-backend/src/main/java/tbd/lab1/services/DetalleOrdenService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ecommerce-backend/src/main/java/tbd/lab1/services/ProductoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-backend/src/main/java/tbd/lab1/services/ProductoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ecommerce-backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-backend/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ecommerce-frontend/src/components/categoria.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-frontend/src/components/categoria.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ecommerce-frontend/src/components/cliente.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-frontend/src/components/cliente.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ecommerce-frontend/src/components/orden.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-frontend/src/components/orden.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ecommerce-frontend/src/components/detalleorden.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-frontend/src/components/detalleorden.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ecommerce-frontend/src/components/producto.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-frontend/src/components/producto.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ecommerce-frontend/src/views/categorias.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-frontend/src/views/categorias.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ecommerce-frontend/src/views/clientes.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-frontend/src/views/clientes.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ecommerce-frontend/src/views/detalleordenes.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-frontend/src/views/detalleordenes.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ecommerce-frontend/src/views/ordenes.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-frontend/src/views/ordenes.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ecommerce-frontend/src/views/productos.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ecommerce-frontend/src/views/productos.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,6 +142,7 @@
       <workItem from="1731426888135" duration="9490000" />
       <workItem from="1731535558688" duration="1181000" />
       <workItem from="1731598504737" duration="3431000" />
+      <workItem from="1732050066556" duration="8669000" />
     </task>
     <servers />
   </component>

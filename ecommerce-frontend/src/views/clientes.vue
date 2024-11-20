@@ -1,21 +1,65 @@
+<template>
+  <v-container class="clientes-page" fluid>
+    <!-- Parallax Background Section -->
+    <v-parallax :src="backgroundImageSrc" height="auto" style="padding-top: 100px;">
+      <v-row class="header" justify="center" align="center">
+        <v-col cols="12" class="text-center">
+          <h2 class="title">Clientes</h2>
+        </v-col>
+      </v-row>
+      
+      <!-- Clients Section -->
+      <v-row class="clientes-section" justify="center">
+        <v-col cols="12">
+          <v-row class="container" dense>
+            <v-col v-for="(cliente, index) in clientes" :key="cliente.id_cliente" cols="12" sm="6" md="4" lg="3">
+              <Cliente 
+                :cliente="cliente" 
+                :backgroundImage="clienteImages[index]" 
+                @edit="startEditCliente(cliente)" 
+                @eliminar="deleteCliente" 
+              />
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-parallax>
+
+    <!-- Formulario para Crear un Nuevo Cliente -->
+    <v-row class="form-section" justify="center" style="margin-top: 40px;">
+      <v-col cols="12" md="6">
+        <v-form @submit.prevent="createCliente()" class="cliente-form">
+          <v-text-field v-model="clienteForm.nombre" label="Nombre" outlined clearable color="primary" />
+          <v-text-field v-model="clienteForm.direccion" label="Dirección" outlined clearable color="primary" />
+          <v-text-field v-model="clienteForm.email" label="Email" outlined clearable color="primary" />
+          <v-text-field v-model="clienteForm.telefono" label="Teléfono" outlined clearable color="primary" />
+          <v-btn color="primary" @click="createCliente">
+            Crear Cliente
+          </v-btn>
+        </v-form>
+      </v-col>
+    </v-row>
+
+  </v-container>
+</template>
+
 <script setup>
 import Cliente from '@/components/cliente.vue';
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
 const clientes = ref([]);
-const newCliente = ref({ nombre: '', direccion: '', email: '', telefono: '' });
-
-// Variables para las imágenes de fondo de cada cliente
+const clienteForm = ref({ nombre: '', direccion: '', email: '', telefono: '' });
+const editingClienteId = ref(null);
 const clienteImages = ref([]);
-const backgroundImageSrc = ref(''); // Imagen de fondo
+const backgroundImageSrc = ref('');
 
 // Función para obtener los clientes desde la API
 const fetchClientes = async () => {
   try {
     const response = await axios.get("http://localhost:8090/api/cliente/");
     clientes.value = response.data;
-    fetchClienteImages(); // Llama la función para obtener las imágenes de los clientes
+    fetchClienteImages(); // Obtener las imágenes después de traer los clientes
   } catch (error) {
     console.error("Error fetching clientes:", error);
   }
@@ -24,23 +68,54 @@ const fetchClientes = async () => {
 // Función para crear un nuevo cliente
 const createCliente = async () => {
   try {
-    const response = await axios.post("http://localhost:8090/api/cliente/", newCliente.value);
+    const response = await axios.post("http://localhost:8090/api/cliente/", clienteForm.value);
     clientes.value.push(response.data);
-    newCliente.value = { nombre: '', direccion: '', email: '', telefono: '' };
+    resetForm();
     fetchClienteImages(); // Actualizar las imágenes tras añadir un cliente
+    alert("Cliente creado exitosamente");
   } catch (error) {
     console.error("Error creating cliente:", error);
+    alert("Error al crear el cliente");
   }
 };
 
+// Función para iniciar la edición de un cliente
+const startEditCliente = (cliente) => {
+  editingClienteId.value = cliente.id_cliente;
+  clienteForm.value = { ...cliente };
+};
+
+// Función para actualizar un cliente
+const updateCliente = async (cliente) => {
+  try {
+    const response = await axios.put(`http://localhost:8090/api/cliente/`, cliente);
+    const index = clientes.value.findIndex(c => c.id_cliente === cliente.id_cliente);
+    if (index !== -1) {
+      clientes.value[index] = response.data; // Actualizamos el cliente en la lista local
+    }
+    alert("Cliente actualizado exitosamente");
+  } catch (error) {
+    console.error("Error updating cliente:", error);
+    alert("Ocurrió un error al actualizar el cliente");
+  }
+};
+
+// Función para eliminar un cliente
 const deleteCliente = async (clienteId) => {
   try {
     await axios.delete(`http://localhost:8090/api/cliente/delete-cliente/${clienteId}`);
-    clientes.value = clientes.value.filter((cliente) => cliente.idCliente !== clienteId);
-    fetchClienteImages(); // Actualizar las imágenes tras eliminar un cliente
+    clientes.value = clientes.value.filter(cliente => cliente.id_cliente !== clienteId);
+    alert("Cliente eliminado exitosamente");
   } catch (error) {
     console.error("Error deleting cliente:", error);
+    alert("Ocurrió un error al eliminar el cliente");
   }
+};
+
+// Función para resetear el formulario
+const resetForm = () => {
+  clienteForm.value = { nombre: '', direccion: '', email: '', telefono: '' };
+  editingClienteId.value = null;
 };
 
 // Función para obtener las imágenes de los clientes desde Unsplash
@@ -76,47 +151,9 @@ const fetchBackgroundImage = async (query) => {
 
 onMounted(() => {
   fetchClientes();
-  fetchBackgroundImage('cyberpunk'); // Ajusta el término de búsqueda para la imagen de fondo
+  fetchBackgroundImage('cyberpunk');
 });
 </script>
-
-<template>
-  <v-container class="clientes-page" fluid>
-    <!-- Parallax Background Section -->
-    <v-parallax :src="backgroundImageSrc" height="auto" style="padding-top: 100px;">
-      <!-- Header Section -->
-      <v-row class="header" justify="center" align="center">
-        <v-col cols="12" class="text-center">
-          <h2 class="title">Clientes</h2>
-        </v-col>
-      </v-row>
-       <!-- Clients Section -->
-    <v-row class="clientes-section" justify="center">
-      <v-col cols="12">
-        <v-row class="container" dense>
-          <v-col v-for="(cliente, index) in clientes" :key="cliente.idCliente" cols="12" sm="6" md="4" lg="3">
-            <Cliente :cliente="cliente" :backgroundImage="clienteImages[index]" />
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
-    </v-parallax>
-
-
-    <!-- Form to Create Clients -->
-    <v-row class="form-section" justify="center">
-      <v-col cols="12" md="6">
-        <v-form @submit.prevent="createCliente" class="cliente-form">
-          <v-text-field v-model="newCliente.nombre" label="Nombre" outlined clearable color="primary" />
-          <v-text-field v-model="newCliente.direccion" label="Dirección" outlined clearable color="primary" />
-          <v-text-field v-model="newCliente.email" label="Email" outlined clearable color="primary" />
-          <v-text-field v-model="newCliente.telefono" label="Teléfono" outlined clearable color="primary" />
-          <v-btn color="primary" @click="createCliente">Crear Cliente</v-btn>
-        </v-form>
-      </v-col>
-    </v-row>
-  </v-container>
-</template>
 
 <style scoped>
 .clientes-page {

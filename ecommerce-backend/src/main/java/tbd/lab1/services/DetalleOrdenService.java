@@ -19,16 +19,16 @@ public class DetalleOrdenService {
     public ArrayList<DetalleOrdenEntity> getDetalle() {
         return (ArrayList<DetalleOrdenEntity>) detalleOrdenRepository.getDetalleOrden();
     }
-/*
-    public DetalleOrdenEntity getDetalleById(Long id) {
-        return detalleOrdenRepository.getDetalleOrdenById(id);
-    }
 
+    public DetalleOrdenEntity getDetalleById(Long id) {
+        int idint = Math.toIntExact(id);
+        return detalleOrdenRepository.getDetalleOrdenById(idint);
+    }
 
 
     public boolean updateDetalle(DetalleOrdenEntity detalle) {
         // vemos si el cliente existe en la base de datos
-        if (detalleOrdenRepository.getDetalleOrdenById(detalle.getIdDetalle()) != null) {
+        if (detalleOrdenRepository.getDetalleOrdenById(detalle.getId_detalle()) != null) {
             // actualizamos el cliente usando el método del repositorio
             return detalleOrdenRepository.updateDetalleOrden(detalle);
         }
@@ -37,12 +37,12 @@ public class DetalleOrdenService {
 
     public boolean deleteDetalle(Long id) throws Exception {
         try {
-            detalleOrdenRepository.deleteDetalleOrden(id);
+            int idint = Math.toIntExact(id);
+            detalleOrdenRepository.deleteDetalleOrden(idint);
             return true;
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
     }
 
- */
 }
