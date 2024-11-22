@@ -38,7 +38,7 @@ public class ClienteRepository {
             if (affectedRows > 0) {
                 try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        cliente.setIdCliente(generatedKeys.getLong(1));
+                        cliente.setId_cliente(generatedKeys.getLong(1));
                     }
                 }
             } else {
@@ -61,7 +61,7 @@ public class ClienteRepository {
 
             while (resultSet.next()) {
                 ClienteEntity cliente = new ClienteEntity();
-                cliente.setIdCliente(resultSet.getLong("id_cliente"));
+                cliente.setId_cliente(resultSet.getLong("id_cliente"));
                 cliente.setNombre(resultSet.getString("nombre"));
                 cliente.setDireccion(resultSet.getString("direccion"));
                 cliente.setEmail(resultSet.getString("email"));
@@ -100,7 +100,7 @@ public class ClienteRepository {
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     cliente = new ClienteEntity();
-                    cliente.setIdCliente(resultSet.getLong("id_cliente"));
+                    cliente.setId_cliente(resultSet.getLong("id_cliente"));
                     cliente.setNombre(resultSet.getString("nombre"));
                     cliente.setDireccion(resultSet.getString("direccion"));
                     cliente.setEmail(resultSet.getString("email"));
@@ -123,7 +123,7 @@ public class ClienteRepository {
             statement.setString(2, cliente.getDireccion());
             statement.setString(3, cliente.getEmail());
             statement.setString(4, cliente.getTelefono());
-            statement.setLong(5, cliente.getIdCliente());
+            statement.setLong(5, cliente.getId_cliente());
 
             int affectedRows = statement.executeUpdate();
             return affectedRows > 0; // Devuelve true si se actualizó al menos una fila

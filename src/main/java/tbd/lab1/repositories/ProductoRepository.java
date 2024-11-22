@@ -34,8 +34,8 @@ public class ProductoRepository {
             statement.setString(5, producto.getEstado());
 
             // verificamos que producto tiene una categoría con un ID establecido
-            if (producto.getCategoria() != null && producto.getCategoria().getIdCategoria() != null) {
-                statement.setLong(6, producto.getCategoria().getIdCategoria());
+            if (producto.getCategoria() != null && producto.getCategoria().getId_categoria() != null) {
+                statement.setLong(6, producto.getCategoria().getId_categoria());
             } else {
                 throw new SQLException("Categoría no proporcionada o inválida");
             }
@@ -46,7 +46,7 @@ public class ProductoRepository {
             if (affectedRows > 0) {
                 try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        producto.setIdProducto(generatedKeys.getLong(1));
+                        producto.setId_producto(generatedKeys.getLong(1));
                     }
                 }
             } else {
@@ -69,7 +69,7 @@ public class ProductoRepository {
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     producto = new ProductoEntity();
-                    producto.setIdProducto(resultSet.getLong("id_producto"));
+                    producto.setId_producto(resultSet.getLong("id_producto"));
                     producto.setNombre(resultSet.getString("nombre"));
                     producto.setDescripcion(resultSet.getString("descripcion"));
                     producto.setPrecio(resultSet.getBigDecimal("precio"));
@@ -79,7 +79,7 @@ public class ProductoRepository {
                     Long idCategoria = resultSet.getLong("id_categoria");
                     if (idCategoria != null) {
                         CategoriaEntity categoria = new CategoriaEntity();
-                        categoria.setIdCategoria(idCategoria);
+                        categoria.setId_categoria(idCategoria);
                         producto.setCategoria(categoria);
                     }
 
@@ -101,7 +101,7 @@ public class ProductoRepository {
 
             while (resultSet.next()) {
                 ProductoEntity producto = new ProductoEntity();
-                producto.setIdProducto(resultSet.getLong("id_producto"));
+                producto.setId_producto(resultSet.getLong("id_producto"));
                 producto.setNombre(resultSet.getString("nombre"));
                 producto.setDescripcion(resultSet.getString("descripcion"));
                 producto.setPrecio(resultSet.getBigDecimal("precio"));
@@ -111,7 +111,7 @@ public class ProductoRepository {
                 Long idCategoria = resultSet.getLong("id_categoria");
                 if (idCategoria != null) {
                     CategoriaEntity categoria = new CategoriaEntity();
-                    categoria.setIdCategoria(idCategoria);
+                    categoria.setId_categoria(idCategoria);
                     producto.setCategoria(categoria); // Asignar la categoría al producto
                 }
 
@@ -137,12 +137,12 @@ public class ProductoRepository {
 
             // Verificar si el producto tiene una categoría asignada
             if (producto.getCategoria() != null) {
-                statement.setLong(6, producto.getCategoria().getIdCategoria());
+                statement.setLong(6, producto.getCategoria().getId_categoria());
             } else {
                 statement.setNull(6, java.sql.Types.BIGINT); // Si no hay categoría, se guarda como NULL
             }
 
-            statement.setLong(7, producto.getIdProducto());  // Establece el id del producto
+            statement.setLong(7, producto.getId_producto());  // Establece el id del producto
 
 
             int affectedRows = statement.executeUpdate();

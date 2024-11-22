@@ -46,7 +46,7 @@ public class ClienteService {
 
     public boolean updateCliente(ClienteEntity cliente) {
         // vemos si el cliente existe en la base de datos
-        if (clienteRepository.getClienteById(cliente.getIdCliente()) != null) {
+        if (clienteRepository.getClienteById(cliente.getId_cliente()) != null) {
             // actualizamos el cliente usando el método del repositorio
             return clienteRepository.updateCliente(cliente);
         }

@@ -34,7 +34,7 @@ public class CategoriaRepository {
             if (affectedRows > 0) {
                 try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        categoria.setIdCategoria(generatedKeys.getLong(1));
+                        categoria.setId_categoria(generatedKeys.getLong(1));
                     }
                 }
             } else {
@@ -56,7 +56,7 @@ public class CategoriaRepository {
 
             while (resultSet.next()) {
                 CategoriaEntity categoria = new CategoriaEntity();
-                categoria.setIdCategoria(resultSet.getLong("id_categoria"));
+                categoria.setId_categoria(resultSet.getLong("id_categoria"));
                 categoria.setNombre(resultSet.getString("nombre"));
                 categorias.add(categoria);
             }
@@ -79,7 +79,7 @@ public class CategoriaRepository {
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     categoria = new CategoriaEntity();
-                    categoria.setIdCategoria(resultSet.getLong("id_categoria"));
+                    categoria.setId_categoria(resultSet.getLong("id_categoria"));
                     categoria.setNombre(resultSet.getString("nombre"));
                 }
             }
@@ -112,7 +112,7 @@ public class CategoriaRepository {
                 PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, categoria.getNombre());
-            statement.setLong(2, categoria.getIdCategoria());
+            statement.setLong(2, categoria.getId_categoria());
 
             int affectedRows = statement.executeUpdate();
             return affectedRows > 0; // Devuelve true si se actualizó al menos una fila

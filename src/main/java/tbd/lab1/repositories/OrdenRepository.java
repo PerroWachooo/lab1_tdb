@@ -35,9 +35,9 @@ public class OrdenRepository {
                 PreparedStatement statement = connection.prepareStatement(sql)) {
             logger.info("Recibido objeto Orden4: {}", orden);
             // Establecer valores en el PreparedStatement
-            statement.setObject(1, orden.getFechaOrden());
+            statement.setObject(1, orden.getFecha_orden());
             statement.setString(2, orden.getEstado());
-            statement.setLong(3, orden.getCliente() != null ? orden.getCliente().getIdCliente() : null);
+            statement.setLong(3, orden.getId_cliente() != null ? orden.getId_cliente().getId_cliente() : null);
             statement.setBigDecimal(4, orden.getTotal());
             logger.info("Recibido objeto Orden5: {}", orden);
             // Ejecutar la inserción y obtener el id_orden generado
@@ -46,7 +46,7 @@ public class OrdenRepository {
                     long idOrden = generatedKeys.getLong(1);
                     // Asignar el idOrden a la entidad y devolverla
                     logger.info("Recibido objeto Orden6: {}", orden);
-                    orden.setIdOrden(idOrden);
+                    orden.setId_orden(idOrden);
                     return orden; // Devolver la orden guardada
                 } else {
                     throw new SQLException("No se pudo obtener el id de la orden.");
@@ -69,16 +69,16 @@ public class OrdenRepository {
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     orden = new OrdenEntity();
-                    orden.setIdOrden(resultSet.getLong("id_orden"));
-                    orden.setFechaOrden(resultSet.getObject("fecha_orden", LocalDateTime.class)); // Cambiar según el
+                    orden.setId_orden(resultSet.getLong("id_orden"));
+                    orden.setFecha_orden(resultSet.getObject("fecha_orden", LocalDateTime.class)); // Cambiar según el
                                                                                                   // tipo de dato
                     orden.setEstado(resultSet.getString("estado"));
                     orden.setTotal(resultSet.getBigDecimal("total"));
                     // Asegúrate de que la columna total esté presente en tu consulta
                     // Cargar el cliente asociado
                     ClienteEntity cliente = new ClienteEntity();
-                    cliente.setIdCliente(resultSet.getLong("id_cliente"));
-                    orden.setCliente(cliente);
+                    cliente.setId_cliente(resultSet.getLong("id_cliente"));
+                    orden.setId_cliente(cliente);
                 }
             }
 
@@ -97,14 +97,14 @@ public class OrdenRepository {
 
             while (resultSet.next()) {
                 OrdenEntity orden = new OrdenEntity();
-                orden.setIdOrden(resultSet.getLong("id_orden"));
-                orden.setFechaOrden(resultSet.getObject("fecha_orden", LocalDateTime.class));
+                orden.setId_orden(resultSet.getLong("id_orden"));
+                orden.setFecha_orden(resultSet.getObject("fecha_orden", LocalDateTime.class));
                 orden.setEstado(resultSet.getString("estado"));
                 orden.setTotal(resultSet.getBigDecimal("total"));
 
                 Long idCliente = resultSet.getLong("id_cliente");
                 ClienteEntity cliente = getClienteById(idCliente);
-                orden.setCliente(cliente);
+                orden.setId_cliente(cliente);
 
                 ordenes.add(orden);
             }
@@ -127,7 +127,7 @@ public class OrdenRepository {
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     cliente = new ClienteEntity();
-                    cliente.setIdCliente(resultSet.getLong("id_cliente"));
+                    cliente.setId_cliente(resultSet.getLong("id_cliente"));
                     cliente.setNombre(resultSet.getString("nombre"));
                     cliente.setDireccion(resultSet.getString("direccion"));
                     cliente.setEmail(resultSet.getString("email"));
@@ -149,18 +149,18 @@ public class OrdenRepository {
                 PreparedStatement statement = connection.prepareStatement(sql)) {
 
             // Establecer los valores para la consulta
-            statement.setObject(1, orden.getFechaOrden());
+            statement.setObject(1, orden.getFecha_orden());
             statement.setString(2, orden.getEstado());
             statement.setBigDecimal(3, orden.getTotal());
 
             // Verificar si la orden tiene un cliente asignado
-            if (orden.getCliente() != null) {
-                statement.setLong(4, orden.getCliente().getIdCliente());
+            if (orden.getId_cliente() != null) {
+                statement.setLong(4, orden.getId_cliente().getId_cliente());
             } else {
                 statement.setNull(4, java.sql.Types.BIGINT); // Si no hay cliente, se guarda como NULL
             }
 
-            statement.setLong(5, orden.getIdOrden()); // Establece el id de la orden
+            statement.setLong(5, orden.getId_orden()); // Establece el id de la orden
 
             int affectedRows = statement.executeUpdate();
             return affectedRows > 0; // Devuelve true si se actualizó al menos una fila

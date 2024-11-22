@@ -29,17 +29,17 @@ public class DetalleOrdenRepository {
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             // Establecer valores en el PreparedStatement
-            statement.setLong(1, detalleOrden.getOrden() != null ? detalleOrden.getOrden().getIdOrden() : null);
-            statement.setLong(2, detalleOrden.getProducto() != null ? detalleOrden.getProducto().getIdProducto() : null);
+            statement.setLong(1, detalleOrden.getOrden() != null ? detalleOrden.getOrden().getId_orden() : null);
+            statement.setLong(2, detalleOrden.getProducto() != null ? detalleOrden.getProducto().getId_producto() : null);
             statement.setInt(3, detalleOrden.getCantidad());
-            statement.setBigDecimal(4, detalleOrden.getPrecioUnitario());
+            statement.setBigDecimal(4, detalleOrden.getPrecio_unitario());
 
             // Ejecutar la inserción y obtener el id_detalle generado
             try (ResultSet generatedKeys = statement.executeQuery()) {
                 if (generatedKeys.next()) {
                     long idDetalle = generatedKeys.getLong(1);
                     // Asignar el idDetalle a la entidad y devolverla
-                    detalleOrden.setIdDetalle(idDetalle);
+                    detalleOrden.setId_detalle(idDetalle);
                     return detalleOrden; // Devolver el detalle de orden guardado
                 } else {
                     throw new SQLException("No se pudo obtener el id del detalle.");
@@ -62,15 +62,15 @@ public class DetalleOrdenRepository {
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     detalleOrden = new DetalleOrdenEntity();
-                    detalleOrden.setIdDetalle(resultSet.getLong("id_detalle"));
+                    detalleOrden.setId_detalle(resultSet.getLong("id_detalle"));
                     detalleOrden.setCantidad(resultSet.getInt("cantidad"));
-                    detalleOrden.setPrecioUnitario(resultSet.getBigDecimal("precio_unitario"));
+                    detalleOrden.setPrecio_unitario(resultSet.getBigDecimal("precio_unitario"));
 
                     // Cargar la Orden
                     Long idOrden = resultSet.getLong("id_orden");
                     if (idOrden != null) {
                         OrdenEntity orden = new OrdenEntity();
-                        orden.setIdOrden(idOrden);
+                        orden.setId_orden(idOrden);
                         detalleOrden.setOrden(orden);
                     }
 
@@ -78,7 +78,7 @@ public class DetalleOrdenRepository {
                     Long idProducto = resultSet.getLong("id_producto");
                     if (idProducto != null) {
                         ProductoEntity producto = new ProductoEntity();
-                        producto.setIdProducto(idProducto);
+                        producto.setId_producto(idProducto);
                         detalleOrden.setProducto(producto);
                     }
                 }
@@ -99,15 +99,15 @@ public class DetalleOrdenRepository {
 
             while (resultSet.next()) {
                 DetalleOrdenEntity detallesOrden = new DetalleOrdenEntity();
-                detallesOrden.setIdDetalle(resultSet.getLong("id_detalle"));
+                detallesOrden.setId_detalle(resultSet.getLong("id_detalle"));
                 detallesOrden.setCantidad(resultSet.getInt("cantidad"));
-                detallesOrden.setPrecioUnitario(resultSet.getBigDecimal("precio_unitario"));
+                detallesOrden.setPrecio_unitario(resultSet.getBigDecimal("precio_unitario"));
 
                 // Cargar la Orden
                 Long idOrden = resultSet.getLong("id_orden");
                 if (idOrden != null) {
                     OrdenEntity orden = new OrdenEntity();
-                    orden.setIdOrden(idOrden);
+                    orden.setId_orden(idOrden);
                     detallesOrden.setOrden(orden);
                 }
 
@@ -115,7 +115,7 @@ public class DetalleOrdenRepository {
                 Long idProducto = resultSet.getLong("id_producto");
                 if (idProducto != null) {
                     ProductoEntity producto = new ProductoEntity();
-                    producto.setIdProducto(idProducto);
+                    producto.setId_producto(idProducto);
                     detallesOrden.setProducto(producto);
                 }
 
@@ -134,23 +134,23 @@ public class DetalleOrdenRepository {
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, detalleOrden.getCantidad());
-            statement.setBigDecimal(2, detalleOrden.getPrecioUnitario());
+            statement.setBigDecimal(2, detalleOrden.getPrecio_unitario());
 
             // Verificar si el detalle tiene una orden asignada
             if (detalleOrden.getOrden() != null) {
-                statement.setLong(3, detalleOrden.getOrden().getIdOrden());
+                statement.setLong(3, detalleOrden.getOrden().getId_orden());
             } else {
                 statement.setNull(3, java.sql.Types.BIGINT); // Si no hay orden, se guarda como NULL
             }
 
             // Verificar si el detalle tiene un producto asignado
             if (detalleOrden.getProducto() != null) {
-                statement.setLong(4, detalleOrden.getProducto().getIdProducto());
+                statement.setLong(4, detalleOrden.getProducto().getId_producto());
             } else {
                 statement.setNull(4, java.sql.Types.BIGINT); // Si no hay producto, se guarda como NULL
             }
 
-            statement.setLong(5, detalleOrden.getIdDetalle()); // Establece el id del detalle
+            statement.setLong(5, detalleOrden.getId_detalle()); // Establece el id del detalle
 
             int affectedRows = statement.executeUpdate();
             return affectedRows > 0; // Devuelve true si se actualizó al menos una fila

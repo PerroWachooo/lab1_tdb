@@ -39,7 +39,7 @@ public class CategoriaService {
 
     public boolean updateCategoria(CategoriaEntity categoria) {
         // vemos si categoria existe en la base de datos
-        if (categoriaRepository.findByIdCategoria(categoria.getIdCategoria()) != null) {
+        if (categoriaRepository.findByIdCategoria(categoria.getId_categoria()) != null) {
             // actualizamos el categoria usando el método del repositorio
             return categoriaRepository.updateCategoria(categoria);
         }

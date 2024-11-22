@@ -26,7 +26,7 @@ public class DetalleOrdenService {
 
     public boolean updateDetalle(DetalleOrdenEntity detalle) {
         // vemos si el cliente existe en la base de datos
-        if (detalleOrdenRepository.getDetalleOrdenById(detalle.getIdDetalle()) != null) {
+        if (detalleOrdenRepository.getDetalleOrdenById(detalle.getId_detalle()) != null) {
             // actualizamos el cliente usando el método del repositorio
             return detalleOrdenRepository.updateDetalleOrden(detalle);
         }
