@@ -5,22 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c390a82c-caef-4d1d-ba62-a7531994a67a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tbd/lab1/entities/CategoriaEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tbd/lab1/entities/CategoriaEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tbd/lab1/entities/ClienteEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tbd/lab1/entities/ClienteEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tbd/lab1/entities/DetalleOrdenEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tbd/lab1/entities/DetalleOrdenEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tbd/lab1/entities/OrdenEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tbd/lab1/entities/OrdenEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tbd/lab1/entities/ProductoEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tbd/lab1/entities/ProductoEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tbd/lab1/repositories/CategoriaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tbd/lab1/repositories/CategoriaRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tbd/lab1/repositories/ClienteRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tbd/lab1/repositories/ClienteRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tbd/lab1/repositories/DetalleOrdenRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tbd/lab1/repositories/DetalleOrdenRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tbd/lab1/repositories/OrdenRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tbd/lab1/repositories/OrdenRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tbd/lab1/repositories/ProductoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tbd/lab1/repositories/ProductoRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tbd/lab1/services/CategoriaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tbd/lab1/services/CategoriaService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tbd/lab1/services/ClienteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tbd/lab1/services/ClienteService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tbd/lab1/services/DetalleOrdenService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tbd/lab1/services/DetalleOrdenService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tbd/lab1/services/OrdenService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tbd/lab1/services/OrdenService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tbd/lab1/services/ProductoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tbd/lab1/services/ProductoService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dbCreate.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,7 +116,7 @@
       <updated>1730504908538</updated>
       <workItem from="1730504908543" duration="3163000" />
       <workItem from="1730673952258" duration="5592000" />
-      <workItem from="1732299994946" duration="2460000" />
+      <workItem from="1732299994946" duration="3099000" />
     </task>
     <servers />
   </component>
