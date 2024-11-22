@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="postgres@localhost">
-  <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.51">
+  <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.53">
     <root id="1">
       <DateStyle>mdy</DateStyle>
       <Grants>1||-9223372036854775808|c|G
@@ -4287,43 +4287,43 @@ false Zulu
       <OwnerName>pg_database_owner</OwnerName>
     </schema>
     <sequence id="267" parent="266" name="categoria_id_categoria_seq">
-      <DasType>bigint|0s</DasType>
       <ObjectId>500775</ObjectId>
       <SequenceIdentity>1</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>24287</StateNumber>
+      <StoredType>bigint|0s</StoredType>
       <OwnerName>postgres</OwnerName>
     </sequence>
     <sequence id="268" parent="266" name="cliente_id_cliente_seq">
-      <DasType>bigint|0s</DasType>
       <ObjectId>500781</ObjectId>
       <SequenceIdentity>1</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>24288</StateNumber>
+      <StoredType>bigint|0s</StoredType>
       <OwnerName>postgres</OwnerName>
     </sequence>
     <sequence id="269" parent="266" name="detalle_orden_id_detalle_seq">
-      <DasType>bigint|0s</DasType>
       <ObjectId>500789</ObjectId>
       <SequenceIdentity>1</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>24289</StateNumber>
+      <StoredType>bigint|0s</StoredType>
       <OwnerName>postgres</OwnerName>
     </sequence>
     <sequence id="270" parent="266" name="orden_id_orden_seq">
-      <DasType>bigint|0s</DasType>
       <ObjectId>500795</ObjectId>
       <SequenceIdentity>1</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>24290</StateNumber>
+      <StoredType>bigint|0s</StoredType>
       <OwnerName>postgres</OwnerName>
     </sequence>
     <sequence id="271" parent="266" name="producto_id_producto_seq">
-      <DasType>bigint|0s</DasType>
       <ObjectId>500801</ObjectId>
       <SequenceIdentity>1</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>24291</StateNumber>
+      <StoredType>bigint|0s</StoredType>
       <OwnerName>postgres</OwnerName>
     </sequence>
     <table id="272" parent="266" name="categoria">
@@ -4357,19 +4357,19 @@ false Zulu
       <OwnerName>postgres</OwnerName>
     </table>
     <column id="277" parent="272" name="id_categoria">
-      <DasType>bigint|0s</DasType>
       <IdentityKind>by-default</IdentityKind>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StateNumber>24287</StateNumber>
+      <StoredType>bigint|0s</StoredType>
       <SequenceId>500775</SequenceId>
       <TypeId>20</TypeId>
     </column>
     <column id="278" parent="272" name="nombre">
-      <DasType>varchar(100)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StateNumber>24287</StateNumber>
+      <StoredType>varchar(100)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
     <index id="279" parent="272" name="categoria_pkey">
@@ -4389,37 +4389,37 @@ false Zulu
       <UnderlyingIndexId>500779</UnderlyingIndexId>
     </key>
     <column id="281" parent="273" name="id_cliente">
-      <DasType>bigint|0s</DasType>
       <IdentityKind>by-default</IdentityKind>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StateNumber>24288</StateNumber>
+      <StoredType>bigint|0s</StoredType>
       <SequenceId>500781</SequenceId>
       <TypeId>20</TypeId>
     </column>
     <column id="282" parent="273" name="direccion">
-      <DasType>varchar(255)|0s</DasType>
       <Position>2</Position>
       <StateNumber>24288</StateNumber>
+      <StoredType>varchar(255)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
     <column id="283" parent="273" name="email">
-      <DasType>varchar(100)|0s</DasType>
       <Position>3</Position>
       <StateNumber>24288</StateNumber>
+      <StoredType>varchar(100)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
     <column id="284" parent="273" name="nombre">
-      <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StateNumber>24288</StateNumber>
+      <StoredType>varchar(255)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
     <column id="285" parent="273" name="telefono">
-      <DasType>varchar(20)|0s</DasType>
       <Position>5</Position>
       <StateNumber>24288</StateNumber>
+      <StoredType>varchar(20)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
     <index id="286" parent="273" name="cliente_pkey">
@@ -4439,36 +4439,36 @@ false Zulu
       <UnderlyingIndexId>500787</UnderlyingIndexId>
     </key>
     <column id="288" parent="274" name="id_detalle">
-      <DasType>bigint|0s</DasType>
       <IdentityKind>by-default</IdentityKind>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StateNumber>24289</StateNumber>
+      <StoredType>bigint|0s</StoredType>
       <SequenceId>500789</SequenceId>
       <TypeId>20</TypeId>
     </column>
     <column id="289" parent="274" name="cantidad">
-      <DasType>integer|0s</DasType>
       <Position>2</Position>
       <StateNumber>24289</StateNumber>
+      <StoredType>integer|0s</StoredType>
       <TypeId>23</TypeId>
     </column>
     <column id="290" parent="274" name="precio_unitario">
-      <DasType>numeric(10,2 digit)|0s</DasType>
       <Position>3</Position>
       <StateNumber>24289</StateNumber>
+      <StoredType>numeric(10,2 digit)|0s</StoredType>
       <TypeId>1700</TypeId>
     </column>
     <column id="291" parent="274" name="id_orden">
-      <DasType>bigint|0s</DasType>
       <Position>4</Position>
       <StateNumber>24289</StateNumber>
+      <StoredType>bigint|0s</StoredType>
       <TypeId>20</TypeId>
     </column>
     <column id="292" parent="274" name="id_producto">
-      <DasType>bigint|0s</DasType>
       <Position>5</Position>
       <StateNumber>24289</StateNumber>
+      <StoredType>bigint|0s</StoredType>
       <TypeId>20</TypeId>
     </column>
     <foreign-key id="293" parent="274" name="fklsw0bpcxtrh4dy417wl6tbum0">
@@ -4502,36 +4502,36 @@ false Zulu
       <UnderlyingIndexId>500793</UnderlyingIndexId>
     </key>
     <column id="297" parent="275" name="id_orden">
-      <DasType>bigint|0s</DasType>
       <IdentityKind>by-default</IdentityKind>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StateNumber>24290</StateNumber>
+      <StoredType>bigint|0s</StoredType>
       <SequenceId>500795</SequenceId>
       <TypeId>20</TypeId>
     </column>
     <column id="298" parent="275" name="estado">
-      <DasType>varchar(50)|0s</DasType>
       <Position>2</Position>
       <StateNumber>24290</StateNumber>
+      <StoredType>varchar(50)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
     <column id="299" parent="275" name="fecha_orden">
-      <DasType>timestamp(6)|0s</DasType>
       <Position>3</Position>
       <StateNumber>24290</StateNumber>
+      <StoredType>timestamp(6)|0s</StoredType>
       <TypeId>1114</TypeId>
     </column>
     <column id="300" parent="275" name="total">
-      <DasType>numeric(10,2 digit)|0s</DasType>
       <Position>4</Position>
       <StateNumber>24290</StateNumber>
+      <StoredType>numeric(10,2 digit)|0s</StoredType>
       <TypeId>1700</TypeId>
     </column>
     <column id="301" parent="275" name="id_cliente">
-      <DasType>bigint|0s</DasType>
       <Position>5</Position>
       <StateNumber>24290</StateNumber>
+      <StoredType>bigint|0s</StoredType>
       <TypeId>20</TypeId>
     </column>
     <foreign-key id="302" parent="275" name="fk2q1npk79pf5vd9n5ot07drnb4">
@@ -4558,50 +4558,50 @@ false Zulu
       <UnderlyingIndexId>500799</UnderlyingIndexId>
     </key>
     <column id="305" parent="276" name="id_producto">
-      <DasType>bigint|0s</DasType>
       <IdentityKind>by-default</IdentityKind>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StateNumber>24291</StateNumber>
+      <StoredType>bigint|0s</StoredType>
       <SequenceId>500801</SequenceId>
       <TypeId>20</TypeId>
     </column>
     <column id="306" parent="276" name="descripcion">
-      <DasType>text|0s</DasType>
       <Position>2</Position>
       <StateNumber>24299</StateNumber>
+      <StoredType>text|0s</StoredType>
       <TypeId>25</TypeId>
     </column>
     <column id="307" parent="276" name="estado">
-      <DasType>varchar(50)|0s</DasType>
       <Position>3</Position>
       <StateNumber>24291</StateNumber>
+      <StoredType>varchar(50)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
     <column id="308" parent="276" name="nombre">
-      <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StateNumber>24291</StateNumber>
+      <StoredType>varchar(255)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
     <column id="309" parent="276" name="precio">
-      <DasType>numeric(10,2 digit)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StateNumber>24291</StateNumber>
+      <StoredType>numeric(10,2 digit)|0s</StoredType>
       <TypeId>1700</TypeId>
     </column>
     <column id="310" parent="276" name="stock">
-      <DasType>integer|0s</DasType>
       <Position>6</Position>
       <StateNumber>24291</StateNumber>
+      <StoredType>integer|0s</StoredType>
       <TypeId>23</TypeId>
     </column>
     <column id="311" parent="276" name="id_categoria">
-      <DasType>bigint|0s</DasType>
       <Position>7</Position>
       <StateNumber>24291</StateNumber>
+      <StoredType>bigint|0s</StoredType>
       <TypeId>20</TypeId>
     </column>
     <foreign-key id="312" parent="276" name="fk9nyueixdsgbycfhf7allg8su">
