@@ -24,6 +24,6 @@ public class ProductoEntity {
 
     private String estado;
 
-    private CategoriaEntity categoria;
+    private Long id_categoria;
 }
 

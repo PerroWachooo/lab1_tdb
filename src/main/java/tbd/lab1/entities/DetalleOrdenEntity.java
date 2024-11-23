@@ -8,9 +8,9 @@ public class DetalleOrdenEntity {
 
     private Long id_detalle;
 
-    private OrdenEntity orden;
+    private Long id_orden;
 
-    private ProductoEntity producto;
+    private Long id_producto;
 
     private Integer cantidad;
 
