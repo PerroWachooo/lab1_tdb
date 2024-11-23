@@ -6,11 +6,11 @@ import java.math.BigDecimal;
 @Data
 public class DetalleOrdenEntity {
 
-    private Long id_detalle;
+    private Integer id_detalle;
 
-    private Long id_orden;
+    private Integer id_orden;
 
-    private Long id_producto;
+    private Integer id_producto;
 
     private Integer cantidad;
 

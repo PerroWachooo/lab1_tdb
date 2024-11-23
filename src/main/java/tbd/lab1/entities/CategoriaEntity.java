@@ -4,7 +4,7 @@ import lombok.Data;
 @Data
 public class CategoriaEntity {
 
-    private Long id_categoria;
+    private Integer id_categoria;
 
     private String nombre;
 }

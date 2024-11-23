@@ -5,9 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c390a82c-caef-4d1d-ba62-a7531994a67a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/Datos/DBcreate.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/deccd9fa-e39c-4aa1-a92a-5a6253a04695.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/config/CorsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tbd/lab1/config/CorsConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/config/DatabaseConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tbd/lab1/config/DatabaseConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tbd/lab1/entities/CategoriaEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tbd/lab1/entities/CategoriaEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tbd/lab1/entities/ClienteEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tbd/lab1/entities/ClienteEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tbd/lab1/entities/DetalleOrdenEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tbd/lab1/entities/DetalleOrdenEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tbd/lab1/entities/OrdenEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tbd/lab1/entities/OrdenEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tbd/lab1/entities/ProductoEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tbd/lab1/entities/ProductoEntity.java" afterDir="false" />
@@ -16,6 +21,7 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/tbd/lab1/repositories/DetalleOrdenRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tbd/lab1/repositories/DetalleOrdenRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tbd/lab1/repositories/OrdenRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tbd/lab1/repositories/OrdenRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tbd/lab1/repositories/ProductoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tbd/lab1/repositories/ProductoRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tbd/lab1/repositories/ProductoRepositoryInt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tbd/lab1/repositories/ProductoRepositoryInt.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,7 +49,8 @@
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+        <option name="mavenHome" value="Use Maven wrapper" />
+        <option name="useMavenConfig" value="true" />
       </MavenGeneralSettings>
     </option>
     <option name="importingSettings">
@@ -80,16 +87,18 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.EcommerceApplication.executor": "Run",
+    "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "bastianbb",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Byron Caices/Desktop/tbd-lab1/tbd-lab1-backend/src/main/java",
+    "last_opened_file_path": "C:/Users/thoma/OneDrive/Escritorio/tbd-lab1-backend",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
+    "spring.configuration.checksum": "e274b0a65912e49a28a9ae5c1479bdce",
     "ts.external.directory.path": "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2023.2.2\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
     "vue.rearranger.settings.migration": "true"
   },
@@ -107,9 +116,9 @@
   <component name="RunManager">
     <configuration name="EcommerceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <envs>
-        <env name="DB_URL" value="jdbc:postgresql://localhost:5432/ecommercedb" />
-        <env name="DB_USER" value="postgres" />
         <env name="DB_PASSWORD" value="1234" />
+        <env name="DB_URL" value="jdbc:postgresql://localhost:5433/Lab1" />
+        <env name="DB_USER" value="postgres" />
       </envs>
       <module name="lab1" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="tbd.lab1.EcommerceApplication" />
@@ -137,6 +146,7 @@
       <workItem from="1730504908543" duration="3163000" />
       <workItem from="1730673952258" duration="5592000" />
       <workItem from="1732299994946" duration="11749000" />
+      <workItem from="1732336560143" duration="2081000" />
     </task>
     <servers />
   </component>

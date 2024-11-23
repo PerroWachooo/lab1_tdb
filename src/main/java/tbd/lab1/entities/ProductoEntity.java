@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 public class ProductoEntity {
 
 
-    private Long id_producto;
+    private Integer id_producto;
 
     private String nombre;
 
@@ -24,6 +24,6 @@ public class ProductoEntity {
 
     private String estado;
 
-    private Long id_categoria;
+    private Integer id_categoria;
 }
 
