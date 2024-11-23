@@ -22,7 +22,7 @@ public class OrdenService {
         return ordenRepository.saveOrden(orden);
     }
 
-    public OrdenEntity getOrdenById(Long id) {
+    public OrdenEntity getOrdenById(Integer id) {
         return ordenRepository.getOrdenById(id);
     }
 
@@ -39,7 +39,7 @@ public class OrdenService {
         return false;
     }
 
-    public boolean deleteOrden(Long id) throws Exception {
+    public boolean deleteOrden(Integer id) throws Exception {
         try {
             ordenRepository.deleteOrden(id);
             return true;

@@ -1,183 +1,106 @@
 package tbd.lab1.repositories;
 
+import org.sql2o.Connection;
+import org.sql2o.Sql2o;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import tbd.lab1.entities.DetalleOrdenEntity;
-import tbd.lab1.entities.OrdenEntity;
-import tbd.lab1.entities.ProductoEntity;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 @Repository
-public class DetalleOrdenRepository {
+public class DetalleOrdenRepository implements DetalleOrdenRepositoryInt{
 
-/*
     @Autowired
-    public DetalleOrdenRepository(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
+    private Sql2o sql2o;
 
     public DetalleOrdenEntity saveDetalleOrden(DetalleOrdenEntity detalleOrden) {
-        String sql = "INSERT INTO detalle_orden (id_orden, id_producto, cantidad, precio_unitario) VALUES (?, ?, ?, ?) RETURNING id_detalle";
+        String sql = "INSERT INTO detalle_orden (id_orden, id_producto, cantidad, precio_unitario) VALUES (:idOrden, :idProducto, :cantidad, :precioUnitario) RETURNING id_detalle";
 
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection con = sql2o.open()) {
+            // Ejecutar la consulta de inserción y obtener el id_detalle generado
+            Integer idDetalle = con.createQuery(sql)
+                    .addParameter("idOrden", detalleOrden.getId_orden())
+                    .addParameter("idProducto", detalleOrden.getId_producto())
+                    .addParameter("cantidad", detalleOrden.getCantidad())
+                    .addParameter("precioUnitario", detalleOrden.getPrecio_unitario())
+                    .executeUpdate()
+                    .getKey(Integer.class);
 
-            // Establecer valores en el PreparedStatement
-            statement.setLong(1, detalleOrden.getOrden() != null ? detalleOrden.getOrden().getIdOrden() : null);
-            statement.setLong(2, detalleOrden.getProducto() != null ? detalleOrden.getProducto().getIdProducto() : null);
-            statement.setInt(3, detalleOrden.getCantidad());
-            statement.setBigDecimal(4, detalleOrden.getPrecioUnitario());
-
-            // Ejecutar la inserción y obtener el id_detalle generado
-            try (ResultSet generatedKeys = statement.executeQuery()) {
-                if (generatedKeys.next()) {
-                    long idDetalle = generatedKeys.getLong(1);
-                    // Asignar el idDetalle a la entidad y devolverla
-                    detalleOrden.setIdDetalle(idDetalle);
-                    return detalleOrden; // Devolver el detalle de orden guardado
-                } else {
-                    throw new SQLException("No se pudo obtener el id del detalle.");
-                }
+            if (idDetalle == null) {
+                throw new RuntimeException("Failed to insert DetalleOrden. No ID returned.");
             }
 
-        } catch (SQLException e) {
+            detalleOrden.setId_detalle(idDetalle);
+            return detalleOrden;
+
+        } catch (Exception e) {
             e.printStackTrace();
+            System.err.println("Error occurred while saving DetalleOrden: " + e.getMessage());
             return null; // En caso de error, devolver null
         }
     }
 
-    public DetalleOrdenEntity getDetalleOrdenById(Long id) {
-        String sql = "SELECT * FROM detalle_orden WHERE id_detalle = ?";
-        DetalleOrdenEntity detalleOrden = null;
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+    public DetalleOrdenEntity getDetalleOrdenById(Integer id) {
+        String sql = "SELECT id_detalle, id_orden, id_producto, cantidad, precio_unitario FROM detalle_orden WHERE id_detalle = :id";
 
-            statement.setLong(1, id);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    detalleOrden = new DetalleOrdenEntity();
-                    detalleOrden.setIdDetalle(resultSet.getLong("id_detalle"));
-                    detalleOrden.setCantidad(resultSet.getInt("cantidad"));
-                    detalleOrden.setPrecioUnitario(resultSet.getBigDecimal("precio_unitario"));
+        try (Connection con = sql2o.open()) {
+            DetalleOrdenEntity detalleOrden = con.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeAndFetchFirst(DetalleOrdenEntity.class);
 
-                    // Cargar la Orden
-                    Long idOrden = resultSet.getLong("id_orden");
-                    if (idOrden != null) {
-                        OrdenEntity orden = new OrdenEntity();
-                        orden.setIdOrden(idOrden);
-                        detalleOrden.setOrden(orden);
-                    }
-
-                    // Cargar el Producto
-                    Long idProducto = resultSet.getLong("id_producto");
-                    if (idProducto != null) {
-                        ProductoEntity producto = new ProductoEntity();
-                        producto.setIdProducto(idProducto);
-                        detalleOrden.setProducto(producto);
-                    }
-                }
-            }
-
-        } catch (SQLException e) {
+            return detalleOrden;
+        } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return detalleOrden;
     }
 
-    public ArrayList<DetalleOrdenEntity> getDetalleOrden() {
-        ArrayList<DetalleOrdenEntity> detalleOrden = new ArrayList<>();
-        String sql = "SELECT * FROM detalle_orden";
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
+    public List<DetalleOrdenEntity> getDetalleOrdenes() {
+        String sql = "SELECT id_detalle, id_orden, id_producto, cantidad, precio_unitario FROM detalle_orden";
 
-            while (resultSet.next()) {
-                DetalleOrdenEntity detallesOrden = new DetalleOrdenEntity();
-                detallesOrden.setIdDetalle(resultSet.getLong("id_detalle"));
-                detallesOrden.setCantidad(resultSet.getInt("cantidad"));
-                detallesOrden.setPrecioUnitario(resultSet.getBigDecimal("precio_unitario"));
-
-                // Cargar la Orden
-                Long idOrden = resultSet.getLong("id_orden");
-                if (idOrden != null) {
-                    OrdenEntity orden = new OrdenEntity();
-                    orden.setIdOrden(idOrden);
-                    detallesOrden.setOrden(orden);
-                }
-
-                // Cargar el Producto
-                Long idProducto = resultSet.getLong("id_producto");
-                if (idProducto != null) {
-                    ProductoEntity producto = new ProductoEntity();
-                    producto.setIdProducto(idProducto);
-                    detallesOrden.setProducto(producto);
-                }
-
-                detalleOrden.add(detallesOrden);
-            }
-
-        } catch (SQLException e) {
+        try (Connection con = sql2o.open()) {
+            return con.createQuery(sql)
+                    .executeAndFetch(DetalleOrdenEntity.class);
+        } catch (Exception e) {
             e.printStackTrace();
+            return new ArrayList<>();
         }
-        return detalleOrden;
     }
 
     public boolean updateDetalleOrden(DetalleOrdenEntity detalleOrden) {
-        String sql = "UPDATE detalle_orden SET cantidad = ?, precio_unitario = ?, id_orden = ?, id_producto = ? WHERE id_detalle = ?";
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        String sql = "UPDATE detalle_orden SET id_orden = :idOrden, id_producto = :idProducto, cantidad = :cantidad, precio_unitario = :precioUnitario WHERE id_detalle = :idDetalle";
 
-            statement.setInt(1, detalleOrden.getCantidad());
-            statement.setBigDecimal(2, detalleOrden.getPrecioUnitario());
+        try (Connection con = sql2o.open()) {
+            int affectedRows = con.createQuery(sql)
+                    .addParameter("idOrden", detalleOrden.getId_orden())
+                    .addParameter("idProducto", detalleOrden.getId_producto())
+                    .addParameter("cantidad", detalleOrden.getCantidad())
+                    .addParameter("precioUnitario", detalleOrden.getPrecio_unitario())
+                    .addParameter("idDetalle", detalleOrden.getId_detalle())
+                    .executeUpdate()
+                    .getResult(); // Obtener el número de filas afectadas
 
-            // Verificar si el detalle tiene una orden asignada
-            if (detalleOrden.getOrden() != null) {
-                statement.setLong(3, detalleOrden.getOrden().getIdOrden());
-            } else {
-                statement.setNull(3, java.sql.Types.BIGINT); // Si no hay orden, se guarda como NULL
-            }
-
-            // Verificar si el detalle tiene un producto asignado
-            if (detalleOrden.getProducto() != null) {
-                statement.setLong(4, detalleOrden.getProducto().getIdProducto());
-            } else {
-                statement.setNull(4, java.sql.Types.BIGINT); // Si no hay producto, se guarda como NULL
-            }
-
-            statement.setLong(5, detalleOrden.getIdDetalle()); // Establece el id del detalle
-
-            int affectedRows = statement.executeUpdate();
             return affectedRows > 0; // Devuelve true si se actualizó al menos una fila
-
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            return false; // Devuelve false si ocurre un error
         }
-        return false;
     }
 
-    public boolean deleteDetalleOrden(Long id) throws Exception {
-        String sql = "DELETE FROM detalle_orden WHERE id_detalle = ?";
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setLong(1, id);
-            int affectedRows = statement.executeUpdate();
+    public boolean deleteDetalleOrden(Integer id) {
+        String sql = "DELETE FROM detalle_orden WHERE id_detalle = :id";
+        try (Connection con = sql2o.open()) {
+            int affectedRows = con.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeUpdate()
+                    .getResult(); // Obtener el número de filas afectadas
 
             return affectedRows > 0; // Devuelve true si se eliminó al menos una fila
-
-        } catch (SQLException e) {
-            throw new Exception("Error al eliminar el detalle de la orden: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false; // Devuelve false si ocurre un error
         }
     }
-
-*/
-
-
-
 }

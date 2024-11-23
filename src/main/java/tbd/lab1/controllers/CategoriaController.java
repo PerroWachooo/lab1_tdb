@@ -30,7 +30,7 @@ public class CategoriaController {
     }
 
     @GetMapping("/id-categoria/{id}")
-    public ResponseEntity<CategoriaEntity> getCategoriaById(@PathVariable Long id) {
+    public ResponseEntity<CategoriaEntity> getCategoriaById(@PathVariable Integer id) {
         CategoriaEntity categoria = categoriaService.getCategoryById(id);
         return ResponseEntity.ok().body(categoria);
     }
@@ -46,7 +46,7 @@ public class CategoriaController {
     }
 
     @DeleteMapping("/delete-categoria/{id}")
-    public ResponseEntity<Boolean> deleteCategoriaById(@PathVariable Long id) throws Exception {
+    public ResponseEntity<Boolean> deleteCategoriaById(@PathVariable Integer id) throws Exception {
         categoriaService.deleteCategoria(id);
         return ResponseEntity.noContent().build();
     }

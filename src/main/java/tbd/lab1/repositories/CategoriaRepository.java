@@ -9,7 +9,6 @@ import tbd.lab1.entities.CategoriaEntity;
 import java.util.List;
 
 @Repository
-
 public class CategoriaRepository implements CategoriaRepositoryInt {
 
     @Autowired
@@ -19,7 +18,7 @@ public class CategoriaRepository implements CategoriaRepositoryInt {
         String sql = "INSERT INTO categoria (nombre) VALUES (:nombre)";
         try (Connection con = sql2o.open()) {
             // Cambiar Long a Integer
-            Long id = (Long) con.createQuery(sql, true)
+            Integer id = (Integer) con.createQuery(sql, true)
                     .addParameter("nombre", categoria.getNombre())
                     .executeUpdate()
                     .getKey();

@@ -18,7 +18,7 @@ public class ClienteService {
         return clienteRepository.getClientes();
     }
 
-    public ClienteEntity getClienteById(Long id) {
+    public ClienteEntity getClienteById(Integer id) {
         ClienteEntity cliente = clienteRepository.getClienteById(id);
         return cliente;
     }
@@ -35,7 +35,7 @@ public class ClienteService {
         return (ArrayList<ClienteEntity>) clienteRepository.getClientes();
     }
 
-    public boolean deleteCliente(Long id) throws Exception {
+    public boolean deleteCliente(Integer id) throws Exception {
         try {
             clienteRepository.deleteCliente(id);
             return true;

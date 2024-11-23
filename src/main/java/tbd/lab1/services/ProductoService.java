@@ -17,7 +17,7 @@ public class ProductoService {
     }
 
     //obtiene producto segun su id
-    public ProductoEntity getProductoById(Long id){
+    public ProductoEntity getProductoById(Integer id){
         return productoRepository.getProductoById(id);
     }
 
@@ -34,7 +34,7 @@ public class ProductoService {
         return false;
     }
 
-    public boolean deleteProducto(Long id) throws Exception {
+    public boolean deleteProducto(Integer id) throws Exception {
         try{
             productoRepository.deleteProducto(id);
             return true;

@@ -19,7 +19,7 @@ public class ClienteRepository implements ClienteRepositoryInt {
         String sql = "INSERT INTO cliente (nombre, direccion, email, telefono) VALUES (:nombre, :direccion, :email, :telefono)";
         try (Connection con = sql2o.open()) {
             // Insertar el cliente en la base de datos
-            Long id = (Long) con.createQuery(sql, true)  // true indica que se quiere obtener el ID generado
+            Integer id = (Integer) con.createQuery(sql, true)  // true indica que se quiere obtener el ID generado
                     .addParameter("nombre", cliente.getNombre())
                     .addParameter("direccion", cliente.getDireccion())
                     .addParameter("email", cliente.getEmail())

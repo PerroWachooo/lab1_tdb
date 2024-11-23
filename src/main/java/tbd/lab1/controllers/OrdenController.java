@@ -28,7 +28,7 @@ public class OrdenController {
     }
 
     @GetMapping("/id-orden/{id}")
-    public ResponseEntity<OrdenEntity> getOrdenById(@PathVariable Long id) {
+    public ResponseEntity<OrdenEntity> getOrdenById(@PathVariable Integer id) {
         OrdenEntity orden = ordenService.getOrdenById(id);
         return ResponseEntity.ok(orden);
     }
@@ -50,7 +50,7 @@ public class OrdenController {
     }
 
     @DeleteMapping("/delete-orden/{id}")
-    public ResponseEntity<Boolean> deleteOrdenById(@PathVariable Long id) throws Exception {
+    public ResponseEntity<Boolean> deleteOrdenById(@PathVariable Integer id) throws Exception {
         ordenService.deleteOrden(id);
         return ResponseEntity.noContent().build();
     }

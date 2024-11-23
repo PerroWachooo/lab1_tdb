@@ -4,7 +4,7 @@ import lombok.Data;
 @Data
 public class ClienteEntity {
 
-    private Long id_cliente;
+    private Integer id_cliente;
 
     private String nombre;
 

@@ -22,7 +22,7 @@ public class DetalleOrdenController {
     }
 
     @GetMapping("/id-detalle/{id}")
-    public ResponseEntity<DetalleOrdenEntity> getDetalleById(@PathVariable Long id) {
+    public ResponseEntity<DetalleOrdenEntity> getDetalleById(@PathVariable Integer id) {
         DetalleOrdenEntity detalle = detalleOrdenService.getDetalleById(id);
         return ResponseEntity.ok(detalle);
     }
@@ -44,7 +44,7 @@ public class DetalleOrdenController {
     }
 
     @DeleteMapping("/delete-detalle/{id}")
-    public ResponseEntity<Boolean> deleteDetalleById(@PathVariable Long id) throws Exception {
+    public ResponseEntity<Boolean> deleteDetalleById(@PathVariable Integer id) throws Exception {
         detalleOrdenService.deleteDetalle(id);
         return ResponseEntity.noContent().build();
     }
