@@ -1,137 +1,98 @@
 package tbd.lab1.repositories;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
+import org.sql2o.Connection;
+import org.sql2o.Sql2o;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import tbd.lab1.entities.ClienteEntity;
-import org.springframework.beans.factory.annotation.Autowired;
-import javax.sql.DataSource;
+
+import java.util.List;
 
 @Repository
-public class ClienteRepository {
-
-    private final DataSource dataSource;
+public class ClienteRepository implements ClienteRepositoryInt {
 
     @Autowired
-    public ClienteRepository(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
+    private Sql2o sql2o;
 
-    // guarda un cliente sin jpa ;C
+    // Guarda un cliente usando sql2o
     public ClienteEntity saveCliente(ClienteEntity cliente) {
-        String sql = "INSERT INTO cliente (nombre, direccion, email, telefono) VALUES (?, ?, ?, ?)";
-        try (Connection connection = dataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql,
-                        PreparedStatement.RETURN_GENERATED_KEYS)) {
+        String sql = "INSERT INTO cliente (nombre, direccion, email, telefono) VALUES (:nombre, :direccion, :email, :telefono)";
+        try (Connection con = sql2o.open()) {
+            // Insertar el cliente en la base de datos
+            Long id = (Long) con.createQuery(sql, true)  // true indica que se quiere obtener el ID generado
+                    .addParameter("nombre", cliente.getNombre())
+                    .addParameter("direccion", cliente.getDireccion())
+                    .addParameter("email", cliente.getEmail())
+                    .addParameter("telefono", cliente.getTelefono())
+                    .executeUpdate()
+                    .getKey(); // Obtener el ID generado
 
-            statement.setString(1, cliente.getNombre());
-            statement.setString(2, cliente.getDireccion());
-            statement.setString(3, cliente.getEmail());
-            statement.setString(4, cliente.getTelefono());
-
-            int affectedRows = statement.executeUpdate();
-
-            if (affectedRows > 0) {
-                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        cliente.setId_cliente(generatedKeys.getLong(1));
-                    }
-                }
-            } else {
-                throw new SQLException("Error al insertar el cliente, no se generaron filas.");
-            }
-
-        } catch (SQLException e) {
+            // Establecer el ID generado al cliente
+            cliente.setId_cliente(id);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return cliente;
     }
 
-    // obtiene todos los clientes ingresados en la base de datos
-    public ArrayList<ClienteEntity> getClientes() {
-        ArrayList<ClienteEntity> clientes = new ArrayList<>();
+    // Obtiene todos los clientes ingresados en la base de datos
+    public List<ClienteEntity> getClientes() {
         String sql = "SELECT * FROM cliente";
-        try (Connection connection = dataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql);
-                ResultSet resultSet = statement.executeQuery()) {
-
-            while (resultSet.next()) {
-                ClienteEntity cliente = new ClienteEntity();
-                cliente.setId_cliente(resultSet.getLong("id_cliente"));
-                cliente.setNombre(resultSet.getString("nombre"));
-                cliente.setDireccion(resultSet.getString("direccion"));
-                cliente.setEmail(resultSet.getString("email"));
-                cliente.setTelefono(resultSet.getString("telefono"));
-                clientes.add(cliente);
-            }
-
-        } catch (SQLException e) {
+        try (Connection con = sql2o.open()) {
+            return con.createQuery(sql)
+                    .executeAndFetch(ClienteEntity.class);
+        } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return clientes;
     }
 
-    public boolean deleteCliente(Long id) throws Exception {
-        String sql = "DELETE FROM cliente WHERE id_cliente = ?";
-        try (Connection connection = dataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setLong(1, id);
-            int affectedRows = statement.executeUpdate();
+    // Elimina un cliente por ID
+    public boolean deleteCliente(Integer id) {
+        String sql = "DELETE FROM cliente WHERE id_cliente = :id";
+        try (Connection con = sql2o.open()) {
+            int affectedRows = con.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeUpdate()
+                    .getResult(); // Obtener el número de filas afectadas
 
             return affectedRows > 0; // Devuelve true si se eliminó al menos una fila
-
-        } catch (SQLException e) {
-            throw new Exception("Error al eliminar el cliente: " + e.getMessage());
-        }
-    }
-
-    public ClienteEntity getClienteById(Long id) {
-        String sql = "SELECT * FROM cliente WHERE id_cliente = ?";
-        ClienteEntity cliente = null;
-        try (Connection connection = dataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setLong(1, id);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    cliente = new ClienteEntity();
-                    cliente.setId_cliente(resultSet.getLong("id_cliente"));
-                    cliente.setNombre(resultSet.getString("nombre"));
-                    cliente.setDireccion(resultSet.getString("direccion"));
-                    cliente.setEmail(resultSet.getString("email"));
-                    cliente.setTelefono(resultSet.getString("telefono"));
-                }
-            }
-
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
-        return cliente;
     }
 
+    // Obtiene un cliente por ID
+    public ClienteEntity getClienteById(Integer id) {
+        String sql = "SELECT * FROM cliente WHERE id_cliente = :id";
+        try (Connection con = sql2o.open()) {
+            return con.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeAndFetchFirst(ClienteEntity.class); // Obtiene el primer resultado
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // Actualiza un cliente existente
     public boolean updateCliente(ClienteEntity cliente) {
-        String sql = "UPDATE cliente SET nombre = ?, direccion = ?, email = ?, telefono = ? WHERE id_cliente = ?";
-        try (Connection connection = dataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql)) {
+        String sql = "UPDATE cliente SET nombre = :nombre, direccion = :direccion, email = :email, telefono = :telefono WHERE id_cliente = :id";
+        try (Connection con = sql2o.open()) {
+            int affectedRows = con.createQuery(sql)
+                    .addParameter("nombre", cliente.getNombre())
+                    .addParameter("direccion", cliente.getDireccion())
+                    .addParameter("email", cliente.getEmail())
+                    .addParameter("telefono", cliente.getTelefono())
+                    .addParameter("id", cliente.getId_cliente())
+                    .executeUpdate()
+                    .getResult(); // Obtener el número de filas afectadas
 
-            statement.setString(1, cliente.getNombre());
-            statement.setString(2, cliente.getDireccion());
-            statement.setString(3, cliente.getEmail());
-            statement.setString(4, cliente.getTelefono());
-            statement.setLong(5, cliente.getId_cliente());
-
-            int affectedRows = statement.executeUpdate();
             return affectedRows > 0; // Devuelve true si se actualizó al menos una fila
-
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
-
 }
