@@ -21,14 +21,14 @@ public class CategoriaService {
         return (ArrayList<CategoriaEntity>) categoriaRepository.getCategorias();
     }
 
-    public CategoriaEntity getCategoryById(Long id) {
+    public CategoriaEntity getCategoryById(Integer id) {
         return categoriaRepository.findByIdCategoria(id);
     }  
      public List<CategoriaEntity> getAllCategorias() {
         return categoriaRepository.getCategorias();
     }
 
-    public boolean deleteCategoria(Long id) throws Exception {
+    public boolean deleteCategoria(Integer id) throws Exception {
         try{
             categoriaRepository.deleteCategoria(id);
             return true;

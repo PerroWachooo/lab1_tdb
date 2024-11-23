@@ -32,7 +32,7 @@ public class ClienteController {
 
     // Obtiene un cliente específico por su ID
     @GetMapping("/{id}")
-    public ResponseEntity<ClienteEntity> getClienteById(@PathVariable Long id) {
+    public ResponseEntity<ClienteEntity> getClienteById(@PathVariable Integer id) {
         ClienteEntity cliente = clienteService.getClienteById(id);
         if (cliente != null) {
             return ResponseEntity.ok(cliente);
@@ -55,7 +55,7 @@ public class ClienteController {
 
     // Borra un cliente específico por su ID
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteClienteById(@PathVariable Long id) throws Exception {
+    public ResponseEntity<Void> deleteClienteById(@PathVariable Integer id) throws Exception {
         boolean isDeleted = clienteService.deleteCliente(id);
         if (isDeleted) {
             return ResponseEntity.noContent().build();

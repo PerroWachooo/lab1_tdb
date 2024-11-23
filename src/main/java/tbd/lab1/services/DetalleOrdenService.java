@@ -16,12 +16,12 @@ public class DetalleOrdenService {
         return detalleOrdenRepository.saveDetalleOrden(detalle);
     }
 
-    public DetalleOrdenEntity getDetalleById(Long id) {
+    public DetalleOrdenEntity getDetalleById(Integer id) {
         return detalleOrdenRepository.getDetalleOrdenById(id);
     }
 
     public ArrayList<DetalleOrdenEntity> getDetalle() {
-        return (ArrayList<DetalleOrdenEntity>) detalleOrdenRepository.getDetalleOrden();
+        return (ArrayList<DetalleOrdenEntity>) detalleOrdenRepository.getDetalleOrdenes();
     }
 
     public boolean updateDetalle(DetalleOrdenEntity detalle) {
@@ -33,7 +33,7 @@ public class DetalleOrdenService {
         return false;
     }
 
-    public boolean deleteDetalle(Long id) throws Exception {
+    public boolean deleteDetalle(Integer id) throws Exception {
         try {
             detalleOrdenRepository.deleteDetalleOrden(id);
             return true;

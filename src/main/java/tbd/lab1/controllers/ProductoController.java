@@ -22,7 +22,7 @@ public class ProductoController {
     }
 
     @GetMapping("/id-producto/{id}")
-    public ResponseEntity<ProductoEntity> getProductoById(@PathVariable Long id) {
+    public ResponseEntity<ProductoEntity> getProductoById(@PathVariable Integer id) {
         ProductoEntity producto = productoService.getProductoById(id);
         return ResponseEntity.ok(producto);
     }
@@ -46,7 +46,7 @@ public class ProductoController {
 
     // borra un solo producto
     @DeleteMapping("/delete-producto/{id}")
-    public ResponseEntity<Boolean> deleteProductoById(@PathVariable Long id) throws Exception {
+    public ResponseEntity<Boolean> deleteProductoById(@PathVariable Integer id) throws Exception {
         productoService.deleteProducto(id);
         return ResponseEntity.noContent().build();
     }
