@@ -9,19 +9,22 @@ import org.springframework.stereotype.Service;
 import tbd.lab1.dtos.TokenResponseDTO;
 import tbd.lab1.entities.UsuarioEntity;
 
-import java.util.concurrent.TimeUnit;
-
 @Service
 public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtUtil;
     private final UsuarioService usuarioService;
 
+
     @Autowired
     public AuthService(AuthenticationManager authenticationManager, JwtService jwtUtil, UsuarioService usuarioService) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
         this.usuarioService = usuarioService;
+    }
+
+    public UsuarioEntity createUsuario(UsuarioEntity usuario) {
+        return usuarioService.createUsuario(usuario);
     }
 
     public TokenResponseDTO authenticate(String username, String password, HttpServletResponse response) {
