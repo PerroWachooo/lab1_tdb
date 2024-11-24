@@ -9,7 +9,7 @@ import tbd.lab1.services.ClienteService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/clientes")
+@RequestMapping("/api/clientes")
 @CrossOrigin("*")
 public class ClienteController {
 
