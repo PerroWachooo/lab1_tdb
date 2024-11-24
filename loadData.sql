@@ -47,7 +47,7 @@ INSERT INTO cliente (id_cliente, nombre, direccion, email, telefono) VALUES
 (2, 'Thomas Oyanedel', 'Avenida los palotes 3', 'thomas.oyanedel@gmail.com', '987654321'),
 (3, 'Isidora Riffo', 'Pasaje feliz 1', 'isidora.riffo@gmail.com', '456789123'),
 (4, 'Benjamin Cassone', 'Calle eao 231', 'benjamin.cassone@gmail.com', '789123456'),
-(5, 'Andrea Bustamante', 'Condominio buena vida 2', 'andrea.bustamante@gmail.com', '321654987');
+(5, 'Andre Bustamante', 'Condominio buena vida 2', 'andre.bustamante@gmail.com', '321654987');
 
 -- Poblar tabla orden
 INSERT INTO orden (id_orden, fecha_orden, estado, id_cliente, total) VALUES 

@@ -25,7 +25,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable) // Deshabilita CSRF por ser una API
                 .cors((cors) -> {}) // Habilita CORS
                 .authorizeHttpRequests(authorize -> authorize // Configura las rutas que requieren autenticación
-                        .requestMatchers("/api/auth/login").permitAll() // Todos pueden acceder a /auth/login
+                        .requestMatchers("/api/auth/**").permitAll() // Todos pueden acceder a /auth/login
                         .requestMatchers("/api/usuario/register").permitAll() // Todos pueden acceder a /usuario/register
                         .anyRequest().authenticated() // Todas las demás rutas requieren autenticación
                 )

@@ -50,6 +50,22 @@ public class JwtService {
         }
     }
 
+    public boolean validateRefreshToken(String token, String username) {
+        String usernameToken = getUsername(token);
+        return (usernameToken.equals(username) && !isTokenExpired(token));
+    }
+
+    private boolean isTokenExpired(String token){
+        return extractExpiration(token).before(new Date());
+    }
+
+    private Date extractExpiration(String token){
+        return JWT.require(ALGORITHM)
+                .build()
+                .verify(token)
+                .getExpiresAt();
+    }
+
     // Este método extrae el nombre de usuario de un JWT
     public String getUsername(String jwt){
         return JWT.require(ALGORITHM)

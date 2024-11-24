@@ -11,7 +11,7 @@ import tbd.lab1.services.OrdenService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/ordenes")
+@RequestMapping("/api/ordenes")
 @CrossOrigin("*")
 public class OrdenController {
 
