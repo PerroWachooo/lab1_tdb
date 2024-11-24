@@ -3,6 +3,7 @@ package tbd.lab1.services;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
@@ -43,12 +44,13 @@ public class AuthService {
         Cookie refreshTokenCookie = new Cookie("refreshToken", jwtRefreshToken);
         refreshTokenCookie.setHttpOnly(true); // Protege contra XSS
         refreshTokenCookie.setSecure(false);  // Solo para HTTPS
-        refreshTokenCookie.setPath("/api/auth/refresh"); // El endpoint que manejará la rotación
+        refreshTokenCookie.setPath("/"); // El endpoint que manejará la rotación
         refreshTokenCookie.setMaxAge(15 * 24 * 60 * 60); // 15 días en segundos
         refreshTokenCookie.setAttribute("SameSite", "Strict"); // O "Lax" si necesitas que funcione en enlaces externos
 
         // Agregar la cookie a la respuesta
         response.addCookie(refreshTokenCookie);
+        //response.addHeader(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString());
 
         return new TokenResponseDTO(jwtToken, idUsuario);
 
