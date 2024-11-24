@@ -9,7 +9,7 @@ import tbd.lab1.services.CategoriaService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/categorias")
+@RequestMapping("/api/categorias")
 @CrossOrigin("*")
 public class CategoriaController {
 

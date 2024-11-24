@@ -9,7 +9,7 @@ import tbd.lab1.services.ProductoService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/productos")
+@RequestMapping("/api/productos")
 @CrossOrigin("*")
 public class ProductoController {
     @Autowired
