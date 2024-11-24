@@ -19,6 +19,14 @@ CREATE DATABASE ecommercedb
 
 -- Creación de la base de datos y tablas
 
+CREATE TABLE IF NOT EXISTS usuario (
+                                       id_usuario SERIAL PRIMARY KEY,
+                                       nombre VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    contrasena VARCHAR(255) NOT NULL
+    );
+
+
 -- Tabla: categoria
 CREATE TABLE categoria (
                            id_categoria SERIAL PRIMARY KEY,
@@ -66,6 +74,17 @@ CREATE TABLE detalle_orden (
                                CONSTRAINT fk_orden FOREIGN KEY (id_orden) REFERENCES orden (id_orden),
                                CONSTRAINT fk_producto FOREIGN KEY (id_producto) REFERENCES producto (id_producto)
 );
+
+CREATE TABLE auditoria (
+                           id_auditoria SERIAL PRIMARY KEY, -- Identificador único para cada registro
+                           accion VARCHAR(50) NOT NULL,    -- Tipo de acción: INSERT, UPDATE, DELETE
+                           nombre_tabla VARCHAR(100) NOT NULL, -- Nombre de la tabla afectada
+                           id_registro INTEGER NOT NULL,   -- ID del registro afectado
+                           usuario VARCHAR(255) NOT NULL,  -- Usuario que ejecutó la acción
+                           descripcion TEXT,               -- Descripción de los datos (formato JSON)
+                           fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- Fecha y hora de la acción
+);
+
 
 -- Funcion: auditar_accion
 -- Description: Esta función registra las acciones de insert, update y delete en la tabla cliente

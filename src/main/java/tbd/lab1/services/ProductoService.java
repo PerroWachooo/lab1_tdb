@@ -42,4 +42,9 @@ public class ProductoService {
             throw new Exception(e.getMessage());
         }
     }
+
+    public void desactivarProductosSinStock() {
+        productoRepository.desactivarProductosSinStock();
+    }
+
 }

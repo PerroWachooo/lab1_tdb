@@ -103,4 +103,15 @@ public class DetalleOrdenRepository implements DetalleOrdenRepositoryInt{
             return false; // Devuelve false si ocurre un error
         }
     }
+
+    public void gestionarDevolucion(int id_orden, int id_producto, int cantidad) {
+        String sql = "CALL gestionar_devolucion_proc(:id_orden, :id_producto, :cantidad)";
+        try (Connection connection = sql2o.open()) {
+            connection.createQuery(sql)
+                    .addParameter("id_orden", id_orden)
+                    .addParameter("id_producto", id_producto)
+                    .addParameter("cantidad", cantidad)
+                    .executeUpdate();
+        }
+    }
 }
