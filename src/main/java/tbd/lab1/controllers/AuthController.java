@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.util.WebUtils;
 import tbd.lab1.dtos.TokenResponseDTO;
+import tbd.lab1.entities.UsuarioEntity;
 import tbd.lab1.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -44,5 +45,21 @@ public class AuthController {
         } catch (Exception e){
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    // crea un usuario
+    @PostMapping("/register")
+    public ResponseEntity<UsuarioEntity> saveUsuario(@RequestBody UsuarioEntity usuario) {
+        try {
+            UsuarioEntity NewUsuario = authService.createUsuario(usuario);
+            if (NewUsuario != null) {
+                return ResponseEntity.ok(NewUsuario);
+            } else {
+                return ResponseEntity.badRequest().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+
     }
 }
