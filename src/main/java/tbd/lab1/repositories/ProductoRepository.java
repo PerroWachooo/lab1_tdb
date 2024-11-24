@@ -130,4 +130,13 @@ public class ProductoRepository implements ProductoRepositoryInt {
             return false; // Devuelve false si ocurre un error
         }
     }
+
+    public void desactivarProductosSinStock() {
+        String sql = "CALL desactivar_productos_sin_stock()";
+        try (Connection connection = sql2o.open()) {
+            connection.createQuery(sql)
+                    .executeUpdate();
+        }
+    }
+
 }

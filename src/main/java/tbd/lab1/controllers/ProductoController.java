@@ -50,4 +50,11 @@ public class ProductoController {
         productoService.deleteProducto(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/desactivarProductos")
+    public ResponseEntity<String> desactivarProductosSinStock() {
+        productoService.desactivarProductosSinStock();
+        return ResponseEntity.ok("Productos sin stock desactivados correctamente.");
+    }
+
 }

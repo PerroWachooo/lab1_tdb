@@ -11,4 +11,5 @@ public interface ProductoRepositoryInt {
     ProductoEntity getProductoById(Integer id);
     boolean updateProducto(ProductoEntity producto);
     boolean deleteProducto(Integer id);
+    void desactivarProductosSinStock();
 }

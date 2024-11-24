@@ -12,6 +12,7 @@ public class DetalleOrdenService {
     @Autowired
     DetalleOrdenRepository detalleOrdenRepository;
 
+
     public DetalleOrdenEntity saveDetalle(DetalleOrdenEntity detalle) {
         return detalleOrdenRepository.saveDetalleOrden(detalle);
     }
@@ -41,4 +42,10 @@ public class DetalleOrdenService {
             throw new Exception(e.getMessage());
         }
     }
+
+    public void gestionarDevolucion(int idOrden, int idProducto, int cantidad) {
+        // Validaciones adicionales si es necesario
+        detalleOrdenRepository.gestionarDevolucion(idOrden, idProducto, cantidad);
+    }
+
 }

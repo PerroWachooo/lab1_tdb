@@ -49,4 +49,15 @@ public class DetalleOrdenController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/gestionarDevolucion")
+    public ResponseEntity<String> gestionarDevolucion(
+            @RequestParam int idOrden,
+            @RequestParam int idProducto,
+            @RequestParam int cantidad) {
+
+        detalleOrdenService.gestionarDevolucion(idOrden, idProducto, cantidad);
+        return ResponseEntity.ok("Devolución gestionada correctamente.");
+    }
+
+
 }

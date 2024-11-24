@@ -10,4 +10,5 @@ public interface DetalleOrdenRepositoryInt {
     List<DetalleOrdenEntity> getDetalleOrdenes();
     boolean updateDetalleOrden(DetalleOrdenEntity detalleOrden);
     boolean deleteDetalleOrden(Integer id);
+    void gestionarDevolucion(int id_orden, int id_producto, int cantidad);
 }
