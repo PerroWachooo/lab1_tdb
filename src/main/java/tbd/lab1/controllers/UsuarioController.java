@@ -17,21 +17,6 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    // crea un usuario
-    @PostMapping("/register")
-    public ResponseEntity<UsuarioEntity> saveUsuario(@RequestBody UsuarioEntity usuario) {
-        try {
-            UsuarioEntity NewUsuario = usuarioService.createUsuario(usuario);
-            if (NewUsuario != null) {
-                return ResponseEntity.ok(NewUsuario);
-            } else {
-                return ResponseEntity.badRequest().build();
-            }
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
-
-    }
     // obtiene todos los clientes ingresados en la base de datos
     @GetMapping("/")
     public ResponseEntity<List<UsuarioEntity>> listUsuario() {
