@@ -121,9 +121,9 @@ CREATE OR REPLACE FUNCTION reporte_usuarios_mas_activos()
 RETURNS TABLE(usuario VARCHAR, total_queries BIGINT) AS $$
 BEGIN
     RETURN QUERY
-    SELECT usuario, COUNT(*) AS total_queries
-    FROM auditoria
-    GROUP BY usuario
+    SELECT a.usuario, COUNT(*) AS total_queries
+    FROM auditoria a
+    GROUP BY a.usuario
     ORDER BY total_queries DESC;
 END;
 $$ LANGUAGE plpgsql;
