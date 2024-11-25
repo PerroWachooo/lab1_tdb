@@ -7,6 +7,7 @@ import tbd.lab1.entities.DetalleOrdenEntity;
 import tbd.lab1.services.DetalleOrdenService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/detalleordenes")
@@ -51,11 +52,13 @@ public class DetalleOrdenController {
 
     @PostMapping("/gestionarDevolucion")
     public ResponseEntity<String> gestionarDevolucion(
-            @RequestParam int idOrden,
-            @RequestParam int idProducto,
-            @RequestParam int cantidad) {
+            @RequestBody Map<String, Object> body) {
 
-        detalleOrdenService.gestionarDevolucion(idOrden, idProducto, cantidad);
+        detalleOrdenService.gestionarDevolucion(
+                (Integer) body.get("idOrden"),
+                (Integer) body.get("idProducto"),
+                (Integer) body.get("cantidad")
+        );
         return ResponseEntity.ok("Devolución gestionada correctamente.");
     }
 
