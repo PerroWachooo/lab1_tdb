@@ -164,7 +164,7 @@ CREATE OR REPLACE PROCEDURE desactivar_productos_sin_stock()
 LANGUAGE plpgsql AS $$
 BEGIN
     UPDATE producto
-    SET estado = 'no disponible'
+    SET estado = 'Agotado'
     WHERE stock <= 0;
 END;
 $$;
