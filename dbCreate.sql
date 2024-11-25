@@ -117,17 +117,18 @@ CREATE TRIGGER trigger_auditoria
 -- Requerimiento 17
 -- Descripción: Este procedimiento consulta la tabla auditoria, agrupa las acciones (INSERT, UPDATE, DELETE) por usuario y devuelve los usuarios con mayor cantidad de acciones ejecutadas.
 -- Ej: SELECT * FROM reporte_usuarios_mas_activos();
+DROP FUNCTION IF EXISTS reporte_usuarios_mas_activos();
+
 CREATE OR REPLACE FUNCTION reporte_usuarios_mas_activos()
-RETURNS TABLE(usuario VARCHAR, total_queries BIGINT) AS $$
+    RETURNS TABLE(id_registro INTEGER, total_queries BIGINT) AS $$
 BEGIN
     RETURN QUERY
-    SELECT a.usuario, COUNT(*) AS total_queries
-    FROM auditoria a
-    GROUP BY a.usuario
-    ORDER BY total_queries DESC;
+        SELECT a.id_registro, COUNT(*) AS total_queries
+        FROM auditoria a
+        GROUP BY a.id_registro
+        ORDER BY total_queries DESC;
 END;
 $$ LANGUAGE plpgsql;
-
 
 --Requerimiento 24
 -- Descripción: Este procedimiento actualiza el stock de los productos devueltos y, si todos los productos de una orden han sido devueltos, cambia el estado de la orden a 'devuelto'.

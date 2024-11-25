@@ -1,25 +1,25 @@
 package tbd.lab1.models;
 
 public class UsuarioActivo {
-    private String usuario;
+    private Integer id_registro;
     private long total_queries;
 
     // Constructor sin argumentos
     public UsuarioActivo() {
     }
     // Constructor
-    public UsuarioActivo(String usuario, long totalQueries) {
-        this.usuario = usuario;
+    public UsuarioActivo(Integer id_registro, long totalQueries) {
+        this.id_registro = id_registro;
         this.total_queries = totalQueries;
     }
 
     // Getters y Setters
-    public String getUsuario() {
-        return usuario;
+    public Integer getId_registro() {
+        return id_registro;
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
+    public void setId_registro(Integer id_registro) {
+        this.id_registro = id_registro;
     }
 
     public long getTotal_queries() {
