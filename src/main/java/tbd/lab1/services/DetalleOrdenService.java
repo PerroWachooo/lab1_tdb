@@ -20,7 +20,7 @@ public class DetalleOrdenService {
     public DetalleOrdenEntity saveDetalle(DetalleOrdenEntity detalle) {
         int producto_id = detalle.getId_producto();
         ProductoEntity producto = productoRepository.getProductoById(producto_id);
-        producto.setStock(producto.getStock()-1);
+        producto.setStock(producto.getStock() - detalle.getCantidad());
         productoRepository.updateProducto(producto);
         return detalleOrdenRepository.saveDetalleOrden(detalle);
     }
@@ -54,6 +54,10 @@ public class DetalleOrdenService {
     public void gestionarDevolucion(int idOrden, int idProducto, int cantidad) {
         // Validaciones adicionales si es necesario
         detalleOrdenRepository.gestionarDevolucion(idOrden, idProducto, cantidad);
+    }
+
+    public ArrayList<DetalleOrdenEntity> getDetallesByIdOrden(int id_orden) {
+        return (ArrayList<DetalleOrdenEntity>) detalleOrdenRepository.getDetallesByIdOrden(id_orden);
     }
 
 }

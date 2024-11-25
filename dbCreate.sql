@@ -69,7 +69,7 @@ CREATE TABLE detalle_orden (
                                id_producto INTEGER NOT NULL,
                                cantidad INT NOT NULL,
                                precio_unitario DECIMAL(10, 2) NOT NULL,
-                               CONSTRAINT fk_orden FOREIGN KEY (id_orden) REFERENCES orden (id_orden),
+                               CONSTRAINT fk_orden FOREIGN KEY (id_orden) REFERENCES orden (id_orden) ON DELETE CASCADE,
                                CONSTRAINT fk_producto FOREIGN KEY (id_producto) REFERENCES producto (id_producto)
 );
 

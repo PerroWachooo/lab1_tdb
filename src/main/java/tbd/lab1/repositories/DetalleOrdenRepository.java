@@ -114,4 +114,17 @@ public class DetalleOrdenRepository implements DetalleOrdenRepositoryInt{
                     .executeUpdate();
         }
     }
+
+    public List<DetalleOrdenEntity> getDetallesByIdOrden(int id_orden) {
+        String sql = "SELECT id_detalle, id_orden, id_producto, cantidad, precio_unitario FROM detalle_orden WHERE id_orden = :id_orden order by id_detalle";
+
+        try (Connection con = sql2o.open()) {
+            return con.createQuery(sql)
+                    .addParameter("id_orden", id_orden)
+                    .executeAndFetch(DetalleOrdenEntity.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
 }
