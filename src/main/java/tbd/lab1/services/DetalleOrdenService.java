@@ -20,7 +20,7 @@ public class DetalleOrdenService {
     public DetalleOrdenEntity saveDetalle(DetalleOrdenEntity detalle) {
         int producto_id = detalle.getId_producto();
         ProductoEntity producto = productoRepository.getProductoById(producto_id);
-        producto.setStock(producto.getStock()-1);
+        producto.setStock(producto.getStock() - detalle.getCantidad());
         productoRepository.updateProducto(producto);
         return detalleOrdenRepository.saveDetalleOrden(detalle);
     }
