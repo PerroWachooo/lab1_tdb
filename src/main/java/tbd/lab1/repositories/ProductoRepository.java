@@ -80,8 +80,7 @@ public class ProductoRepository implements ProductoRepositoryInt {
     }
 
     public List<ProductoEntity> getProductos() {
-        String sql = "SELECT id_producto AS idProducto, nombre, descripcion, precio, stock, estado, id_categoria " +
-                "FROM producto";
+        String sql = "SELECT * FROM producto";
 
         try (Connection con = sql2o.open()) {
             return con.createQuery(sql)
