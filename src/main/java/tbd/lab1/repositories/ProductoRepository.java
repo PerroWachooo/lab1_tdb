@@ -31,8 +31,8 @@ public class ProductoRepository implements ProductoRepositoryInt {
             throw new IllegalArgumentException("El stock del producto debe ser mayor a cero.");
         }
         if (producto.getEstado() == null ||
-                (!producto.getEstado().equals("disponible") && !producto.getEstado().equals("agotado"))) {
-            throw new IllegalArgumentException("El estado debe ser 'disponible' o 'agotado'.");
+                (!producto.getEstado().equals("Disponible") && !producto.getEstado().equals("Agotado"))) {
+            throw new IllegalArgumentException("El estado debe ser 'Disponible' o 'Agotado'.");
         }
         if (producto.getId_categoria() == null) {
             throw new IllegalArgumentException("La categoría es obligatoria.");
@@ -80,7 +80,7 @@ public class ProductoRepository implements ProductoRepositoryInt {
     }
 
     public List<ProductoEntity> getProductos() {
-        String sql = "SELECT * FROM producto";
+        String sql = "SELECT * FROM producto ORDER BY id_producto";
 
         try (Connection con = sql2o.open()) {
             return con.createQuery(sql)
