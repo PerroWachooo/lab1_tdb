@@ -3,7 +3,10 @@ package tbd.lab1.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tbd.lab1.entities.DetalleOrdenEntity;
+import tbd.lab1.entities.ProductoEntity;
+
 import tbd.lab1.repositories.DetalleOrdenRepository;
+import tbd.lab1.repositories.ProductoRepository;
 
 import java.util.ArrayList;
 
@@ -11,9 +14,14 @@ import java.util.ArrayList;
 public class DetalleOrdenService {
     @Autowired
     DetalleOrdenRepository detalleOrdenRepository;
-
+    @Autowired
+    ProductoRepository productoRepository;
 
     public DetalleOrdenEntity saveDetalle(DetalleOrdenEntity detalle) {
+        int producto_id = detalle.getId_producto();
+        ProductoEntity producto = productoRepository.getProductoById(producto_id);
+        producto.setStock(producto.getStock()-1);
+        productoRepository.updateProducto(producto);
         return detalleOrdenRepository.saveDetalleOrden(detalle);
     }
 
