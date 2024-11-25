@@ -140,11 +140,31 @@ CREATE OR REPLACE PROCEDURE gestionar_devolucion_proc(
     IN p_cantidad INTEGER
 )
 LANGUAGE plpgsql AS $$
+DECLARE
+    nuevo_total DECIMAL(10, 2);
+    precio_unit DECIMAL(10, 2);
 BEGIN
     -- Actualizar el stock del producto
     UPDATE producto
     SET stock = stock + p_cantidad
     WHERE id_producto = p_id_producto;
+
+    -- Obtener el precio unitario del producto en el detalle de la orden
+    SELECT precio_unitario INTO precio_unit
+    FROM detalle_orden
+    WHERE id_orden = p_id_orden AND id_producto = p_id_producto;
+
+    -- Calcular el nuevo total
+    SELECT total - (precio_unit * p_cantidad) INTO nuevo_total
+    FROM orden
+    WHERE id_orden = p_id_orden;
+
+    -- Actualizar el total de la orden
+    UPDATE orden
+    SET total = nuevo_total
+    WHERE id_orden = p_id_orden;
+
+
 
     -- Verificar si la orden debe actualizar su estado
     IF (SELECT COUNT(*) FROM detalle_orden WHERE id_orden = p_id_orden AND cantidad > 0) = 0 THEN
