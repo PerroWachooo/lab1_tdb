@@ -64,7 +64,7 @@ public class ProductoRepository implements ProductoRepositoryInt {
     }
 
     public ProductoEntity getProductoById(Integer id) {
-        String sql = "SELECT id_producto AS idProducto, nombre, descripcion, precio, stock, estado, id_categoria " +
+        String sql = "SELECT id_producto, nombre, descripcion, precio, stock, estado, id_categoria " +
                 "FROM producto WHERE id_producto = :id";
 
         try (Connection con = sql2o.open()) {
