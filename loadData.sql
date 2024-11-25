@@ -90,13 +90,14 @@ INSERT INTO cliente (id_cliente, nombre, direccion, email, telefono) VALUES
 -- Poblar tabla orden
 -- =============================
 INSERT INTO orden (id_orden, fecha_orden, estado, id_cliente, total) VALUES
-                                                                         (1, '2024-11-01 10:00:00', 'Pagada', 1, 500000.00),
-                                                                         (2, '2024-11-02 15:30:00', 'Enviada', 2, 400000.00),
-                                                                         (3, '2024-11-05 18:45:00', 'Pendiente', 3, 50000.00),
-                                                                         (4, '2024-11-10 12:20:00', 'Enviada', 5, 100000.00),
-                                                                         (5, '2024-11-12 17:30:00', 'Enviada', 5, 300000.00),
-                                                                         (6, '2024-11-20 18:00:00', 'Pagada', 1, 80000.00),
-                                                                         -- Órdenes adicionales
+                                                                         (1, '2024-10-15 10:00:00', 'Pagada', 1, 500000.00),
+                                                                         (2, '2024-10-15 15:30:00', 'Enviada', 2, 400000.00),
+                                                                         (3, '2024-10-15 18:45:00', 'Pendiente', 1, 50000.00),
+                                                                         (4, '2024-10-15 12:20:00', 'Enviada', 5, 100000.00),
+                                                                         (5, '2024-10-15 17:30:00', 'Enviada', 5, 300000.00),
+                                                                         (6, '2024-10-15 18:00:00', 'Pagada', 1, 80000.00),
+
+                                                                        -- Órdenes adicionales
                                                                          (7, '2024-11-21 09:15:00', 'Pagada', 6, 150000.00),
                                                                          (8, '2024-11-22 11:45:00', 'Enviada', 7, 200000.00),
                                                                          (9, '2024-11-23 14:30:00', 'Pendiente', 8, 75000.00),
@@ -200,3 +201,39 @@ INSERT INTO detalle_orden (id_detalle, id_orden, id_producto, cantidad, precio_u
                                                                                              (51, 48, 19, 2, 15000.00),
                                                                                              (52, 49, 20, 1, 60000.00),
                                                                                              (53, 50, 21, 3, 25000.00);
+
+
+
+-- =============================
+-- Actualizar secuencias de IDs
+-- =============================
+
+-- Actualizar secuencia de categoria
+SELECT setval(
+               pg_get_serial_sequence('categoria', 'id_categoria'),
+               (SELECT MAX(id_categoria) FROM categoria)
+       );
+
+-- Actualizar secuencia de producto
+SELECT setval(
+               pg_get_serial_sequence('producto', 'id_producto'),
+               (SELECT MAX(id_producto) FROM producto)
+       );
+
+-- Actualizar secuencia de cliente
+SELECT setval(
+               pg_get_serial_sequence('cliente', 'id_cliente'),
+               (SELECT MAX(id_cliente) FROM cliente)
+       );
+
+-- Actualizar secuencia de orden
+SELECT setval(
+               pg_get_serial_sequence('orden', 'id_orden'),
+               (SELECT MAX(id_orden) FROM orden)
+       );
+
+-- Actualizar secuencia de detalle_orden
+SELECT setval(
+               pg_get_serial_sequence('detalle_orden', 'id_detalle'),
+               (SELECT MAX(id_detalle) FROM detalle_orden)
+       );

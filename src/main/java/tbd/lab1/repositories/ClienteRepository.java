@@ -29,6 +29,7 @@ public class ClienteRepository implements ClienteRepositoryInt {
 
             // Establecer el ID generado al cliente
             cliente.setId_cliente(id);
+            System.out.println("###############\nCliente guardado con ID: " + id + "\n##################");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -37,7 +38,7 @@ public class ClienteRepository implements ClienteRepositoryInt {
 
     // Obtiene todos los clientes ingresados en la base de datos
     public List<ClienteEntity> getClientes() {
-        String sql = "SELECT * FROM cliente";
+        String sql = "SELECT * FROM cliente order by id_cliente";
         try (Connection con = sql2o.open()) {
             return con.createQuery(sql)
                     .executeAndFetch(ClienteEntity.class);

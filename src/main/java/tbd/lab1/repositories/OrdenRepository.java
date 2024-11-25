@@ -45,8 +45,8 @@ public class OrdenRepository implements OrdenRepositoryInt {
     }
 
     public OrdenEntity getOrdenById(Integer id) {
-        String sql = "SELECT o.id_orden AS id_orden, o.fecha_orden AS fecha_orden, o.estado AS estado, " +
-                "o.id_cliente AS cliente, o.total AS total " +
+        String sql = "SELECT o.id_orden, o.fecha_orden, o.estado, " +
+                "o.id_cliente, o.total " +
                 "FROM orden o " +
                 "JOIN cliente c ON o.id_cliente = c.id_cliente " +
                 "WHERE o.id_orden = :id";
@@ -79,7 +79,16 @@ public class OrdenRepository implements OrdenRepositoryInt {
             return new ArrayList<>();
         }
     }
-
+    public List<OrdenEntity> getAllOrdenes(){
+        String sql = "SELECT * FROM orden";
+        try (Connection con = sql2o.open()) {
+            return con.createQuery(sql)
+                    .executeAndFetch(OrdenEntity.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
 
 
 

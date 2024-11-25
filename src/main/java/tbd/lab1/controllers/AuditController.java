@@ -26,11 +26,9 @@ public class AuditController {
     }
 
     @GetMapping("/clientesMultiplesCompras")
-    public ResponseEntity<List<ClienteMultiplesCompras>> obtenerClientesMultiplesCompras(
-            @RequestParam String fechaInicio,
-            @RequestParam String fechaFin) {
+    public ResponseEntity<ClienteMultiplesCompras> obtenerClientesMultiplesCompras() {
 
-        List<ClienteMultiplesCompras> reporte = auditService.obtenerClientesMultiplesCompras(fechaInicio, fechaFin);
+        ClienteMultiplesCompras reporte = auditService.obtenerClientesMultiplesCompras();
         return ResponseEntity.ok(reporte);
     }
 

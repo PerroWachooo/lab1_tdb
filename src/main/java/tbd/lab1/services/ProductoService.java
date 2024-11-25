@@ -21,6 +21,11 @@ public class ProductoService {
         return productoRepository.getProductoById(id);
     }
 
+    //obtiene todos los productos
+    public ArrayList<ProductoEntity> getAllProductos(){
+        return (ArrayList<ProductoEntity>) productoRepository.getProductos();
+    }
+
     public ArrayList<ProductoEntity> getProductos(){
         return (ArrayList<ProductoEntity>) productoRepository.getProductos();
     }

@@ -29,8 +29,12 @@ public class ProductoController {
 
     @GetMapping("/")
     public ResponseEntity<List<ProductoEntity>> listProducto() {
-        List<ProductoEntity> productos = productoService.getProductos();
-        return ResponseEntity.ok(productos);
+        try {
+            List<ProductoEntity> productos = productoService.getAllProductos();
+            return ResponseEntity.ok(productos);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     // actualiza producto
