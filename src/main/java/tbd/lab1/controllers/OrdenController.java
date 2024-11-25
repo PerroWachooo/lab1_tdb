@@ -35,7 +35,7 @@ public class OrdenController {
 
     @GetMapping("/")
     public ResponseEntity<List<OrdenEntity>> listOrden() {
-        List<OrdenEntity> ordenes = ordenService.getAllOrdenes();
+        List<OrdenEntity> ordenes = ordenService.getOrdenes();
         return ResponseEntity.ok(ordenes);
     }
 

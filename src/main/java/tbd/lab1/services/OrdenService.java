@@ -29,9 +29,7 @@ public class OrdenService {
     public ArrayList<OrdenEntity> getOrdenes() {
         return (ArrayList<OrdenEntity>) ordenRepository.getOrdenes();
     }
-    public ArrayList<OrdenEntity> getAllOrdenes() {
-        return (ArrayList<OrdenEntity>) ordenRepository.getAllOrdenes();
-    }
+
     public boolean updateOrden(OrdenEntity orden) {
         // vemos si el cliente existe en la base de datos
         if (ordenRepository.getOrdenById(orden.getId_orden()) != null) {

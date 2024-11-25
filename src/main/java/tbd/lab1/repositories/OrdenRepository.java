@@ -79,16 +79,6 @@ public class OrdenRepository implements OrdenRepositoryInt {
             return new ArrayList<>();
         }
     }
-    public List<OrdenEntity> getAllOrdenes(){
-        String sql = "SELECT * FROM orden";
-        try (Connection con = sql2o.open()) {
-            return con.createQuery(sql)
-                    .executeAndFetch(OrdenEntity.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
-    }
 
 
 

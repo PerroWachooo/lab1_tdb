@@ -11,8 +11,6 @@ public interface OrdenRepositoryInt {
 
     List<OrdenEntity> getOrdenes();
 
-    List<OrdenEntity> getAllOrdenes();
-
     boolean updateOrden(OrdenEntity orden);
 
     boolean deleteOrden(Integer id);
