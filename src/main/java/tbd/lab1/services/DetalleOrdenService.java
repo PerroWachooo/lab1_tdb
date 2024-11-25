@@ -48,4 +48,8 @@ public class DetalleOrdenService {
         detalleOrdenRepository.gestionarDevolucion(idOrden, idProducto, cantidad);
     }
 
+    public ArrayList<DetalleOrdenEntity> getDetallesByIdOrden(int id_orden) {
+        return (ArrayList<DetalleOrdenEntity>) detalleOrdenRepository.getDetallesByIdOrden(id_orden);
+    }
+
 }

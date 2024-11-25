@@ -62,5 +62,11 @@ public class DetalleOrdenController {
         return ResponseEntity.ok("Devolución gestionada correctamente.");
     }
 
+    @GetMapping("/id-orden/{id_orden}")
+    public ResponseEntity<List<DetalleOrdenEntity>> getDetallesByIdOrden(@PathVariable Integer id_orden) {
+        List<DetalleOrdenEntity> detalles = detalleOrdenService.getDetallesByIdOrden(id_orden);
+        return ResponseEntity.ok(detalles);
+    }
+
 
 }
