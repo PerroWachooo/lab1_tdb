@@ -29,8 +29,12 @@ public class OrdenService {
     public ArrayList<OrdenEntity> getOrdenes() {
         return (ArrayList<OrdenEntity>) ordenRepository.getOrdenes();
     }
-
+    public ArrayList<OrdenEntity> getAllOrdenes() {
+        return (ArrayList<OrdenEntity>) ordenRepository.getAllOrdenes();
+    }
     public boolean updateOrden(OrdenEntity orden) {
+        System.out.println("Recibido objeto Orden: " + orden);
+        System.out.println("Recibido objeto Orden: " + orden.getId_orden());
         // vemos si el cliente existe en la base de datos
         if (ordenRepository.getOrdenById(orden.getId_orden()) != null) {
             // actualizamos el cliente usando el método del repositorio
