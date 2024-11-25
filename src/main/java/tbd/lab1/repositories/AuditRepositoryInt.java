@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface AuditRepositoryInt {
     List<UsuarioActivo> reporteUsuariosMasActivos();
-    List<ClienteMultiplesCompras> clientesMultiplesCompras(String fechaInicio, String fechaFin);
+    ClienteMultiplesCompras clientesMultiplesCompras();
 }
