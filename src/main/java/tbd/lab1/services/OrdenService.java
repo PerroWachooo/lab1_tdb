@@ -29,7 +29,9 @@ public class OrdenService {
     public ArrayList<OrdenEntity> getOrdenes() {
         return (ArrayList<OrdenEntity>) ordenRepository.getOrdenes();
     }
-
+    public ArrayList<OrdenEntity> getAllOrdenes() {
+        return (ArrayList<OrdenEntity>) ordenRepository.getAllOrdenes();
+    }
     public boolean updateOrden(OrdenEntity orden) {
         System.out.println("Recibido objeto Orden: " + orden);
         System.out.println("Recibido objeto Orden: " + orden.getId_orden());

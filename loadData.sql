@@ -200,3 +200,37 @@ INSERT INTO detalle_orden (id_detalle, id_orden, id_producto, cantidad, precio_u
                                                                                              (51, 48, 19, 2, 15000.00),
                                                                                              (52, 49, 20, 1, 60000.00),
                                                                                              (53, 50, 21, 3, 25000.00);
+
+-- =============================
+-- Actualizar secuencias de IDs
+-- =============================
+
+-- Actualizar secuencia de categoria
+SELECT setval(
+               pg_get_serial_sequence('categoria', 'id_categoria'),
+               (SELECT MAX(id_categoria) FROM categoria)
+       );
+
+-- Actualizar secuencia de producto
+SELECT setval(
+               pg_get_serial_sequence('producto', 'id_producto'),
+               (SELECT MAX(id_producto) FROM producto)
+       );
+
+-- Actualizar secuencia de cliente
+SELECT setval(
+               pg_get_serial_sequence('cliente', 'id_cliente'),
+               (SELECT MAX(id_cliente) FROM cliente)
+       );
+
+-- Actualizar secuencia de orden
+SELECT setval(
+               pg_get_serial_sequence('orden', 'id_orden'),
+               (SELECT MAX(id_orden) FROM orden)
+       );
+
+-- Actualizar secuencia de detalle_orden
+SELECT setval(
+               pg_get_serial_sequence('detalle_orden', 'id_detalle'),
+               (SELECT MAX(id_detalle) FROM detalle_orden)
+       );
